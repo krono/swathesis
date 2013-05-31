@@ -1,0 +1,18 @@
+\lstdefinelanguage[80]{Smalltalk}{
+  morekeywords={true,false,self,super,nil,thisContext},
+  sensitive=true,
+  morecomment=[s]{"}{"},
+  morestring=[d]',
+  style=SmalltalkStyle
+}
+\lstdefinestyle{SmalltalkStyle}{
+  literate=%{:=}{{\(\gets\)}}1
+        {^}{{\(\uparrow\)}}1
+}
+
+\lstset{defaultdialect=[80]{Smalltalk}}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

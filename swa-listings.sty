@@ -1,0 +1,77 @@
+\RequirePackage[final]{listings}
+\RequirePackage{relsize}
+\input{javascript.def}
+\input{smalltalk.def}
+\input{lua.def}
+\lstdefinelanguage{Self}[]{Smalltalk}{}
+
+\lstset{%
+  basicstyle=\ttfamily,
+  keywordstyle=\bfseries,
+%  stringstyle=\sffamily,
+  commentstyle=\slshape,
+  captionpos=b,
+  showstringspaces=false,
+  tabsize=2,
+  resetmargins=true,
+  frame=lines,
+  upquote=true,
+  floatplacement=hbtp,
+  % columns=[c]fixed,
+  columns=fullflexible,
+  % basewidth={0.57em,0.45em},
+  % aboveskip=\bigskipamount,
+  lineskip=-.5ex,
+  %linewidth=\linewidth,
+  escapechar=\`,
+}
+
+\providecaptionname{english}{\lstlistlistingname}{List of Listings}
+\providecaptionname{german}{\lstlistlistingname}{Listingverzeichnis}
+\providecaptionname{ngerman}{\lstlistlistingname}{Listingverzeichnis}
+% \renewcaptionname{english}{\lstlistlistingname}{List of Listings}
+% \renewcaptionname{german}{\lstlistlistingname}{Listingverzeichnis}
+% \renewcaptionname{ngerman}{\lstlistlistingname}{Listingverzeichnis}
+
+\providecommand{\listingnumberfont}{{}}
+\lstset{numberstyle=\listingnumberfont}
+
+\newcommand{\swaListingInlineMode}{
+  \lstset{%
+    columns=fullflexible,
+    basicstyle=\ttfamily
+  }}
+
+\newcommand{\swaListingMode}{
+  \lstset{%
+    columns=[c]fixed,
+    basicstyle=\smaller\ttfamily,
+  }}
+
+\swaListingInlineMode
+
+
+\lstnewenvironment{code}[3][]%
+{
+\swaListingMode
+\lstset{
+label=#1,
+caption={#2},
+#3
+}}{
+\swaListingInlineMode
+}
+
+\endinput
+    ;; New environments
+    (LaTeX-add-environments
+     '("code" LaTeX-env-args
+       [TeX-arg-key-val LaTeX-listings-key-val-options]))
+    (add-to-list 'LaTeX-indent-environment-list
+		 '("code" current-indentation))
+    (make-local-variable 'LaTeX-verbatim-regexp)
+    (setq LaTeX-verbatim-regexp (concat LaTeX-verbatim-regexp "\\|code"))
+    (add-to-list 'LaTeX-verbatim-environments-local "code")
+
+    (reftex-add-to-label-alist 
+        '(("\\begin{code}[*]{}{}" ?c "lst:" "\\ref{%s}" caption nil)))

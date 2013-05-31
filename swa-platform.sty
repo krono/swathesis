@@ -1,0 +1,32 @@
+\RequirePackage{etoolbox}
+\RequirePackage{ifthen}
+\RequirePackage{ifpdf}
+\RequirePackage{ifluatex}
+\RequirePackage{ifxetex}
+
+\ifthenelse{\boolean{xetex}}{% xetex
+}{ % luatex and pdftex
+  \ifthenelse{\boolean{luatex}}{}{
+    \RequirePackage[utf8]{inputenc}
+  }
+  \RequirePackage{cmap}
+  \input glyphtounicode
+  \pdfgentounicode=1
+}
+
+\ifcsname ifundefinedorrelax\endcsname
+\else
+\RequirePackage{scrbase}
+\fi
+
+%%
+% From titlepage.dtx by Markus Kohm
+%
+\newcommand*{\swa@NowButAfterBeginDocument}{%
+  \if@atdocument
+    \expandafter\@firstofone
+  \else
+    \expandafter\AtBeginDocument
+  \fi
+}
+%

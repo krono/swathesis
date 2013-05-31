@@ -1,0 +1,69 @@
+
+\ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
+  % to match EB Garamond
+  \setmonofont%
+  [Scale=.73,Microtype,Numbers={Lining,Monospaced,SlashedZero}]%
+  {DejaVu  Sans Mono}
+  
+  \defaultfontfeatures{Microtype,Ligatures=TeX,RawFeature={+calt,+clig,+tlig}}
+
+  \global\let\slshape\itshape\relax
+  
+  \ifthenelse{\boolean{xetex}}{%
+    \setmainfont{EB Garamond}%
+  }{%
+    \ifcsundef{garamondpath}{
+      \PackageError{swa-font-garamond}{%
+        % 
+        You have requested Garamond for LuaTeX, \MessageBreak
+        but  not provided a path to the files. \MessageBreak%
+        So you have to specify the path to the \MessageBreak
+        otf-files with %
+        \MessageBreak\MessageBreak%
+        \protect\newcommand{\protect\garamondpath}{/path/to/otffiles/} %
+        \MessageBreak\MessageBreak%
+        BEFORE \protect\documentclass %
+        }{\MessageBreak
+        You have to specify the path to the otf-files with %
+        \MessageBreak\MessageBreak%
+        \protect\newcommand{\protect\garamondpath}{/path/to/otffiles/} %
+        \MessageBreak\MessageBreak%
+        BEFORE \protect\documentclass %
+      }
+    }{
+      \setmainfont[
+        Path = \garamondpath ,
+        UprightFont =EBGaramond-Regular,
+        BoldFont = EBGaramond-Bold ,
+        SmallCapsFont= EBGaramond-SC ,
+        ItalicFont = EBGaramond-Italic,
+        Ligatures=TeX
+      ]{EB Garamond}
+    }
+  }
+
+\addtokomafont{partentrypagenumber}{%
+  \addfontfeatures{Numbers={OldStyle,Monospaced}}}
+\addtokomafont{chapterentrypagenumber}{%
+  \addfontfeatures{Numbers={OldStyle,Monospaced}}}
+\settocfeature{pagenumberhook}{%
+  \addfontfeatures{Numbers={OldStyle,Monospaced}}}
+
+\renewcommand\listingnumberfont{%
+  \rmfamily\addfontfeatures{Numbers={OldStyle,Monospaced}}}
+\renewcommand\tablefontcommand{%
+  \addfontfeatures{Numbers={OldStyle,Monospaced}}}
+
+
+}{%
+  \RequirePackage[urw-garamond]{mathdesign}
+  \renewcommand{\rmdefault}{garamond}
+  \RequirePackage[scaled=.9]{beramono}
+}
+
+
+  % scale down euler a bit more.
+  % note, don't use the small option for eulervm, then
+  \def\zeu@Scale{.89}
+  \RequirePackage[euler-digits,T1]{eulervm}
+

@@ -1,0 +1,149 @@
+
+\RequirePackage{acronym}
+
+\RequirePackage{etoolbox}
+
+\RequirePackage{swa-platform}
+
+\newcommand*{\acroshortsuffixfont}[1]{{\upshape #1}}
+
+\newcommand*{\ac@doacros}{}
+
+%patch acronym
+\newcommand*\newacronym[1]{%
+ \@ifnextchar[%] 
+  {\mynewacronymi{#1}}{\mynewacronymii{#1}}%
+}
+
+\providecommand\acroshortsuffixfont[1]{{#1}}
+\providecommand\acrolongsuffixfont[1]{{#1}}
+
+\newcommand\mynewacronymi{}
+\def\mynewacronymi#1[#2]#3{%
+  \@ifnextchar[%] 
+  {\mynewacronymiii{#1}[#2]{#3}}{\mynewacronymiv{#1}[#2]{#3}}%
+}
+\newcommand\mynewacronymii{}
+\def\mynewacronymii#1#2{%
+  \@ifnextchar[%] 
+  {\mynewacronymiii{#1}[s]{#2}}{\mynewacronymiv{#1}[s]{#2}}%
+}
+\newcommand\mynewacronymiv{}
+\def\mynewacronymiv#1[#2]#3{%
+  \mynewacronymiii{#1}[#2]{#3}[s]%
+}
+
+\newcommand\mynewacronymiii{}
+\def\mynewacronymiii#1[#2]#3[#4]{%
+ \gappto\ac@doacros{{\doacro{#1}}}
+ \acrodef{#1}{#3}%
+ \acrodefplural{#1}[{#1\acroshortsuffixfont{#2}}]{{#3\acrolongsuffixfont{#4}}}%
+ % support for one-time compilation, too.
+ \ifundefinedorrelax{fn@#1}{%
+   \newacro{#1}{#3}%
+   \newacroplural{#1}[{#1\acroshortsuffixfont{#2}}]{{#3\acrolongsuffixfont{#4}}}%
+ }{}%
+}
+
+
+\renewcommand*{\acsfont}[1]{{\scshape #1}}
+
+\providecommand*{\ac@labelfont}[1]{{\acsfont{#1}}}
+\providecommand*{\ac@label}[1]{{\ac@labelfont{#1}\hfill}}
+
+
+\providecommand*{\listofloaname}{List of Abbreviations}
+\providecaptionname{english}{\listofloaname}{List of Abbreviations}
+\providecaptionname{german}{\listofloaname}{Abk\"urzungsverzeichnis}
+\providecaptionname{ngerman}{\listofloaname}{Abk\"urzungsverzeichnis}
+
+\newcommand*{\printacroentry}[1]{
+  \ifAC@printonlyused%
+    \expandafter\ifx\csname acused@#1\endcsname\AC@used%
+       \item[\protect\AC@hypertarget{#1}{\acsfont{\AC@acs{#1}}}] \AC@acl{#1}%
+          \ifAC@withpage%
+            \ifundefinedorrelax{r@acro:#1}{%
+              \PackageInfo{acronym}{%
+                Acronym #1 used in text but not spelled out in
+                full in text}%
+            }{%
+              \dotfill\pageref{acro:#1}%
+            }%\\%
+          \fi%
+       \fi
+ \else%
+    \item[\protect\AC@hypertarget{#1}{\acsfont{\AC@acs{#1}}}] \AC@acl{#1}%
+ \fi%
+}
+
+\newdimen\ac@longest \relax
+\newdimen\ac@curr@width \relax
+\newcommand*\ac@setlongest@label[1]{
+  \microtypesetup{disable}
+  \settowidth{\ac@curr@width}{\ac@labelfont{#1}}
+  \microtypesetup{enable}
+  \ifdim\ac@longest<\ac@curr@width\relax
+    \global\ac@longest=\ac@curr@width\relax
+  \fi
+}
+
+\ifundefinedorrelax{@listoftoc}{%
+  \ifundefinedorrelax{toc@heading}{%
+    % neither tocbasic, komascript not float available
+    % so missuse listoffigures here
+    \gdef\ac@listhead{
+      \begingroup
+      \let\@starttoc\@gobble
+      \let\listfigurename\contentsname
+      \listoffigures
+      \endgroup
+    }
+  }{%
+    \gdef\ac@listhead{\toc@heading}%
+  }
+}{%
+  \gdef\ac@listhead{\@listoftoc{loa}}
+}
+
+
+
+\newcommand\listofacronyms[1][1]{%
+  \begingroup
+
+  \let\contentsname\listofloaname\relax
+  \ac@listhead
+
+  %determine if we have acros defined at all
+  \newif\if@ac@listempty
+  \@ac@listemptytrue
+  \def\doacro{%
+    \global\@ac@listemptyfalse\@gobble%
+  }
+  \ac@doacros\relax
+
+  \if@ac@listempty
+  \else
+
+  \begin{acronym}[#1]
+    % check for optional argument
+    \def\@tempa{1}\def\@tempb{#1}%
+    \ifx\@tempa\@tempb%
+      % determine longest label into \ac@longest
+      \def\doacro{\ac@setlongest@label}
+      \ac@doacros\relax
+
+      % adjust lengths
+      \setlength{\labelwidth}{\ac@longest}%
+      \leftmargin\z@
+      \itemindent\dimexpr\labelwidth-\labelsep\relax
+    \fi
+
+      \let\makelabel\ac@label
+
+      % print acros
+      \let\doacro\printacroentry
+      \ac@doacros\relax
+  \end{acronym}
+  \fi
+  \endgroup
+}

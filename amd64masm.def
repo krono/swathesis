@@ -1,0 +1,37 @@
+\lstdefinelanguage[amd64masm]{Assembler}[x86masm]{Assembler}%
+{morekeywords={rax,rbx,rcx,rdx,%
+      rsi,rdi,rbp,rsp,r9,r10,r11,r12,r13,r14,r15,%
+      %st,aaa,aad,aam,aas,adc,
+      addq,andq,%
+      %arpl,bound,bsf,bsr,bswap,bt,btc,%
+      %btr,bts,call,cbw,cdq,clc,cld,cli,clts,cmc,cmp,cmps,cmpsb,cmpsw,%
+      cmpq,%
+      % cmpsd,cmpxchg,cwd,cwde,daa,das,dec,div,enter,hlt,idiv,imul,in,%
+      % inc,ins,int,into,invd,invlpg,iret,ja,jae,jb,jbe,jc,jcxz,jecxz,%
+      % je,jg,jge,jl,jle,jna,jnae,jnb,jnbe,jnc,jne,jng,jnge,jnl,jnle,%
+      % jno,jnp,jns,jnz,jo,jp,jpe,jpo,js,jz,jmp,lahf,lar,lea,leave,lgdt,%
+      % lidt,lldt,lmsw,lock,lods,lodsb,lodsw,lodsd,loop,loopz,loopnz,%
+      % loope,loopne,lds,les,lfs,lgs,lss,lsl,ltr,mov,movs,movsb,movsw,%
+      % movsd,movsx,movzx,mul,neg,nop,not,or,out,outs,pop,popa,popad,%
+      % popf,popfd,push,pusha,pushad,pushf,pushfd,rcl,rcr,rep,repe,%
+      % repne,repz,repnz,ret,retf,rol,ror,sahf,sal,sar,sbb,scas,seta,%
+      % setae,setb,setbe,setc,sete,setg,setge,setl,setle,setna,setnae,%
+      % setnb,setnbe,setnc,setne,setng,setnge,setnl,setnle,setno,setnp,%
+      % setns,setnz,seto,setp,setpe,setpo,sets,setz,sgdt,shl,shld,shr,%
+      % shrd,sidt,sldt,smsw,stc,std,sti,stos,stosb,stosw,stosd,str,sub,%
+      subq,%
+      % test,verr,verw,wait,wbinvd,xadd,xchg,xlatb,xor,fabs,fadd,fbld,%
+      % fbstp,fchs,fclex,fcom,fcos,fdecstp,fdiv,fdivr,ffree,fiadd,ficom,%
+      % fidiv,fidivr,fild,fimul,fincstp,finit,fist,fisub,fisubr,fld,fld1,%
+      % fldl2e,fldl2t,fldlg2,fldln2,fldpi,fldz,fldcw,fldenv,fmul,fnop,%
+      % fpatan,fprem,fprem1,fptan,frndint,frstor,fsave,fscale,fsetpm,%
+      % fsin,fsincos,fsqrt,fst,fstcw,fstenv,fstsw,fsub,fsubr,ftst,fucom,%
+      % fwait,fxam,fxch,fxtract,fyl2x,fyl2xp1,f2xm1
+      movq%
+      %
+  }%
+}
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

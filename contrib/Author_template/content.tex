@@ -1,0 +1,186 @@
+%%
+%% content.tex
+%%
+\authorrunning{Author}
+\titlerunning{The importance of work}
+\title{The importance of why and how to do work}
+\subtitle{An imaginary paper to showcase a document}
+\extratitle{\raggedleft Author\\ Importance of Work}
+\author{Anton Author}
+\institute{%
+  Hasso-Plattner-Institut, Potsdam\\
+  \email{\{firstname.lastname\}@student.hpi.uni-potsdam.de}
+}
+\supervisors{%
+  Prof.\,Dr.\,William Withaname \and%
+ Dr.\,John Doe}
+\maketitle
+
+\begin{abstract}
+  Hello, here is some text without a meaning. This text should show what a
+  printed text will look like at this place. If you read this text, you will
+  get no information. Really? Is there no information? Is there a difference
+  between this text and some nonsense like “Huardest gefburn”? Kjift – not at
+  all! A blind text like this gives you information about the selected font,
+  how the letters are written and an impression of the look. This text should
+  contain all letters of the alphabet and it should be written in of the
+  original language. There is no need for special content, but the length of
+  words should match the language.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+
+Hello, here is some text without a meaning. This text should show what a
+printed text will look like at this place. If you read this text, you will get
+no information. Really? Is there no information? Is there a difference between
+this text and some nonsense like “Huardest gefburn”? Kjift – not at all! A
+blind text like this gives you information about the selected font, how the
+letters are written and an impression of the look. This text should contain all
+letters of the alphabet and it should be written in of the original language.
+There is no need for special content, but the length of words should match the
+language.\todo{cite}
+
+Hello, here is some text without a meaning. This text should show what a
+printed text will look like at this place. If you read this text, you will get
+no information. Really? Is there no information? Is there a difference between
+this text and some nonsense like “Huardest gefburn”? Kjift – not at all! A
+blind text like this gives you information about the selected font, how the
+letters are written and an impression of the look. This text should contain all
+letters of the alphabet and it should be written in of the original language.
+There is no need for special content, but the length of words should match the
+language.
+
+\section{Context}
+\label{sec:context}
+
+Hello, here is some text without a meaning. This text should show what a
+printed text will look like at this place. If you read this text, you will get
+no information. Really? Is there no information? Is there a difference between
+this text and some nonsense like “Huardest gefburn”? Kjift – not at all! A
+blind text like this gives you information about the selected font, how the
+letters are written and an impression of the look. This text should contain all
+letters of the alphabet and it should be written in of the original language.
+There is no need for special content, but the length of words should match the
+language.
+
+\todosec{Is that redundant?}
+
+Hello, here is some text without a meaning. This text should show what a
+printed text will look like at this place. If you read this text, you will get
+no information. Really? Is there no information? Is there a difference between
+this text and some nonsense like “Huardest gefburn”? Kjift – not at all! A
+blind text like this gives you information about the selected font, how the
+letters are written and an impression of the look. This text should contain all
+letters of the alphabet and it should be written in of the original language.
+There is no need for special content, but the length of words should match the
+language.
+
+\section{Problem}
+\label{sec:problem}
+
+\secmissing{The Main Problem}
+
+\section{Solution}
+\label{sec:solution}
+
+\todolist{anton}{
+\item Put A onto B
+\item Put B into C
+\item Pull D from C
+}
+
+\section{Implementation}
+\label{sec:implementation}
+
+\missingfigure{Make a overview sketch of the whole system}
+
+\section{Evaluation}
+\label{sec:evaluation}
+
+\lstset{language=Smalltalk}
+\iffalse
+\begin{verbatim}\fi
+\begin{code}[lst:example]{An example code snippet}{float,numbers=left}
+exampleWithNumber: x
+
+"A method that illustrates every part of Smalltalk method syntax
+except primitives. It has unary, binary, and keyword messages,
+declares arguments and temporaries, accesses a global variable
+(but not and instance variable), uses literals (array, character,
+symbol, string, integer, float), uses the pseudo variables
+true false, nil, self, and super, and has sequence, assignment,
+return and cascade. It has both zero argument and one argument blocks."
+
+    |y|
+    true & false not & (nil isNil) ifFalse: [self halt].
+    y := self size + super size.
+    #($a #a "a" 1 1.0)
+        do: [:each | Transcript show: (each class name);
+                                 show: ' '].
+     ^ x < y
+\end{code}
+\iffalse
+\end{verbatim}\fi
+
+
+
+\section{Related Work}
+\label{sec:related-work}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\ctable%
+[table,
+caption={Differences between things projected and things achieved}
+label=tbl:things]%
+{>{}p{.4\linewidth}@{}c}%
+{\tnote[a]{Just few things missing}}%
+{%
+\FL Part           & done
+\ML Title          & \y
+\NN Abstract       & \n
+\NN Intro          & \y
+\NN \multicolumn{2}{c}{Rest is not entirely true}
+\ML Context        & \y
+\NN Problem        & \n\tmark[a]
+\NN Solution       & \y
+\NN Implementation & \y
+\NN Evaluation     & \n
+\NN Related Work   & \n
+\NN Conclusion     & \y
+\LL
+}
+
+
+\nocite{*}
+\bibliography{references}
+
+% BAMA-O §20.7 
+% Ist die Arbeit in einer 
+%Fremdsprache verfasst, muss sie als Anhang eine 
+% kurze Zusammenfassung in deutscher Sprache enthalten.
+\begin{zusammenfassung}
+  Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien
+  leben die Blindtexte. Abgeschieden wohnen Sie in Buchstabhausen an der Küste
+  des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden
+  fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist
+  ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund
+  fliegen. Nicht einmal von der allmächtigen Interpunktion werden die
+  Blindtexte beherrscht – ein geradezu unorthographisches Leben. Eines Tages
+  aber beschloß eine kleine Zeile Blindtext, ihr Name war Lorem Ipsum, hinaus
+  zu gehen in die weite Grammatik. Der große Oxmox riet ihr davon ab, da es
+  dort wimmele von bösen Kommata, wilden Fragezeichen und hinterhältigen
+  Semikoli, doch das Blindtextchen ließ sich nicht beirren. Es packte seine
+  sieben Versalien, schob sich sein Initial in den Gürtel und machte sich auf
+  den Weg. Als es die ersten Hügel des Kursivgebirges erklommen hatte, warf es
+  einen letzten Blick zurück auf die Skyline seiner Heimatstadt Buchstabhausen,
+  die Headline von Alphabetdorf und die Subline seiner eigenen Straße, der
+  Zeilengasse. Wehmütig lief ihm eine rhetorische Frage über die Wange, dann
+  setzte es seinen Weg fort. Unterwegs traf es eine Copy
+\end{zusammenfassung}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% End: 

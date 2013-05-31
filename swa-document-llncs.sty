@@ -1,0 +1,305 @@
+%
+% llncs-dependend document config
+%
+\@ifclassloaded{llncs}{}{%
+  % not koma
+  \PackageError{swa-document-llncs}{
+    This package should only be used with the LNCS class
+  }{
+    You might consider loading swa-document.
+    }
+}
+
+% provide basic KOMA stuff
+\RequirePackage{scrbase}
+\RequirePackage{etoolbox}
+
+\bibliographystyle{splncs03}%% llncs
+\hypersetup{%
+  pdfpagescrop={92 112 523 778}, % LNCS paper size
+}
+
+\def\swa@doubleempty{%
+  \clearpage%
+  \ifodd\c@page\relax%
+  \else{\thispagestyle{empty}\mbox{}\cleardoublepage}%
+  \fi%
+}
+\ifundefinedorrelax{cleardoubleemptypage}{%
+  \newcommand{\cleardoubleemptypage}{\swa@doubleempty}%
+}{}
+
+\def\smashnewline#1{{\let\titlebreak\space\relax%
+\let\newline\relax #1}}
+
+\newcounter{bktocdepth}
+\setcounter{bktocdepth}{\value{tocdepth}}
+\setcounter{tocdepth}{2}
+
+\pretocmd{\tableofcontents}{%
+  \begingroup%
+  \let\newline\relax
+  \swa@doubleempty%
+  \setcounter{tocdepth}{\value{bktocdepth}}
+}{}{}
+\apptocmd{\tableofcontents}{%
+  \setcounter{tocdepth}{2}
+  \swa@doubleempty%
+  \endgroup%
+}{}{}
+
+
+\providecommand*\extratitle[1]{\gdef\swa@extratitle{#1}}
+\providecommand*\swa@extratitle{}
+
+
+\providecommand*\supervisor[1]{\gdef\swa@supervisor{#1}}
+\providecommand*\supervisors[1]{\gdef\swa@supervisors{#1}}
+\providecommand*\swa@supervisor{}
+\providecommand*\swa@supervisors{}
+
+
+\providecommand*\swa@faculty{%
+  Hasso-Plattner-Institute for Software~Systems~Engineering%
+  \\ at the University of Potsdam, Germany%
+}
+\providecommand*\swa@university{%
+      Software Architecture Group\\
+      Hasso-Plattner-Institute\\%
+      University of Potsdam, Germany%
+}
+
+\providecommand*\swa@discipline{%
+  Software~Engineering%
+}%
+
+\providecommand*\swa@whom{Dem}
+
+\providecommand*\swa@facultylogo{}
+\providecommand*\facultylogo[1]{\gdef\swa@facultylogo{#1}}
+\providecommand*\swa@universitylogo{}
+\providecommand*\universitylogo[1]{\gdef\swa@universitylogo{#1}}
+
+
+\providecommand*\swa@thesis@mastername{Master's Thesis}
+\providecommand*\swa@thesis@bachelorname{Bachelor's Thesis}
+\providecommand*\swa@thesis@phdname{Doctoral Disstertation}
+\providecommand*\swa@degree@mastername{Master of Science}
+\providecommand*\swa@degree@bachelorname{Bachelor of Science}
+\providecommand*\swa@degree@phdname{Doctor of Philosophy}
+
+\newif\ifswa@logo@university
+\newif\ifswa@logo@faculty
+
+
+\swa@NowButAfterBeginDocument{
+  \providecaptionname{english}{\supervisorname}{Supervisor}%
+  \providecaptionname{english}{\supervisorsname}{Supervisors}%
+  \providecaptionname{german}{\supervisorname}{Betreuer}%
+  \providecaptionname{german}{\supervisorsname}{\supervisorname}%
+  \ifx\swa@universitylogo\@empty
+  % see http://www.intern.uni-potsdam.de/u/zavz/logos.htm
+  \universitylogo{Unilogo}
+  \fi
+  \ifx\swa@facultylogo\@empty
+  \facultylogo{hpi_logo_v2_cmyk_sl2}
+  \fi
+  \expandafter\IfFileExists{\swa@universitylogo.ai}{\global\swa@logo@universitytrue}{}
+  \expandafter\IfFileExists{\swa@universitylogo.pdf}{\global\swa@logo@universitytrue}{}
+  \expandafter\IfFileExists{\swa@universitylogo.eps}{\global\swa@logo@universitytrue}{}
+  \expandafter\IfFileExists{\swa@facultylogo.pdf}{\global\swa@logo@facultytrue}{}
+  \expandafter\IfFileExists{\swa@facultylogo.eps}{\global\swa@logo@facultytrue}{}
+}
+
+\providecommand*\swa@titlefont{}
+\providecommand*\swa@subtitlefont{}
+
+
+\newboolean{swa@logo@title}
+\AtBeginDocument{
+  \@ifpackageloaded{swa-collate}{
+    \setboolean{swa@logo@title}{false}
+  }{
+    \setboolean{swa@logo@title}{true}
+  }
+}
+
+
+\providecommand*{\swa@fromname}{by}
+\providecommand*{\swa@thesis@information}{%
+  A thesis submitted to the \\%
+  \swa@faculty{}\\%
+  in partial fulfillment of the requirements for the degree of \\[.5\baselineskip]
+  {\scshape \swa@degree@ in \swa@discipline\\}%
+}
+
+\newcommand*\swa@subject{
+  \csuse{swa@thesis@\swa@degree name}
+}
+\newcommand*\swa@degree@{
+  \csuse{swa@degree@\swa@degree name}
+}
+
+
+\swa@NowButAfterBeginDocument{%
+  \providecaptionname{english}{\swa@thesis@mastername}{Master's Thesis}
+  \providecaptionname{english}{\swa@thesis@bachelorname}{Bachelor's Thesis}
+  \providecaptionname{english}{\swa@thesis@phdname}{Doctoral Disstertation}
+  \providecaptionname{english}{\swa@degree@mastername}{Master of Science}
+  \providecaptionname{english}{\swa@degree@bachelorname}{Bachelor of Science}
+  \providecaptionname{english}{\swa@degree@phdname}{Doctor of Philosophy}
+  \providecaptionname{english}{\swa@fromname}{by}%
+
+  \providecaptionname{english}{\supervisorname}{Supervisor}%
+  \providecaptionname{english}{\supervisorsname}{Supervisors}%
+
+  \providecaptionname{english}{\swa@thesis@information}{%
+    A thesis submitted to the \\%
+    \swa@faculty{}\\%
+    in partial fulfillment of the requirements for the degree of \\[.5\baselineskip]
+    {\scshape \swa@degree@ in \swa@discipline\\
+    }%
+  }
+
+  \providecaptionname{german}{\swa@thesis@mastername}{Masterarbeit}
+  \providecaptionname{german}{\swa@thesis@bachelorname}{Bachelorarbeit}
+  \providecaptionname{german}{\swa@thesis@phdname}{Disstertation}
+  \providecaptionname{german}{\swa@degree@mastername}{Master of Science}
+  \providecaptionname{german}{\swa@degree@bachelorname}{Bachelor of Science}
+  \providecaptionname{german}{\swa@degree@phdname}{Doktor der Ingenieurwissenschaften}
+  \providecaptionname{german}{\swa@fromname}{von}%
+  \providecaptionname{german}{\supervisorname}{Betreuer}%
+  \providecaptionname{german}{\supervisorsname}{\supervisorname}%
+  \providecaptionname{german}{\swa@thesis@information}{%
+    \swa@whom\space\swa@faculty{}\\
+    zur Erlangung des akademischen Grades des\\[.5\baselineskip]
+    {\scshape \swa@degree@ in \swa@discipline}\\[.5\baselineskip]
+    vorgelegte \swa@subject{}.
+  }
+  \providecaptionname{ngerman}{\swa@thesis@mastername}{Masterarbeit}
+  \providecaptionname{ngerman}{\swa@thesis@bachelorname}{Bachelorarbeit}
+  \providecaptionname{ngerman}{\swa@thesis@phdname}{Disstertation}
+  \providecaptionname{ngerman}{\swa@degree@mastername}{Master of Science}
+  \providecaptionname{ngerman}{\swa@degree@bachelorname}{Bachelor of Science}
+  \providecaptionname{ngerman}{\swa@degree@phdname}{Doktor der Ingenieurwissenschaften}
+  \providecaptionname{ngerman}{\swa@fromname}{von}%
+  \providecaptionname{ngerman}{\supervisorname}{Betreuer}%
+  \providecaptionname{ngerman}{\supervisorsname}{\supervisorname}%
+  \providecaptionname{ngerman}{\swa@thesis@information}{%
+    \swa@whom\space\swa@faculty{}\\
+    zur Erlangung des akademischen Grades des\\[.5\baselineskip]
+    {\scshape \swa@degree@ in \swa@discipline}\\[.5\baselineskip]
+    vorgelegte \swa@subject{}.
+  }%
+}
+
+\providecommand*\swa@titlefont{\normalfont}
+\providecommand*\swa@subtitlefont{}
+
+\pretocmd{\maketitle}{
+  \begingroup
+    \ifthenelse{\boolean{swa@logo@title}}{
+      \ifx\swa@extratitle\@empty\else
+      \pagenumbering{Roman}
+      \begin{titlepage}
+        \noindent\swa@extratitle
+      \end{titlepage}
+      \swa@doubleempty
+      \if@mainmatter
+      \pagenumbering{arabic}
+      \else
+      \pagenumbering{roman}
+      \fi
+      \fi
+      \titlepage
+    }{
+      \thispagestyle{empty}
+    }
+    \setlength{\parskip}{\z@}%
+    \setlength{\parindent}{\z@}%
+    \setlength{\parfillskip}{\z@\@plus 1fil}%
+    \linespread{1}\selectfont
+    \swa@titlefont
+    \centering
+    \ifthenelse{\boolean{swa@logo@title}}{
+      \vspace*{-\dimexpr\baselineskip+\headheight+\headsep\relax}%
+      \hbox to \linewidth{%
+        \ifswa@logo@university%
+        \includegraphics[height=6pc]{\swa@universitylogo}%
+        \fi%
+        \hfill%
+        \ifswa@logo@faculty%
+        \includegraphics[height=6pc]{\swa@facultylogo}%
+        \fi%
+      }%
+    }{}
+    \centering
+    \Large
+    \null\vfill
+    {\swa@titlefont\huge\@title}\par
+    {\ifx\@subtitle\@empty\else\swa@subtitlefont{\@subtitle}\par\fi}%
+    \vspace*{\baselineskip}
+    \swa@fromname\par
+    \vspace*{\baselineskip}
+    \@author\par
+    \vfill
+    {\swa@titlefont\large
+    \swa@thesis@information}\par
+    \vfill
+    \ifx\@empty\swa@supervisors
+    \supervisorname{} \\[.5\baselineskip]{\swa@supervisor}
+    \else
+    \supervisorsname{} \\[.5\baselineskip]{\let\and\\\relax \swa@supervisors}
+    \fi
+    \vfill
+    {\swa@university\par}
+    \vspace*{2\baselineskip}
+    {\@date\par}
+    \ifthenelse{\boolean{swa@logo@title}}{
+      \endtitlepage
+    }{}
+    \endgroup
+    \swa@doubleempty
+}{}{}
+
+\pretocmd{\maketitle}{
+  \swa@doubleempty%
+}{}{}
+
+\providecommand*\swa@author{}
+\pretocmd{\maketitle}{
+  \xdef\swa@author{\@author}%
+}{}{}
+
+
+\AtBeginDocument{
+  \@ifpackageloaded{swa-collate}{}{
+    % zusammenfassung only in non-collate
+    \ifundefinedorrelax{zusammenfassung}{
+      \newenvironment{zusammenfassung}{}{}
+    }{}
+
+    \ifthenelse{\boolean{xetex}}{
+      \renewenvironment{zusammenfassung}{%
+        \clearpage
+        \begingroup
+        \let\raggedsection\centering
+        \begin{german}
+          \section*{\abstractname}
+        }{%
+        \end{german}
+        \endgroup
+      }
+    }{%%% non-xetex uses babel.
+      \renewenvironment{zusammenfassung}{%
+        \clearpage
+        \begingroup
+        \let\raggedsection\centering
+        \selectlanguage{ngerman}
+        \section*{\abstractname}
+      }{%
+        \endgroup
+      }
+    }
+  }
+}

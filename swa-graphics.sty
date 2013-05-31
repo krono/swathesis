@@ -1,0 +1,23 @@
+% Graphics
+\RequirePackage{graphicx}
+
+\ifthenelse{\boolean{pdf}\OR\boolean{xetex}}{
+  % ai's are just pdfs.
+  \ifthenelse{\boolean{xetex}}{
+    \DeclareGraphicsRule{.ai}{QTm}{*}{}
+    \DeclareGraphicsExtensions{.ai,\Gin@extensions}
+  }{
+    \DeclareGraphicsRule{.ai}{pdf}{*}{}
+    \pdfpagebox=5
+    \DeclareGraphicsExtensions{.ai,.AI,\Gin@extensions}
+  }
+}{}
+
+
+% Figures/Floats, often used with graphic
+\RequirePackage[caption=false]{subfig}
+\RequirePackage{wrapfig}
+
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.8} 

@@ -1,0 +1,260 @@
+%%
+%% title-hpi-swa.def
+%% for use with titlepage.sty by Markus Kohm.
+%% Takes inspiration and code from title-DHBW.def,
+%% title-KOMAScript.def, and title-TU-HH.def
+%%
+\ProvidesFile{%
+  title%
+  -hpi-swa%
+ .def%
+}[%
+  2012/01/09 v0.01
+]
+\begingroup
+  \def\PackageNotLoadedError#1{%
+    \GenericError{%
+      (#1)\@spaces\@spaces\@spaces\@spaces
+    }{%
+      File `#1' Error: package `titlepage' hasn't been loaded%
+    }{%
+      This definition file was made to be loaded by package
+      `titlepage'.\MessageBreak
+      You may not use it without package `titlepage'!\MessageBreak
+      See the documentation of package `titlepage' for explanation.%
+    }%
+  }%
+  \ifx\csname titlepage.sty@vers\endcsname\relax
+    \PackageNotLoadedError{%
+      title-hpi-swa.def%
+    }%
+  \fi
+\endgroup
+%% end init mumbojumbo
+
+\DefineFamilyMember[HPISWA]{title}
+
+\providecommand*{\supervisorname}{Supervisor}
+\providecommand*{\supervisorsname}{Supervisors}
+
+\DefineSimpleTitleKey[HPISWA]{supervisor}
+\DefineSimpleTitleKey[HPISWA]{supervisors}
+\DefineSimpleTitleKey[HPISWA]{whom}
+
+\DefineSimpleTitleKey[HPISWA]{facultylogo}
+\DefineSimpleTitleKey[HPISWA]{universitylogo}
+
+
+%%% to be KOMA-like, nearly straight from title-KOMAScript.def
+\providecommand*{\@uppertitleback}{}
+\providecommand{\uppertitleback}[1]{\gdef\@uppertitleback{#1}}
+\DefineFamilyKey[HPISWA]{title}{uppertitleback}{\uppertitleback{#1}}
+\providecommand*{\@lowertitleback}{}
+\providecommand{\lowertitleback}[1]{\gdef\@lowertitleback{#1}}
+\DefineFamilyKey[%
+ HPISWA%
+]{title}{lowertitleback}{\lowertitleback{#1}}
+\renewcommand*{\makemaintitleback}{%
+  \begin{titlepage}
+    \begin{minipage}[t]{\textwidth}
+      \@titlepagefont{\@uppertitleback}%
+    \end{minipage}\par
+    \vfill
+    \begin{minipage}[b]{\textwidth}
+      \@titlepagefont{\@lowertitleback}%
+    \end{minipage}
+  \end{titlepage}
+}
+
+\providecommand*{\@extratitle}{}
+\providecommand{\extratitle}[1]{\gdef\@extratitle{#1}}
+\DefineFamilyKey[HPISWA]{title}{extratitle}{\extratitle{#1}}
+\renewcommand*{\makepretitle}{%
+  \ifx\@extratitle\@empty\else
+    \begin{titlepage}
+      \noindent\@extratitle
+    \end{titlepage}
+  \fi
+}%
+\renewcommand*{\makepretitleback}{%
+  \ifx\@extratitle\@empty\else\begin{titlepage}\null\end{titlepage}\fi
+}
+\renewcommand*{\makeposttitle}{%
+  \ifx\@dedication\@empty\else
+    \begin{titlepage}
+      \null\vfill
+      {\centering\csname @dedicationfont\endcsname{\@dedication \par}}%
+      \vskip \z@ \@plus 3fill
+    \end{titlepage}
+  \fi
+}
+\renewcommand*{\makeposttitleback}{%
+  \ifx\@dedication\@empty\else\begin{titlepage}\null\end{titlepage}\fi
+}
+%%%
+
+\providecaptionname{english}{\fromname}{by}
+
+\providecommand*{\presentationinformationHPISWA}{%
+  A thesis submitted to the \\%
+  \@faculty{}\\%
+  in partial fulfillment of the requirements for the degree of \\[.5\baselineskip]
+  {\scshape \@degree{} in  \@discipline\\}%
+}
+
+\NowButAfterBeginDocument{%
+  \providecaptionname{english}{\supervisorname}{Supervisor}%
+  \providecaptionname{english}{\supervisorsname}{Supervisors}%
+
+  \providecaptionname{english}{\presentationinformationHPISWA}{%
+    A thesis submitted to the \\%
+    \@faculty{}\\%
+    in partial fulfillment of the requirements for the degree of \\[.5\baselineskip]
+    {\scshape \@degree{} in \@discipline\\
+    }%
+  }
+  \providecaptionname{german}{\supervisorname}{Betreuer}%
+  \providecaptionname{german}{\supervisorsname}{\supervisorname}%
+  \providecaptionname{german}{\presentationinformationHPISWA}{%
+    \@whom\space\@faculty{}\\
+    zur Erlangung des akademischen Grades des\\[.5\baselineskip]
+    {\scshape \@degree{} in \@discipline}\\[.5\baselineskip]
+    vorgelegte \@subject{}.
+  }
+   \providecaptionname{ngerman}{\supervisorname}{Betreuer}%
+  \providecaptionname{ngerman}{\supervisorsname}{\supervisorname}%
+  \providecaptionname{ngerman}{\presentationinformationHPISWA}{%
+    \@whom\space\@faculty{}\\
+    zur Erlangung des akademischen Grades des\\[.5\baselineskip]
+    {\scshape \@degree{} in \@discipline}\\[.5\baselineskip]
+    vorgelegte \@subject{}.
+  }%
+}
+\renewcommand*{\inittitle}{%
+  \let\footnotesize\small
+  \let\footnoterule\relax
+  \let\footnote\thanks
+  \renewcommand*\thefootnote{\@fnsymbol\c@footnote}%
+  \let\@oldmakefnmark\@makefnmark
+  \renewcommand*{\@makefnmark}{\rlap\@oldmakefnmark}%
+  \ifx\@date\@empty
+    \date{\today}
+  \fi
+  \ifx\@faculty\@empty
+    \faculty{%
+      Hasso-Plattner-Institute for Software Systems Engineering%
+      \\ at the University of Potsdam, Germany%
+    }%
+  \fi
+  \ifx\@university\@empty
+    \university{%
+      Software Architecture Group\\
+      Hasso-Plattner-Institute\\%
+      University of Potsdam, Germany%
+    }%
+  \fi
+  \ifx\@whom\@empty
+  \whom{Dem}
+  \fi
+  \ifx\@discipline\@empty
+    \discipline{%
+      Software Engineering%
+    }%
+  \fi
+
+
+  \ifx\@universitylogo\@empty
+  % see http://www.intern.uni-potsdam.de/u/zavz/logos.htm
+  \universitylogo{Unilogo}
+  \fi
+  \ifx\@facultylogo\@empty
+  \facultylogo{hpi_logo_v2_cmyk_sl2}
+  \fi
+ 
+  \ifx\@titlehead\@empty
+    \global\newif\if@logo@university
+    \@logo@universityfalse
+    \global\newif\if@logo@faculty
+    \@logo@facultyfalse
+
+    \expandafter\IfFileExists{\@universitylogo.ai}{\global\@logo@universitytrue}{}
+    \expandafter\IfFileExists{\@universitylogo.pdf}{\global\@logo@universitytrue}{}
+    \expandafter\IfFileExists{\@universitylogo.eps}{\global\@logo@universitytrue}{}
+    \expandafter\IfFileExists{\@facultylogo.pdf}{\global\@logo@facultytrue}{}
+    \expandafter\IfFileExists{\@facultylogo.eps}{\global\@logo@facultytrue}{}
+    
+    \scr@ifundefinedorrelax{includegraphics}{%
+      \if@atdocument\else
+        \RequirePackage{graphics}
+        \begingroup\expandafter\expandafter\expandafter\endgroup
+	\expandafter\ifx\csname XeTeXrevision\endcsname\relax
+          % non-xetex
+          \DeclareGraphicsRule{.ai}{pdf}{*}{}
+          \DeclareGraphicsExtensions{.ai,.AI,\Gin@extensions}
+        \else
+          % non-xetex
+          \DeclareGraphicsRule{.ai}{QTm}{*}{}
+          \DeclareGraphicsExtensions{.ai,\Gin@extensions}
+        \fi
+      \fi
+    }{}
+    \scr@ifundefinedorrelax{includegraphics}{}{%
+      \titlehead{%
+        \vspace*{-\dimexpr\baselineskip+\headheight+\headsep\relax}%
+        \hbox to \linewidth{%
+        \if@logo@university%
+          \includegraphics[height=6pc]{\@universitylogo}%
+        \fi%
+        \hfill%
+        \if@logo@faculty%
+          \includegraphics[height=6pc]{\@facultylogo}%
+        \fi%
+        }
+      }%
+    }
+  \fi
+  \ifx\@titlepagefont\@empty
+    \renewcommand*{\@titlepagefont}{\normalfont}%
+  \fi
+}
+\renewcommand*{\makemaintitle}{%
+  \begin{titlepage}
+    \setlength{\parskip}{\z@}%
+    \setlength{\parindent}{\z@}%
+    \setlength{\parfillskip}{\z@\@plus 1fil}%
+    \linespread{1}\selectfont
+    \@titlepagefont
+    \centering
+      \ifx\@titlehead\@empty \else
+        \@titlehead\par
+      \fi
+      \centering
+      \Large
+      \null\vfill
+      {\titlefont\huge\@title}\par
+      {\ifx\@subtitle\@empty\else\@subtitlefont{\@subtitle}\par\fi}%
+      \vspace*{\baselineskip}
+      \fromname\par
+      \vspace*{\baselineskip}
+      \@author\par
+      \vfill
+      \presentationinformationHPISWA\par
+      \vfill
+      \ifx\@empty\@supervisors
+        \supervisorname{} \\[.5\baselineskip]{\@supervisor}
+      \else
+        \supervisorsname{} \\[.5\baselineskip]{\let\and\\\relax \@supervisors}
+      \fi
+      \vfill
+      {\@university\par}
+      \vspace*{2\baselineskip}
+      {\@date\par}
+  \end{titlepage}
+}
+
+\endinput
+%%
+%% End of file `title-hpi-swa.def'.
+%%% Local Variables: 
+%%% mode: latex
+%%% End: 

@@ -1,0 +1,231 @@
+
+%common config
+\RequirePackage{etoolbox}
+\RequirePackage{fancybox}
+
+\RequirePackage{chapterbib}
+
+\RequirePackage{comment}
+
+\RequirePackage{swa-platform}
+\RequirePackage{swa-statement}
+\RequirePackage{swa-graphics}
+
+
+\providecommand*\globaltitle[1]{\gdef\swa@globaltitle{#1}}
+\providecommand*\globalsubtitle[1]{\gdef\swa@globalsubtitle{#1}}
+\providecommand*\extraglobaltitle[1]{\gdef\swa@extraglobaltitle{#1}}
+
+\providecommand*\globalsupervisor[1]{\gdef\swa@globalsupervisor{#1}}
+\providecommand*\globalsupervisors[1]{\gdef\swa@globalsupervisors{#1}}
+
+
+\providecommand*\swa@globaltitle{}
+\providecommand*\swa@globalsubtitle{}
+\providecommand*\swa@extraglobaltitle{}
+
+\providecommand*\swa@globalsupervisor{}
+\providecommand*\swa@globalsupervisors{}
+
+
+\def\swa@printAuthorInTitle{\@author \\}
+
+\newcommand*\makeglobaltitle{
+  \ifx\swa@extraglobaltitle\@empty\else
+    \pagenumbering{Roman}
+    \begin{titlepage}
+      \noindent\swa@extraglobaltitle
+    \end{titlepage}
+    \swa@doubleempty
+    \if@mainmatter
+    \pagenumbering{arabic}
+    \else
+    \pagenumbering{roman}
+    \fi
+  \fi
+  \begin{titlepage}
+    \setlength{\parskip}{\z@}%
+    \setlength{\parindent}{\z@}%
+    \setlength{\parfillskip}{\z@\@plus 1fil}%
+    \linespread{1}\selectfont
+    % font.
+    \normalfont
+    \centering
+    \vspace*{-\dimexpr\baselineskip+\headheight+\headsep\relax}%
+    \hbox to \linewidth{%
+      \ifswa@logo@university%
+        \includegraphics[height=6pc]{\swa@universitylogo}%
+      \fi%
+      \hfill%
+      \ifswa@logo@faculty%
+        \includegraphics[height=6pc]{\swa@facultylogo}%
+      \fi%
+    }%
+    \centering
+    \Large
+    \null\vfill
+    {\swa@titlefont\huge\swa@globaltitle}\par
+    {\ifx\swa@globalsubtitle\@empty\else\swa@subtitlefont{\swa@globalsubtitle}\par\fi}%
+    \vfill
+    \swa@process@authors{swa@printAuthorInTitle}\par
+    \vfill
+    \ifx\@empty\swa@globalsupervisors
+    \supervisorname{} \\[.5\baselineskip]{\swa@globalsupervisor}
+    \else
+    \supervisorsname{} \\[.5\baselineskip]{\let\and\\\relax \swa@globalsupervisors}
+    \fi
+    \vfill
+    {\swa@university\par}
+    \vspace*{2\baselineskip}
+    {\@date\par}
+  \end{titlepage}
+  \swa@doubleempty
+}
+
+\newcommand*\addglobaltitlecmark{%
+  \begingroup
+  \let\\\space
+  \addtocmark{\swa@globaltitle}
+  \endgroup
+}
+
+
+\providecommand\swa@theses{}
+\newcommand*{\theses}[1]{%
+  \xdef\swa@theses{#1}%
+  \configureTheses%
+}
+\newcommand*{\swa@system}[1]{\input{#1/system}}
+
+\newcommand*{\configureTheses}{%
+  \@for\next:=\swa@theses\do{%
+    \ifx\@empty\next\relax\else%
+    \swa@system\next%
+    \fi%
+  }
+}
+\newcommand*{\includeThesesContent}{%
+  \@for\next:=\swa@theses\do{%
+    \ifx\@empty\next\relax\else%
+    \swa@includedir\next%
+    \fi%
+  }
+}
+
+\newwrite\ft@aut
+\AtBeginDocument{
+  \ifthenelse{\boolean{@filesw}}{
+    \protected@write\@mainaux{}{%
+      \string\AtEndDocument{%
+      \string\immediate%
+      \string\openout%
+      \string\ft@aut\space\jobname.aut%
+      \string\relax}}
+    \protected@write\@mainaux{}{\string\swa@writeaut{\string\relax}}
+  }{}
+}
+\long\def\swa@writeaut#1{
+  \ifthenelse{\boolean{@filesw}}{
+    \AtEndDocument{\immediate\write\ft@aut{#1}}%
+  }{}
+}
+
+\begingroup
+% make percent normal
+\catcode37=12\relax
+\gdef\swa@record#1{
+  \edef\tempa{#1}
+  \ifcsname @\tempa\endcsname
+  \expandafter\def\expandafter\tempb\expandafter{\string\@\tempa}
+  \begingroup
+  \def\\{\string\\}
+  \xdef\tempc{\csexpandonce{@\tempa}}
+  \endgroup
+  \protected@write\@mainaux{}{\string\swa@writeaut{\string\string\string\let\string\string\string\swa@aut@\tempa\string\string\tempb}}
+  \protected@write\@mainaux{}{\string\catcode37=0 }
+  \protected@write\@mainaux{}{\string\catcode92=12 }
+  \protected@write\@mainaux{}{%swa@writeaut{\string\def\tempb{\tempc}}}
+  \protected@write\@mainaux{}{%catcode92=0}
+  \protected@write\@mainaux{}{\string\catcode37=14}
+  \fi
+}
+\endgroup
+
+
+\def\swa@replay#1{%
+  \edef\tempa{#1}
+  \ifcsname @\tempa\endcsname
+  % make up @-ed name of #1
+  \expandafter\def\expandafter\tempb\expandafter{\string\@\tempa}
+  \protected@write\@mainaux{}{\string\swa@writeaut{\string\string\string\let\string\string\tempb\string\string\string\swa@aut@\tempa}}
+  \fi
+}
+
+\pretocmd{\maketitle}{%
+  \swa@record{author}%
+  \swa@record{location}%
+  \swa@record{title}%
+  \swa@record{institute}%
+  \swa@record{subtitle}%
+  \swa@record{supervisors}%
+  \protected@write\@mainaux{}{\string\swa@writeaut{\string\string\string\processAuthor}}%
+  \swa@replay{author}%
+  \swa@replay{location}%
+  \swa@replay{title}%
+  \swa@replay{institute}%
+  \swa@replay{subtitle}%
+  \swa@replay{supervisors}%
+}{}{}
+
+\apptocmd{\maketitle}{%
+  \bibliographystyle{splncs03}%
+}{}{}
+
+\newcommand*{\statements}{
+  % \swa@close@authors
+  \swa@process@authors{statementby}
+}
+
+\newcommand{\swa@process@authors}[1]{%
+  \begingroup
+  \makeatletter
+  \letcs\processAuthor{#1}
+  \InputIfFileExists {\jobname.aut}{
+    \PackageInfo{swa-collate}{Using authors-file `\jobname.aut'}
+  }{
+    \PackageInfo{swa-collate}{Not using an authors-file, re-run?}
+  }
+  \endgroup
+}
+
+\newcommand*{\swa@includedir}[1]{%
+  \global\let\swa@saved@include\include
+  \global\let\swa@saved@input\input
+  %\global\let\swa@saved@bibliography\bibliography
+  \gdef\include##1{\swa@saved@include{#1/##1}}
+  \gdef\input##1{\swa@saved@input{#1/##1}}
+  %\gdef\bibliography##1{\swa@saved@bibliography{#1/##1}}
+  \graphicspath{{#1/}}
+  \swa@saved@include{#1/content}
+  \global\let\include\swa@saved@include%
+  \global\let\input\swa@saved@input%
+  %\global\let\bibliography\swa@saved@bibliography%
+}
+
+
+%
+% chapterbib + lncs
+%
+\let\@auto@bibname\refname
+\let\bibname\refname
+
+\AtBeginDocument{
+  %
+  % collated does not use german Zusammefassung
+  \excludecomment{zusammenfassung}
+}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% End: 

@@ -1,0 +1,68 @@
+\RequirePackage[USenglish,german]{datenumber}
+\setdatetoday
+
+\RequirePackage{swa-platform}
+\ifundefinedorrelax{@swa@german}{
+  \newif\if@swa@german
+}{}
+
+
+\ifthenelse{\boolean{xetex}}{
+  \RequirePackage{polyglossia}
+
+  \ifthenelse{\boolean{@swa@german}}{
+    \setotherlanguage{english}
+    \setmainlanguage[babelshorthands,latesthyphen=true]{german}
+  }{
+    \setmainlanguage{english}
+    \setotherlanguage[babelshorthands,latesthyphen=true]{german}
+  }
+
+  \gappto\captionsenglish{%
+    \def\figureautorefname{figure}
+    \def\tableautorefname{table}
+    \def\lstlistingautorefname{listing}
+    \def\lstnumberautorefname{line}
+    \let\subsectionautorefname\sectionautorefname
+    \let\subsubsectionautorefname\sectionautorefname
+    \@datelanguageUSenglish
+    }
+
+  \gappto\captionsgerman{%
+    \let\subsectionautorefname\sectionautorefname
+    \let\subsubsectionautorefname\sectionautorefname
+    \@datelanguagegerman
+    }
+}{
+%fool AUCTeX
+\iffalse
+  \RequirePackage[english]{babel}
+\fi
+
+  \RequirePackage%
+[ngerman,english]%
+%
+{babel}
+  %//fooling done.
+
+  \ifthenelse{\boolean{@swa@german}}{
+  \selectlanguage{ngerman}
+  }{}
+
+  \addto\captionsenglish{%
+    \def\figureautorefname{figure}
+    \def\tableautorefname{table}
+    \def\lstlistingautorefname{listing}
+    \def\lstnumberautorefname{line}
+    \let\subsectionautorefname\sectionautorefname
+    \let\subsubsectionautorefname\sectionautorefname
+    \@datelanguageUSenglish
+    }
+
+  \addto\captionsngerman{%
+    \let\subsectionautorefname\sectionautorefname
+    \let\subsubsectionautorefname\sectionautorefname
+    \@datelanguagegerman
+    }
+
+}

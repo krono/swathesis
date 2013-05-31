@@ -1,0 +1,54 @@
+
+
+%
+% Set a Vera mono descendant as monofont.
+%
+\ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
+  \setmonofont%
+     [Microtype,Ligatures=TeX]%
+     {DejaVu  Sans Mono}%
+   \defaultfontfeatures{Microtype,Ligatures=TeX,RawFeature={+calt,+clig,+tlig}}
+}{
+  \RequirePackage[scaled=.9]{beramono}
+}
+
+
+\ifthenelse{\boolean{xetex}}{
+   \AtBeginDocument{  
+     \def\mainfontlist{Palatino Linotype,Palatino,TeX Gyre Pagella}
+
+     \edef\RestoreErrorConditions{%
+       \suppressfontnotfounderror=\the\suppressfontnotfounderror\relax
+       \interactionmode=\the\interactionmode\relax
+     }
+     \suppressfontnotfounderror=1 %
+     \batchmode
+     \newif\ifpalatinofound
+     \@for\next:=\mainfontlist\do{%
+       \ifpalatinofound\else
+         \font\x="\next" at 10pt
+         \ifx\x\nullfont%
+         \else
+           \xdef\fonttouse{\next}
+           \PackageInfo{swa-font-palatino}{Using `\next' as Palatino.}
+           \global\palatinofoundtrue
+          \fi
+       \fi
+      }
+      \RestoreErrorConditions
+      \setmainfont{\fonttouse}
+    }
+}{}
+
+\ifthenelse{\boolean{luatex}}{%
+  \setmainfont{TeX Gyre Pagella}
+}{}
+
+\ifthenelse{\boolean{xetex} \or \boolean{luatex}}{}{%
+  \RequirePackage[osf,sc]{mathpazo} % Palatino with real small caps and old style figures
+}
+
+
+\linespread{1.05} % a bit more for Palatino
+% math font: euler
+\RequirePackage[euler-digits,T1]{eulervm}

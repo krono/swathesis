@@ -1,0 +1,49 @@
+\RequirePackage{swa-language}
+\RequirePackage{swa-platform}
+
+\ifundefinedorrelax{abstract}{
+  \newenvironment{abstract}{}{}
+}{}
+
+\ifundefinedorrelax{zusammenfassung}{
+  \newenvironment{zusammenfassung}{}{}
+}{}
+
+\ifthenelse{\boolean{xetex}}{
+  \renewenvironment{abstract}{%
+    \begingroup
+    \let\raggedsection\centering
+    \begin{english}
+    \chapter*{\abstractname}
+  }{%
+    \end{english}
+    \endgroup
+  }
+  \renewenvironment{zusammenfassung}{%
+    \begingroup
+    \let\raggedsection\centering
+    \begin{german}
+    \chapter*{\abstractname}
+  }{%
+    \end{german}
+    \endgroup
+  }
+}{%%% non-xetex uses babel.
+  \renewenvironment{abstract}{%
+    \begingroup
+    \let\raggedsection\centering
+    \selectlanguage{english}
+    \chapter*{\abstractname}
+  }{%
+    \endgroup
+  }
+  \renewenvironment{zusammenfassung}{%
+    \begingroup
+    \let\raggedsection\centering
+    \selectlanguage{ngerman}
+    \chapter*{\abstractname}
+  }{%
+    \endgroup
+  }
+}
+%

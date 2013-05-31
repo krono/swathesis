@@ -1,0 +1,62 @@
+%
+%
+%
+\RequirePackage{swa-platform}
+\RequirePackage{swa-language}
+
+\providecommand*\swa@author{}
+\newenvironment*{statement}[1][Eigenständigkeitserklärung]{
+  \cleardoubleemptypage
+  \ifthenelse{\boolean{xetex}}{
+    \begin{german}
+  }{
+    \ifthenelse{\boolean{@swa@german}}{}
+    {\selectlanguage{ngerman}}
+  }
+  \dateselectlanguage{german}
+  \setdatebynumber{\thedatenumber}
+  \chapter*{#1}
+}{
+  ~\\[7\baselineskip]%
+  %
+  \ifundefinedorrelax{@location}{}{%
+    \ifx\@location\@empty%
+    \else
+    \@location, den %
+    \fi%
+  }%
+  \datedate \hfill \rule{.45\textwidth}{0.4pt}\par
+  %
+  \raggedleft%
+  \makeatletter%
+  \ifx\@empty\swa@author\relax%
+  \@author%
+  \else%
+  \swa@author%
+  \fi%
+  \makeatother\par
+  \ifthenelse{\boolean{xetex}}{
+    \end{german}
+  }{
+    \ifthenelse{\boolean{@swa@german}}{}
+    {\selectlanguage{english}}
+  }
+}
+
+\edef\statementcontent{%
+    Hiermit versichere ich, dass ich die vorliegende Arbeit selbständig
+    verfasst sowie keine anderen Quellen und Hilfsmittel als die angegebenen
+    benutzt habe.
+}
+
+\newcommand*{\statementby}{
+  \begin{statement}[Eigenständigkeitserklärung von \@author]
+    \statementcontent
+  \end{statement}
+}
+
+\newcommand*{\defaultstatement}{
+  \begin{statement}
+    \statementcontent
+  \end{statement}
+}

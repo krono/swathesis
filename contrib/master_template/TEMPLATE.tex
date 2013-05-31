@@ -1,0 +1,129 @@
+%
+%   When TeX complains about microtype:
+%
+%  Installation MikTeX: see contrib/microtype.tar.xz
+%     http://docs.miktex.org/manual/localadditions.html
+%  (also for TeXLive <2011)
+%
+%
+%  TeXLive 2011: 
+%     tlmgr --repository http://tlcontrib.metatex.org/2011/ install microtype
+%  TeXLive 2012: 
+%     tlmgr --repository http://tlcontrib.metatex.org/2012/ install microtype
+
+
+% Options.
+%
+% Language
+%  en  -  english (default)
+%  de  -  german
+%
+% Modes
+%  draft - drafting mode, esp for todos
+%  final - final mode
+%
+%
+% Fonts
+%  lmodern - Latin Modern, like TeX default (default)
+%  palatino -  Heavier, slightly more readable
+%                      Palatino Linotype, Palatino or TeX Gyre Pagella  (xetex)
+%                      TeX Gyre Pagella (luatex)
+%                      Palladio+Pazo (pdflatex)
+%  garamond - Lighter than palatino, heavier than latin modern, 
+%                         more readable.
+%                      needs EB Garamond:
+%                       http://www.georgduffner.at/ebgaramond/
+%                          download:
+%            https://github.com/downloads/georgd/EB-Garamond/EBGaramond-0.013.zip
+%                         unzip and install (xetex) or set
+%                         \garamondpath (luatex)
+%
+% Other
+%  print - do not color links
+%
+\documentclass[draft,master]{swathesis}
+
+\addbibresource{thesis.bib}
+
+\usepackage{titlepage}
+\TitlePageStyle[
+subject=master,degree={Master of Science},
+]{hpi-swa}
+
+\supervisors{%
+Prof.\,Dr.\,Jack Hasaname\and %
+Dr.\,John Doe%
+}
+
+% ABGABEDATUM
+% \setdate{2012}{04}{05}
+% \date{\datedate}
+
+\author{Vorname Nachname}
+\location{Berlin}
+\extratitle{\raggedleft Nachname, \\ Titel Kurz\par}
+\title{Der Lange Titel der Arbeit die zu Schreiben Ist}
+\subtitle{Ein Untertitel ist Optional}
+
+\begin{document}
+\frontmatter
+\maketitle
+\input{abstract}
+\input{acknowledgment}
+\tableofcontents
+\listoffigures
+\listoftables
+\lstlistoflistings
+\listofacronyms %
+\mainmatter
+% HAUPTTEIL
+% \input{introduction}
+% \input{context}
+% \input{solution}
+% \input{implementation}
+% \input{evaluation}
+% \input{relatedwork}
+% \input{conclusion}
+%
+
+% beispiel.
+
+\chapter{Introduction}
+\label{cha:introduction}
+
+\blindtext
+\cite{Kay:2011:PCC:800193.1971922}
+
+\secmissing{Motivation}
+
+\todolist{Outline}{
+\item intro
+\item problem
+\item solution
+\item implementation
+\item eval
+\item related
+\item summary
+}
+
+\todosec{I am missing a section here}
+
+Here goes the foo.\todo{cite here}
+I will talk about what an \ac{api} is in this section.
+Normally, there are different \acp{api}. Not to forget,
+anything can be an \ac{api}. And full: \acf{api}.
+
+\blinddocument
+
+\printbibliography
+\clearpage
+\appendix
+\input{appendix}
+\backmatter
+\markboth{}\relax
+\defaultstatement
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

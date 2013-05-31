@@ -1,0 +1,19 @@
+\lstdefinelanguage{JavaScript}{
+   sensitive,%
+   morecomment=[s]{/*}{*/},%
+   morecomment=[l]//,%
+   morestring=[b]",%
+   morestring=[b]',%
+%   procnamekeys={function},%
+   morekeywords={attributes, class, classend, do, empty, endif,%
+     endwhile, fail, function, functionend, if, implements, in, inherit,%
+     inout, not, of, operations, out, return, set, then, types, while, use,
+     break,const,continue,delete,do,while,export,for,in,function,
+     if,else,import,in,instanceof,label,let,new,return,switch,this,
+     throw,try,catch,typeof,var,void,with,yield},%
+}[keywords,comments,strings]
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

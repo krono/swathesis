@@ -1,0 +1,74 @@
+%
+% KOMA-specific properties
+%
+\@ifclassloaded{scrbook}{}{%
+  % not koma
+  \PackageError{swa-document-scrbook}{
+    This package should only be used with KOMA script
+  }{
+    You might consider loading swa-document.
+    }
+}
+
+
+
+  \KOMAoptions{
+    pagesize,
+    DIV=calc,
+    open=right,
+    appendixprefix=true,
+    % footinclude=true
+  }
+\RequirePackage{tocstyle}
+\usetocstyle{KOMAlike}
+
+\setfootnoterule{4cc}
+
+%\RequirePackage[hang,small,bf]{caption}
+\setcapindent{1em}
+\addtokomafont{caption}{\small}
+\addtokomafont{captionlabel}{\bfseries}
+
+
+\RequirePackage{enumitem}
+\setlist{noitemsep,topsep=0pt,partopsep=0pt}
+\setdescription{noitemsep,font=\normalfont\scshape,leftmargin=\parindent}
+\setlist[1]{leftmargin=0pt}
+\setitemize[1]{label=\footnotesize\textbullet}
+
+% koma-hacks
+\RequirePackage{scrhack}
+
+% undo babel thing in tocbasic
+\unsettoc{toc}{nobabel}
+\unsettoc{lof}{nobabel}
+\unsettoc{lot}{nobabel}
+
+\setuptoc{toc}{noprotrusion}
+\setuptoc{lof}{noprotrusion}
+\setuptoc{lot}{noprotrusion}
+\setuptoc{lol}{noprotrusion}
+\setuptoc{loa}{noprotrusion}
+
+\tocbasicautomode
+
+%
+% design
+%
+\setkomafont{subtitle}{\usekomafont{title}\LARGE}
+% \setkomafont{disposition}{\rmfamily\mdseries\scshape}
+\addtokomafont{disposition}{\rmfamily}
+\setkomafont{title}{\rmfamily\mdseries}
+
+
+%redo document stuff:
+\ifundefinedorrelax{hypersetup}{}{%
+  \AtEndPreamble{
+    \hypersetup{
+      pdftitle={\@title{}: \@subtitle},
+      pdfauthor={\@author},
+      pdfsubject={\@subject}
+    }
+  }
+}
+

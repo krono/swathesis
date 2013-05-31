@@ -1,0 +1,135 @@
+%
+% Setup generally required document properties
+%
+
+
+\RequirePackage{ifpdf}
+\RequirePackage{url}
+
+\RequirePackage{color}
+\RequirePackage[table,svgnames]{xcolor}
+
+
+
+\RequirePackage{pdfpages}
+\ifthenelse{\boolean{xetex}}{}{\pdfcompresslevel=6}
+
+% macros for comments
+\RequirePackage[%
+  obeyDraft,%
+  colorinlistoftodos,%
+]{todonotes}
+
+\def\todosec{\par\noindent\todo[inline]}
+\def\secmissing{\par\noindent\todo[color=red,inline,size=\Large]}
+\long\def\todolist#1#2{%
+\par\noindent%
+\todo[inline,color={red!100!green!50},caption={#1}]{%
+\begin{minipage}{\linewidth}%
+\begin{itemize}
+#2%
+\end{itemize}
+\end{minipage}
+}%
+}
+
+% Disable single lines at the start of a paragraph (Schusterjungen)
+\clubpenalty = 10000
+% Disable single lines at the end of a paragraph (Hurenkinder)
+\widowpenalty = 10000 
+\displaywidowpenalty = 10000 % formulas
+\setlength{\textfloatsep}{\baselineskip}
+\setlength{\floatsep}{\baselineskip}
+
+
+\frenchspacing
+\raggedbottom
+
+% Better float parameters: (from the TeX FAQ)
+\renewcommand{\topfraction}{.85}
+\renewcommand{\bottomfraction}{.7}
+\renewcommand{\textfraction}{.15}
+\renewcommand{\floatpagefraction}{.66}
+\renewcommand{\dbltopfraction}{.66}
+\renewcommand{\dblfloatpagefraction}{.66}
+\setcounter{topnumber}{9}
+\setcounter{bottomnumber}{9}
+\setcounter{totalnumber}{20}
+\setcounter{dbltopnumber}{9}
+
+
+
+%%
+%% An Asterism (three * arranged triangularly)
+%% works well as separator.
+%%
+\newcommand{\asterism}{\smash{% 
+    \raisebox{-.5ex}{% 
+      \setlength{\tabcolsep}{.2pt}% 
+      \begin{tabular}{@{}cc@{}}% 
+        \multicolumn2c*\\[-2.2ex]*&*% 
+      \end{tabular}}}}
+\providecommand\vskipnextgrid{\vskip\baselineskip}
+\newcommand{\ParSep}{{\vskipnextgrid\noindent\hbox to \textwidth{\hss\large\asterism\hss}\par\vskipnextgrid}}
+
+\RequirePackage{pifont}
+% Table stuff
+\RequirePackage{longtable}
+\RequirePackage{ctable}
+% ctable is dumb sometimes
+\renewcommand{\tmark}[1][a]{%
+  \rlap{\hbox{\@textsuperscript{\rmfamily\itshape #1}}}}
+
+\definecolor{swatableshadecolor}{rgb}{0.93,0.93,0.93}
+\providecommand*\tablefontcommand{}
+\providecommand*\tableinsidecommand[1][2]{%
+  \def\y{\ding{52}\relax\xspace}\relax%
+  \def\n{\ding{56}\relax\xspace}\relax%
+  \smaller\rowcolors*{#1}{swatableshadecolor}{white}\tablefontcommand%
+}
+\setupctable{pos=htbp,doinside=\tableinsidecommand,table,notespar}
+
+
+\ifthenelse{\equal{\printmode}{true}}{
+  \RequirePackage[final,pdfpagelabels,bookmarks=false]{hyperref}
+  \hypersetup{colorlinks=false}
+}{
+  \RequirePackage[final,pdfpagelabels,bookmarks=true]{hyperref}
+  \hypersetup{%
+    colorlinks=true,   %% true for printout
+    linkcolor=MidnightBlue,%
+    citecolor=MidnightBlue,%
+    urlcolor=MidnightBlue,%
+  }
+}
+
+\hypersetup{%
+  plainpages=false,
+  breaklinks=true,
+  unicode,%
+  pdfstartpage=3,
+  % pagebackref=true,%
+}
+
+\expandafter%
+\RequirePackage{swa-document-\swa@cls}
+
+% for development
+\RequirePackage{ifdraft}
+\ifdraft{%
+  %% Heavy debugging
+  %\usepackage{showframe}
+  \usepackage{blindtext}
+  \usepackage{draftwatermark}
+  \SetWatermarkLightness{0.95}
+  \SetWatermarkText{\textsc{Draft}}
+  \AtEndDocument{\listoftodos}
+}{
+  \let\blindtext\relax
+  \let\Blindtext\relax
+  \let\blinddocument\relax
+  \let\Blinddocument\relax
+}
+
+
+%
