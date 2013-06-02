@@ -24,13 +24,13 @@ if type ditto >/dev/null 2>/dev/null; then
 else
   _pkg_x() {
     _P_PKG_X=$PWD; cd $2
-    unzip $1
+    unzip $1 >/dev/null 2>/dev/null
     E=$?; cd $_P_PKG_X
     return $E
   }
   _pkg_c() {
     _P_PKG_C=$PWD; F=$2.$$; cd $1
-    zip -q -r -X $F *
+    zip -q -r -X $F * >/dev/null 2>/dev/null
     E=$?; cd $_P_PKG_C; mv $F $2
     return $E
   }
