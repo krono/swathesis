@@ -54,6 +54,8 @@ to generate a [TDS][] compatible package for manual installation.
 * A current [`microtype`][microtype] version
 * The [LNCS][] class LaTeX2e class
 * The [`titlepage`][titlepage] package by Markus Kohm (although still alpha)
+* A current `fontaxes` package for `microtype`
+* A current `ctable` package
 
 The `get_requirements.sh` script installs these automatically, if needed.
 
