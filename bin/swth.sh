@@ -7,6 +7,7 @@
 #set -x
 VERSION="0.1"
 PROGRAM=`echo $0 | sed 's%.*/%%'`
+ECHO="/bin/echo -e"
 
 USAGE="Usage: $PROGRAM [OPTIONS] COMMAND
 
@@ -42,7 +43,7 @@ COMMAND
 
 "
 
-echo "Beware of Dragons!"
+$ECHO "Beware of Dragons!"
 
 MODE=
 DRY=false
@@ -60,7 +61,7 @@ THESESMARKER="%SWTH_do_not_remove"
 
 _T=`kpsewhich swathesis.cls`
 if test "x$_T" = "x"; then
-  echo "$PROGRAM: cannot find swathesis"
+  $ECHO "$PROGRAM: cannot find swathesis"
   exit 200
 fi
 TEMPLATEROOT="`dirname $_T`/contrib"
@@ -79,7 +80,7 @@ else
   }
   popd() {
     if test "x$P_OLDPWD" = x; then
-      echo "$0: directory stack empty"
+      $ECHO "$0: directory stack empty"
       (exit 1)
       return 1
     else
@@ -110,8 +111,8 @@ case "$OSTYPE" in
     fi
     ;;
   *)
-    echo "Warn: cannot provide open. \`show' won't work."
-    OPEN=echo
+    $ECHO "Warn: cannot provide open. \`show' won't work."
+    OPEN=$ECHO
     ;;
 esac
 
@@ -159,7 +160,7 @@ __readmain_bp() {
   while test "x$BP" = "x"; do
     printf "What is your bachelor project number (eg, H1)? "
     read BP
-    BP=`echo "$BP" | sed -e 's%[ ,./!?]%%g'`
+    BP=`$ECHO "$BP" | sed -e 's%[ ,./!?]%%g'`
   done
   MAIN="BP${YEAR}${BP}_Theses"
 }
@@ -171,7 +172,7 @@ __ask_for_main() {
   while test "x$NAME" = "x"; do
     printf "What is your family name? "
     read NAME
-    NAME=`echo "$NAME" | sed -e 's%[ ,./!?]%%g'`
+    NAME=`$ECHO "$NAME" | sed -e 's%[ ,./!?]%%g'`
   done
   TITLE=
   if test "x$TITLE" = "x"; then
@@ -181,7 +182,7 @@ __ask_for_main() {
       TITLE=Thesis
     fi
   fi
-  echo "${NAME}_${YEAR}_${TITLE}"
+  $ECHO "${NAME}_${YEAR}_${TITLE}"
 }
 
 __readmain() {
@@ -215,14 +216,14 @@ _create() {
     if test "x$ANS" = "xyes" || test "x$ANS" = "xYes" || test "x$ANS" = "xYES" || test "x$ANS" = "xy" || test "x$ANS" = "xY"; then
       :
     else
-      echo "aborting"
+      $ECHO "aborting"
       exit 4
     fi
   fi
   __readmode "What thesis do you want to create?"
   __readdir "Where do you want to create?"
   if test -d $SWTHDIR; then
-    echo "Found $SWTHDIR"
+    $ECHO "Found $SWTHDIR"
   else
     printf "$SWTHDIR does not yet exist, create? [YES/no]"
     read $ANS
@@ -256,7 +257,7 @@ _init() {
 
 __set_biber() {
   if type biber 2>/dev/null >/dev/null; then
-    echo "Using Biber for BibTeX"
+    $ECHO "Using Biber for BibTeX"
     BIBTEX=biber
   fi
 }
@@ -287,7 +288,7 @@ _latex() {
 
 _show() {
   if test "x$MAIN" = "x"; then
-    echo "No main file. Forgot \`$PROGNAME init'?"
+    $ECHO "No main file. Forgot \`$PROGNAME init'?"
     exit 3
   else
     $OPEN $PDFOUT
@@ -300,7 +301,7 @@ _go() {
 
 _author() {
   if test "x$MODE" != "xbachelor"; then
-    echo "$PROGRAM: adding an author outside BSc mode is not meaningful, aborting"
+    $ECHO "$PROGRAM: adding an author outside BSc mode is not meaningful, aborting"
     exit 5;
   fi
   AU_TEMPLATEDIR="$TEMPLATEROOT/Author_template"
@@ -308,11 +309,11 @@ _author() {
   while test "x$AUTHOR" = "x"; do
     printf "Please name the author to add: "
     read AUTHOR
-    AUTHOR=`echo "$AUTHOR" | sed -e 's%[ ,./!?]%%g'`
+    AUTHOR=`$ECHO "$AUTHOR" | sed -e 's%[ ,./!?]%%g'`
   done
   AU_DIR="$SWTHDIR/$AUTHOR"
   if test -d "$AU_DIR"; then
-    echo "$PROGRAM: $AUTHOR directory already exists, don't know what to do, aborting"
+    $ECHO "$PROGRAM: $AUTHOR directory already exists, don't know what to do, aborting"
     exit 6
   fi
   $CP -r "$AU_TEMPLATEDIR" "$AU_DIR"
@@ -322,7 +323,7 @@ _author() {
   if grep -q "$THESESMARKER" "$SWTHDIR/${MAIN}.tex" 2>/dev/null >/dev/null; then
     sed -i.bak -E -e "s!$THESESMARKER!$AUTHOR,$THESESMARKER!" "$SWTHDIR/${MAIN}.tex"
   else
-    echo "$PROGRAM: Cannont find Thesesmarker \`$THESESMARKER' in $MAIN, you're on your own."
+    $ECHO "$PROGRAM: Cannont find Thesesmarker \`$THESESMARKER' in $MAIN, you're on your own."
   fi
 }
 
@@ -354,10 +355,10 @@ fi
 
 while test $# -gt 0; do
   if test "x$1" = x--help || test "x$1" = x-help || test "x$1" = x-h; then
-    echo "$USAGE"
+    $ECHO "$USAGE"
     exit 0
   elif test "x$1" = x--version || test "x$1" = x-version; then
-    echo "$PROGRAM $VERSION"
+    $ECHO "$PROGRAM $VERSION"
     exit 0
   elif test "x$1" = x--verbose || test "x$1" = x-verbose; then
     VERBOSE=true
@@ -377,8 +378,8 @@ while test $# -gt 0; do
     LATEX=lualatex
   elif test "x$1" = x--biber; then
     __set_biber
-  elif echo "x$1" | grep '^x-' >/dev/null >/dev/null; then
-    echo "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
+  elif $ECHO "x$1" | grep '^x-' >/dev/null >/dev/null; then
+    $ECHO "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
     exit 1
   else
     break
@@ -387,24 +388,24 @@ while test $# -gt 0; do
 done
 
 if test $# -lt 1; then
-  echo "$PROGRAM: no command specified, try --help." >&2
+  $ECHO "$PROGRAM: no command specified, try --help." >&2
   exit 2
 fi
 
 if test "x$DRY" = "xtrue"; then
-  RM="echo $RM"
-  MKDIR="echo $MKDIR"
-  CP="echo $CP"
-  MV="echo $MV"
-  SED="echo $SED"
-  OPEN="echo $OPEN"
-  LATEX="echo $LATEX"
-  BIBTEX="echo $BIBTEX"
+  RM="$ECHO $RM"
+  MKDIR="$ECHO $MKDIR"
+  CP="$ECHO $CP"
+  MV="$ECHO $MV"
+  SED="$ECHO $SED"
+  OPEN="$ECHO $OPEN"
+  LATEX="$ECHO $LATEX"
+  BIBTEX="$ECHO $BIBTEX"
 fi
 
 
 if test "x$VERBOSE" = "xtrue"; then
-  echo "\
+  $ECHO "\
 Information
 ===========
 MAIN = $MAIN
@@ -437,7 +438,7 @@ case "x$1" in
     xgo)     _go ;;
     xauthor) _author ;;
     *)
-        echo "$PROGRAM: unknown command \`$1', try --help if you need it." >&2
+        $ECHO "$PROGRAM: unknown command \`$1', try --help if you need it." >&2
         exit 2
         ;;
 esac
@@ -446,7 +447,7 @@ EXIT=$?
 popd 2>/dev/null >/dev/null
 
 if test $EXIT -ne 0; then
-  echo "Whoops"
+  $ECHO "Whoops"
 else
-  echo "Done"
+  $ECHO "Done"
 fi

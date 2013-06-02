@@ -1,13 +1,14 @@
 #!/bin/sh
 
 PROGRAM=`echo $0 | sed 's%.*/%%'`
+ECHO="/bin/echo -e"
 
 if type wget >/dev/null 2>/dev/null; then
   FETCH="wget --quiet"
 elif type curl >/dev/null 2>/dev/null; then
   FETCH="curl -s -S -O"
 else
-  FETCH="echo Please download "
+  FETCH="$ECHO Please download "
 fi
 
 if type ditto >/dev/null 2>/dev/null; then
@@ -44,7 +45,7 @@ URL="ftp://ftp.springer.de/pub/tex/latex/llncs/latex2e/$SRC"
 
 WORKING=$(mktemp -q -d "$PROGRAM-XXXXXX")
 if [ $? -ne 0 ]; then
-  echo "$0: Can't create temp dir, exiting..."
+  $ECHO "$0: Can't create temp dir, exiting..."
   exit 1
 else
   mkdir -p $WORKING

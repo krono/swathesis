@@ -2,18 +2,19 @@
 
 PROGRAM=`echo $0 | sed 's%.*/%%'`
 
+ECHO="/bin/echo -e"
 if type wget >/dev/null 2>/dev/null; then
   FETCH="wget --quiet"
 elif type curl >/dev/null 2>/dev/null; then
   FETCH="curl -s -S -O"
 else
-  FETCH="echo Please download "
+  FETCH="$ECHO Please download "
 fi
 
 
 if [ -z "$TDS_DEST" ]; then
-  echo "run from install or run as"
-  echo "\tTDS_DEST=$(kpsewhich -var-value TEXMFHOME) $0"
+  $ECHO "run from install or run as"
+  $ECHO "\tTDS_DEST=$(kpsewhich -var-value TEXMFHOME) $0"
   exit 1
 fi
 
@@ -23,7 +24,7 @@ else
   CTANIFYURL=http://mirror.ctan.org/tex-archive/support/ctanify/ctanify
   $FETCH $CTANIFYURL >/dev/null 2>/dev/null
   if [ $? -ne 0 ]; then
-    echo "Cannot download ctanify, abort"
+    $ECHO "Cannot download ctanify, abort"
     exit 100
   fi
   CTANIFY=$PWD/ctanify
@@ -36,7 +37,7 @@ fi
 
 WORKING=$(mktemp -q -d "$PROGRAM-XXXXXX")
 if [ $? -ne 0 ]; then
-  echo "$0: Can't create temp dir, exiting..."
+  $ECHO "$0: Can't create temp dir, exiting..."
   exit 1
 else
   mkdir -p $WORKING
@@ -72,7 +73,7 @@ _get_ctan() {
   if [ ! -f $CTAN ]; then
     $FETCH $URL >/dev/null 2>/dev/null
     if [ $? -ne 0 ]; then
-      echo "Cannot download $CTAN from $URL, abort"
+      $ECHO "Cannot download $CTAN from $URL, abort"
       exit 100
     fi
   fi
@@ -81,7 +82,7 @@ _get_ctan() {
   if [ ! -z "$PRE_CMD" ]; then $PRE_CMD; fi
   $CTANIFY "$@" >/dev/null 2>/dev/null
   if [ ! -f "$CTANIFYOUT" ]; then
-    echo "ctanify failed, abort"
+    $ECHO "ctanify failed, abort"
     exit 128
   fi
   if [ ! -z "$POST_CMD" ]; then $POST_CMD; fi
@@ -91,7 +92,7 @@ _get_ctan() {
   cd $_P_ctan
 
   rm -r $CTAN $PKG
-  echo "$TDS"
+  $ECHO "$TDS"
 }
 
 _get_tds() {
@@ -106,11 +107,11 @@ _get_tds() {
   if [ ! -f $TDS ]; then
     $FETCH $URL >/dev/null 2>/dev/null
     if [ $? -ne 0 ]; then
-      echo "Cannot download $TDS from $URL, abort"
+      $ECHO "Cannot download $TDS from $URL, abort"
       exit 100
     fi
   fi
-  echo "$TDS"
+  $ECHO "$TDS"
 }
 
 _has_package() {
@@ -139,7 +140,7 @@ _has_class() {
 
 
 if _has_class "llncs" "2010/07/12"; then
-  echo ">> llncs found."
+  $ECHO ">> llncs found."
 else
  if [ ! -f llncs.tds.zip ]; then
     ./tdsify_llncs.sh
@@ -148,21 +149,21 @@ else
 fi
 
 if _has_package "titlepage" "2012/12/18"; then
-  echo ">> titlepage found."
+  $ECHO ">> titlepage found."
 else
   TDS=`_get_tds "titlepage" "http://www.komascript.de/files/titlepage.tds__0.zip"`
   _deploy_tds $TDS
 fi
 
 if _has_package "microtype" "2011/08/18"; then
-  echo ">> current microtype found."
+  $ECHO ">> current microtype found."
 else
   TDS=`_get_tds "microtype" ""`
   _deploy_tds $TDS
 fi
 
 if _has_package "ctable" "2012/05/28"; then
-  echo ">> current ctable found."
+  $ECHO ">> current ctable found."
 else
   C=ctable
   TDS=`_get_ctan $C "" "" $C.ins $C.dtx $C.pdf inst=doc/latex/$C "doc/*=doc/latex/$C/" README`
@@ -170,7 +171,7 @@ else
 fi
 
 if _has_package "fontaxes" "2011/12/16"; then
-  echo ">> current fontaxes found."
+  $ECHO ">> current fontaxes found."
 else
   F=fontaxes
   TDS=`_get_ctan $F "pdflatex $F.ins" "" $F.ins $F.pdf README "test-$F.tex=doc/latex/$F"`
