@@ -54,7 +54,7 @@ _deploy_tds() {
       *) F=$PWD/$1;;
     esac
     cd $TDS_DEST
-    unzip $F
+    unzip $F >/dev/null 2>/dev/null
     cd $_P_d
   fi
 }
