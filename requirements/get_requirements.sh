@@ -10,10 +10,24 @@ else
   FETCH="echo Please download "
 fi
 
+
 if [ -z "$TDS_DEST" ]; then
   echo "run from install or run as"
   echo "\tTDS_DEST=$(kpsewhich -var-value TEXMFHOME) $0"
   exit 1
+fi
+
+if type ctanify >/dev/null 2>/dev/null; then
+  CTANIFY=ctanify
+else
+  CTANIFYURL=http://mirror.ctan.org/tex-archive/support/ctanify/ctanify
+  $FETCH $CTANIFYURL >/dev/null 2>/dev/null
+  if [ $? -ne 0 ]; then
+    echo "Cannot download ctanify, abort"
+    exit 100
+  fi
+  CTANIFY=$PWD/ctanify
+  chmod +x $CTANIFY
 fi
 
 if [ ! -d "$TDS_DEST" ]; then
@@ -44,6 +58,61 @@ _deploy_tds() {
   fi
 }
 
+_get_ctan() {
+  PKG="$1"; shift
+  PRE_CMD="$1"; shift
+  POST_CMD="$1"; shift
+
+  _P_ctan=$PWD
+
+  CTAN=$PKG.zip
+  CTANIFYOUT=$PKG.tar.gz
+  TDS=$PKG.tds.zip
+  URL=http://mirrors.ctan.org/macros/latex/contrib/$CTAN
+  if [ ! -f $CTAN ]; then
+    $FETCH $URL >/dev/null 2>/dev/null
+    if [ $? -ne 0 ]; then
+      echo "Cannot download $CTAN from $URL, abort"
+      exit 100
+    fi
+  fi
+  unzip $CTAN >/dev/null 2>/dev/null
+  cd $PKG
+  if [ ! -z "$PRE_CMD" ]; then $PRE_CMD; fi
+  $CTANIFY "$@" >/dev/null 2>/dev/null
+  if [ ! -f "$CTANIFYOUT" ]; then
+    echo "ctanify failed, abort"
+    exit 128
+  fi
+  if [ ! -z "$POST_CMD" ]; then $POST_CMD; fi
+  gunzip -c $CTANIFYOUT | tar x
+  mv $TDS $_P_ctan
+
+  cd $_P_ctan
+
+  rm -r $CTAN $PKG
+  echo "$TDS"
+}
+
+_get_tds() {
+  PKG="$1"; shift
+  URL="$1"; shift
+  if [ -z "$URL" ]; then
+    TDS=$PKG.tds.zip
+    URL="http://mirrors.ctan.org/install/macros/latex/contrib/$TDS"
+  else
+    TDS=`basename "$URL"`
+  fi
+  if [ ! -f $TDS ]; then
+    $FETCH $URL >/dev/null 2>/dev/null
+    if [ $? -ne 0 ]; then
+      echo "Cannot download $TDS from $URL, abort"
+      exit 100
+    fi
+  fi
+  echo "$TDS"
+}
+
 _has_package() {
   (kpsewhich $1.sty && pdflatex \
     -output-directory "$WORKING" \
@@ -70,32 +139,40 @@ _has_class() {
 
 
 if _has_class "llncs" "2010/07/12"; then
-  echo "$PROGRAM: llncs found."
+  echo ">> llncs found."
 else
  if [ ! -f llncs.tds.zip ]; then
-    ./tdsify_lncs.sh
+    ./tdsify_llncs.sh
   fi
   _deploy_tds llncs.tds.zip
 fi
 
 if _has_package "titlepage" "2012/12/18"; then
-  echo "$PROGRAM: titlepage found."
+  echo ">> titlepage found."
 else
-  TDS="titlepage.tds__0.zip"
-  URL="http://www.komascript.de/files/$TDS"
-  if [ ! -f $TDS ]; then
-    $FETCH $URL
-  fi
+  TDS=`_get_tds "titlepage" "http://www.komascript.de/files/titlepage.tds__0.zip"`
   _deploy_tds $TDS
 fi
 
 if _has_package "microtype" "2011/08/18"; then
-  echo "$PROGRAM: current microtype found."
+  echo ">> current microtype found."
 else
-  TDS=microtype.tds.zip
-  URL="http://mirrors.ctan.org/install/macros/latex/contrib/$TDS"
-  if [ ! -f $TDS ]; then
-    $FETCH $URL
-  fi
+  TDS=`_get_tds "microtype" ""`
+  _deploy_tds $TDS
+fi
+
+if _has_package "ctable" "2012/05/28"; then
+  echo ">> current ctable found."
+else
+  C=ctable
+  TDS=`_get_ctan $C "" "" $C.ins $C.dtx $C.pdf inst=doc/latex/$C "doc/*=doc/latex/$C/" README`
+  _deploy_tds "$TDS"
+fi
+
+if _has_package "fontaxes" "2011/12/16"; then
+  echo ">> current fontaxes found."
+else
+  F=fontaxes
+  TDS=`_get_ctan $F "pdflatex $F.ins" "" $F.ins $F.pdf README "test-$F.tex=doc/latex/$F"`
   _deploy_tds $TDS
 fi
