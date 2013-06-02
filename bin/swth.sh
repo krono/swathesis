@@ -147,7 +147,13 @@ __readmain_bp() {
   if test `date +"%m"` -gt 9; then
     YEAR=`date +"%Y"`
   else
-    YEAR=`date -v-1y +"%Y"`
+    if date -v >/dev/null 2>/dev/null; then
+      # this worked, ie, this is GNU date
+      YEAR=`date --date="1 year ago"`
+    else
+      # this is POSIX date
+      YEAR=`date -v-1y +"%Y"`
+    fi
   fi
   BP=
   while test "x$BP" = "x"; do
