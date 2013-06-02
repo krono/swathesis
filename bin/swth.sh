@@ -116,8 +116,8 @@ case "$OSTYPE" in
 esac
 
 _clean() {
-  $RM -f *.{log,aux,aut,out,toc,synctex.gz,bbl,blg,lol,loc,lot,loa,idx,ind,ilg,glo,gls,glg,fdb_latexmk,run.xml,bcf,lof,tdo}
-  $RM -f */*.{log,aux,aut,out,toc,synctex.gz,bbl,blg,lol,loc,lot,loa,idx,ind,ilg,glo,gls,glg,fdb_latexmk,run.xml,bcf,lof,tdo}
+  $RM -f *.log *.aux *.aut *.out *.toc *.synctex.gz *.bbl *.blg *.lol *.loc *.lot *.loa *.idx *.ind *.ilg *.glo *.gls *.glg *.fdb_latexmk *.run.xml *.bcf *.lof *.tdo
+  $RM -f */*.log */*.aux */*.aut */*.out */*.toc */*.synctex.gz */*.bbl */*.blg */*.lol */*.loc */*.lot */*.loa */*.idx */*.ind */*.ilg */*.glo */*.gls */*.glg */*.fdb_latexmk */*.run.xml */*.bcf */*.lof */*.tdo
 }
 
 __readmode() {
@@ -257,7 +257,7 @@ __set_biber() {
 
 _bibtex() {
   if test "$MODE" = "bachelor"; then
-    find "$SWTHDIR" -depth 2 -name \*.aux | while read FILENAME; do
+    find "$SWTHDIR" -mindepth 2 -name \*.aux | while read FILENAME; do
       dir=`dirname "$FILENAME"`;
       base=`basename "$FILENAME" | sed -E -e 's/\.aux$//'`
       pushd $dir 2>/dev/null >/dev/null;
