@@ -3,9 +3,9 @@
 PROGRAM=`echo $0 | sed 's%.*/%%'`
 
 if type wget >/dev/null 2>/dev/null; then
-  FETCH="wget"
+  FETCH="wget --quiet"
 elif type curl >/dev/null 2>/dev/null; then
-  FETCH="curl -O"
+  FETCH="curl -s -S -O"
 else
   FETCH="echo Please download "
 fi
