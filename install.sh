@@ -27,6 +27,8 @@ OPTIONS
   --no-req    do not atempt to install required packages
   --no-bin    do not link the \`swth' script
 
+
+  --update    force update; rebuild TDS package prior to installation
   --verbose   turn verbose output on
   --help      output this help and exit
 
@@ -103,6 +105,7 @@ BIN=
 BIN_DEFAULT="$(__find_bin)"
 NOBIN=0
 NEEDMKTEXLSR=0
+UPDATE=0
 E=
 
 
@@ -122,6 +125,7 @@ while test $# -gt 0; do
     x--bin-tex)     BIN=/usr/bin                ;;
     x--no-req)      REQUIREMENTS=0              ;;
     x--no-bin)      NOBIN=1                     ;;
+    x--update)      UPDATE=1                    ;;
     *)
       echo "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
       exit 1
@@ -216,9 +220,10 @@ if [ "$REQUIREMENTS" -eq 1 ]; then
   cd "$_PREQ"
 fi
 
-if [ ! -f "$PROGDIR/$THE_TDS" ]; then
+if [ (! -f "$PROGDIR/$THE_TDS") -o ($UPDATE -eq 1) ]; then
   echo "> (re)Building TDS package"
   _PTDS="$PWD"; cd "$PROGDIR"
+  $RM -f $THE_TDS
   ./tdsify.sh
   cd "$_PTDS"
 fi
