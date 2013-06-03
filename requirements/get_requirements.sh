@@ -158,20 +158,23 @@ else
     ./tdsify_llncs.sh
   fi
   _deploy_tds llncs.tds.zip
+  $ECHO ">> installed current LLNCS"
 fi
 
 if _has_package "scrbase" "2011/06/07"; then
-  $ECHO ">> current KOMA-script found".
+  $ECHO ">> current KOMA-script found"
 else
   TDS=`_get_tds "koma-script" ""`
   _deploy_tds $TDS
+  $ECHO ">> installed current KOMA-script".
 fi
 
 if _has_package "titlepage" "2012/12/18"; then
-  $ECHO ">> titlepage found."
+  $ECHO ">> titlepage found"
 else
   TDS=`_get_tds "titlepage" "http://www.komascript.de/files/titlepage.tds__0.zip"`
   _deploy_tds $TDS
+  $ECHO ">> installed current titlepage"
 fi
 
 if _has_package "fontaxes" "2011/12/16"; then
@@ -180,6 +183,7 @@ else
   F=fontaxes
   TDS=`_get_ctan $F "pdflatex $F.ins" "" $F.ins $F.pdf README "test-$F.tex=doc/latex/$F"`
   _deploy_tds $TDS
+  $ECHO ">> installed current fontaxes"
 fi
 
 if _has_package "microtype" "2011/08/18"; then
@@ -187,6 +191,7 @@ if _has_package "microtype" "2011/08/18"; then
 else
   TDS=`_get_tds "microtype" ""`
   _deploy_tds $TDS
+  $ECHO ">> installed current microtype"
 fi
 
 if _has_package "ctable" "2012/05/28"; then
@@ -195,4 +200,5 @@ else
   C=ctable
   TDS=`_get_ctan $C "" "" $C.ins $C.dtx $C.pdf inst=doc/latex/$C "doc/*=doc/latex/$C/" README`
   _deploy_tds "$TDS"
+  $ECHO ">> installed current ctable"
 fi
