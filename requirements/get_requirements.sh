@@ -20,6 +20,8 @@ fi
 
 if type ctanify >/dev/null 2>/dev/null; then
   CTANIFY=ctanify
+elif [ -x $PWD/ctanify ]; then
+    CTANIFY=$PWD/ctanify
 else
   CTANIFYURL=http://mirror.ctan.org/tex-archive/support/ctanify/ctanify
   $FETCH $CTANIFYURL >/dev/null 2>/dev/null
