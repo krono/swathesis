@@ -223,7 +223,7 @@ fi
 if [ \( ! -f "$PROGDIR/$THE_TDS" \) -o \( "$UPDATE" -eq 1 \) ]; then
   echo "> (re)Building TDS package"
   _PTDS="$PWD"; cd "$PROGDIR"
-  $RM -f $THE_TDS
+  rm -f $THE_TDS
   ./tdsify.sh
   cd "$_PTDS"
 fi
