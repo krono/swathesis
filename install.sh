@@ -6,7 +6,7 @@ PROGDIR="$(cd `dirname $0`; echo $PWD)"
 THE_TDS=swathesis.tds.zip
 
 KPSEWHICH=`command -v kpsewhich`
-
+KKPATHSEAVERSION=`$KPSEWHICH --version | head -1 | cut -d" " -f3 | cut -d. -f1`
 
 
 __usage() {
@@ -86,6 +86,11 @@ if [ "x$NOBIN" = "xtrue" ]; then
   printf "not "
 fi
 echo "installing binary"
+
+if [ "$NEEDMKTEXLSR" -eq 0 ]; then
+  prinf "not "
+fi
+echo "rebuilding tex file db"
 echo "-----------"
 
 }
@@ -97,6 +102,7 @@ REQUIREMENTS=true
 BIN=
 BIN_DEFAULT="$(__find_bin)"
 NOBIN=false
+NEEDMKTEXLSR=0
 E=
 
 
@@ -151,6 +157,17 @@ case "$DEST" in
 esac
 
 __check_dir "$DEST_DIR"
+OLDKPATHSEA=`if [ "$KPATHSEAVERSION" -lt 6 ]; then echo 1; else echo 0; fi`
+if [ "$DIST" = TEXMFHOME ]; then
+  if [ -f "$DEST_DIR"/ls-R -o "$OLDKPATHSEA" -eq 1 ]; then
+    NEEDMKTEXLSR=1
+  else
+    NEEDMKTEXLSR=0
+  fi
+else
+  NEEDMKTEXLSR=1
+fi
+
 
 if [ "x%NOBIN" != "xtrue" ]; then
   if [ -z "$BIN" ]; then
@@ -217,6 +234,11 @@ $E unzip -q "$PROGDIR/$THE_TDS"
 
 cd "$_P"
 
+
+if [ "$NEEDMKTEXLSR" -eq 1 ]; then
+  echo "> Rebuilding TeX file database"
+  $E mktexlsr "$DEST_DIR"
+fi
 
 if [ "x$NOBIN" != "xtrue" ]; then
   echo "> Linking \`swth' into $BIN"
