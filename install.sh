@@ -6,7 +6,7 @@ PROGDIR="$(cd `dirname $0`; echo $PWD)"
 THE_TDS=swathesis.tds.zip
 
 KPSEWHICH=`command -v kpsewhich`
-KKPATHSEAVERSION=`$KPSEWHICH --version | head -1 | cut -d" " -f3 | cut -d. -f1`
+KPATHSEAVERSION=`$KPSEWHICH --version | head -1 | cut -d" " -f3 | cut -d. -f1`
 
 
 __usage() {
