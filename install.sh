@@ -254,6 +254,7 @@ CAUTION: '$BIN' is not on your \$PATH. You
          (PATH is $PATH)
 
 "
+  fi
 fi
 
 echo "Done"
