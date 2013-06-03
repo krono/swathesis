@@ -150,7 +150,7 @@ __readmain_bp() {
   else
     if date --version | grep -q GNU ; then
       # this worked, ie, this is GNU date
-      YEAR=`date --date="1 year ago"`
+      YEAR=`date --date="1 year ago" +"%Y"`
     else
       # this is POSIX date
       YEAR=`date -v-1y +"%Y"`
