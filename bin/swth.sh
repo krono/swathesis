@@ -166,7 +166,7 @@ __readmain_bp() {
 }
 
 
-__ask_for_main() {
+__ask_for_main_to_OUT() {
   YEAR=`date +"%Y"`
   NAME=
   while test "x$NAME" = "x"; do
@@ -176,13 +176,13 @@ __ask_for_main() {
   done
   TITLE=
   if test "x$TITLE" = "x"; then
-    printf "Pleas give a short title or leave blank: "
+    printf "Please give a short title or leave blank: "
     read TITLE
     if test "x$TITLE" = "x"; then
       TITLE=Thesis
     fi
   fi
-  $ECHO "${NAME}_${YEAR}_${TITLE}"
+  OUT="${NAME}_${YEAR}_${TITLE}"
 }
 
 __readmain() {
@@ -197,7 +197,8 @@ __readmain() {
       *) ;;
     esac
   fi
-  MAIN=`__ask_for_main`
+  __ask_for_main_to_OUT
+  MAIN="$OUT"
 }
 
 
@@ -317,7 +318,8 @@ _author() {
     exit 6
   fi
   $CP -r "$AU_TEMPLATEDIR"/. "$AU_DIR"
-  AU_MAIN=`__ask_for_main`
+  __ask_for_main_to_OUT
+  AU_MAIN="$OUT"
   $MV "$AU_DIR/TEMPLATE.tex" "$AU_DIR/${AU_MAIN}.tex"
 
   if grep -q "$THESESMARKER" "$SWTHDIR/${MAIN}.tex" 2>/dev/null >/dev/null; then
