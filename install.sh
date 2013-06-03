@@ -220,7 +220,7 @@ if [ "$REQUIREMENTS" -eq 1 ]; then
   cd "$_PREQ"
 fi
 
-if [ (! -f "$PROGDIR/$THE_TDS") -o ($UPDATE -eq 1) ]; then
+if [ \(! -f "$PROGDIR/$THE_TDS"\) -o \($UPDATE -eq 1\) ]; then
   echo "> (re)Building TDS package"
   _PTDS="$PWD"; cd "$PROGDIR"
   $RM -f $THE_TDS
