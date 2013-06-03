@@ -54,8 +54,9 @@ to generate a [TDS][] compatible package for manual installation.
 * A current [`microtype`][microtype] version
 * The [LNCS][] class LaTeX2e class
 * The [`titlepage`][titlepage] package by Markus Kohm (although still alpha)
-* A current `fontaxes` package for `microtype`
-* A current `ctable` package
+* A current [`fontaxes`][fontaxes] package for `microtype`
+* A current [`ctable`][ctable] package
+* A current [`acronyms`][acronyms] package
 
 The `get_requirements.sh` script installs these automatically, if needed.
 
@@ -85,3 +86,6 @@ The `get_requirements.sh` script installs these automatically, if needed.
 [titlepage]: http://komascript.de/titlepage
 [LNCS]: http://www.springer.com/computer/lncs/lncs+authors
 [microtype]: http://mirror.ctan.org/help/Catalogue/entries/microtype.html
+[fontaxes]: http://mirror.ctan.org/help/Catalogue/entries/fontaxes.html
+[ctable]: http://mirror.ctan.org/help/Catalogue/entries/ctable.html
+[acronym]: http://mirror.ctan.org/help/Catalogue/entries/acronym.html
