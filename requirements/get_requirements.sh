@@ -37,7 +37,7 @@ if [ ! -d "$TDS_DEST" ]; then
   mkdir -p "$TDS_DEST"
 fi
 
-WORKING=$(mktemp -q -d "$PROGRAM-XXXXXX")
+WORKING=$(mktemp -q -d -t "$PROGRAM-XXXXXX")
 if [ $? -ne 0 ]; then
   $ECHO "$0: Can't create temp dir, exiting..."
   exit 1
@@ -117,27 +117,37 @@ _get_tds() {
 }
 
 _has_package() {
-  (kpsewhich $1.sty && pdflatex \
-    -output-directory "$WORKING" \
-    -draftmode \
-    -halt-on-error \
-    "\\relax%
+  PACKAGETEST=$(mktemp -q -t pkgtst$1-XXXX.tex)
+  echo "\\relax%
 \\renewcommand{\\GenericWarning}[2]{\\GenericError{#1}{#2}{}{ERROR}}%
 \\documentclass{article}%
 \\nofiles%
 \\RequirePackage{$1}[$2]%
-\\begin{document}\\end{document}") >/dev/null 2>/dev/null
+\\begin{document}\\end{document}" > $PACKAGETEST
+  (kpsewhich $1.sty && pdflatex \
+    -output-directory "$WORKING" \
+    -draftmode \
+    -halt-on-error $PACKAGETEST ) >/dev/null 2>/dev/null
+  EXIT=$?
+  rm -f $PACKAGETEST
+  (exit $EXIT)
+  return $EXIT
 }
 
 _has_class() {
-  (kpsewhich $1.cls && pdflatex -draftmode \
-    -output-directory "$WORKING" \
-    -halt-on-error \
-    "\\relax%
+  CLASSTEST=$(mktemp -q -t clstst$1-XXXX.tex)
+  echo "\\relax%
 \\renewcommand{\\GenericWarning}[2]{\\GenericError{#1}{#2}{}{ERROR}}%
 \\documentclass{$1}[$2]%
 \\nofiles%
-\\begin{document}\\end{document}") >/dev/null 2>/dev/null
+\\begin{document}\\end{document}" > $CLASSTEST
+  (kpsewhich $1.cls && pdflatex -draftmode \
+    -output-directory "$WORKING" \
+    -halt-on-error $CLASSTEST ) >/dev/null 2>/dev/null
+  EXIT=$?
+  rm -f $CLASSTEST
+  (exit $EXIT)
+  return $EXIT
 }
 
 

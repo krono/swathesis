@@ -43,7 +43,7 @@ fi
 SRC="llncs2e.zip"
 URL="ftp://ftp.springer.de/pub/tex/latex/llncs/latex2e/$SRC"
 
-WORKING=$(mktemp -q -d "$PROGRAM-XXXXXX")
+WORKING=$(mktemp -q -d -t "$PROGRAM-XXXXXX")
 if [ $? -ne 0 ]; then
   $ECHO "$0: Can't create temp dir, exiting..."
   exit 1
