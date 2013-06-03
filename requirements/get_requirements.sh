@@ -202,3 +202,14 @@ else
   _deploy_tds "$TDS"
   $ECHO ">> installed current ctable"
 fi
+
+if _has_package "acronym" "2010/09/08"; then
+  $ECHO ">> current acronym found."
+else
+  TDS=`_get_tds "acronym" ""`
+  _deploy_tds $TDS
+  $ECHO ">> installed current acronym"
+fi
+
+
+# EOF
