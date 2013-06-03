@@ -150,6 +150,13 @@ else
   _deploy_tds llncs.tds.zip
 fi
 
+if _has_package "scrbase" "2011/06/07"; then
+  $ECHO ">> current KOMA-script found".
+else
+  TDS=`_get_tds "koma-script" ""`
+  _deploy_tds $TDS
+fi
+
 if _has_package "titlepage" "2012/12/18"; then
   $ECHO ">> titlepage found."
 else
