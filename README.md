@@ -88,4 +88,4 @@ The `get_requirements.sh` script installs these automatically, if needed.
 [microtype]: http://mirror.ctan.org/help/Catalogue/entries/microtype.html
 [fontaxes]: http://mirror.ctan.org/help/Catalogue/entries/fontaxes.html
 [ctable]: http://mirror.ctan.org/help/Catalogue/entries/ctable.html
-[acronym]: http://mirror.ctan.org/help/Catalogue/entries/acronym.html
+[acronyms]: http://mirror.ctan.org/help/Catalogue/entries/acronyms.html
