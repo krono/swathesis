@@ -230,7 +230,7 @@ echo "> Deploying swathesis into $DEST_DIR"
 _P=$PWD
 cd "$DEST_DIR"
 
-$E unzip -f -o -q "$PROGDIR/$THE_TDS"
+$E unzip -u -o -q "$PROGDIR/$THE_TDS"
 
 cd "$_P"
 
