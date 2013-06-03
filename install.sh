@@ -78,11 +78,11 @@ BIN_DEFAULT=  $BIN_DEFAULT
 if [ ! -z "$E" ]; then
   echo "using $E as sudo";
 fi
-if [ "x$REQUIREMENTS" = "xfalse" ]; then
+if [ "$REQUIREMENTS" -eq 0 ]; then
   printf "not "
 fi
 echo "installing requirements"
-if [ "x$NOBIN" = "xtrue" ]; then
+if [ "$NOBIN" -eq 1 ]; then
   printf "not "
 fi
 echo "installing binary"
@@ -95,13 +95,13 @@ echo "-----------"
 
 }
 
-VERBOSE=false
+VERBOSE=0
 DEST=
 DEST_DEFAULT="$($KPSEWHICH -var-value TEXMFHOME)"
-REQUIREMENTS=true
+REQUIREMENTS=1
 BIN=
 BIN_DEFAULT="$(__find_bin)"
-NOBIN=false
+NOBIN=0
 NEEDMKTEXLSR=0
 E=
 
@@ -112,7 +112,7 @@ while test $# -gt 0; do
       __usage
       exit 0
       ;;
-    x--verbose|x-v) VERBOSE=true                ;;
+    x--verbose|x-v) VERBOSE=1                   ;;
     x--home)        DEST=TEXMFHOME              ;;
     x--local)       DEST=TEXMFLOCAL             ;;
     x--tex)         DEST=TEXMFDIST              ;;
@@ -120,8 +120,8 @@ while test $# -gt 0; do
     x--bin-local)   BIN=/usr/local/bin          ;;
     x--bin-tex)     BIN="$(dirname $KPSEWHICH)" ;;
     x--bin-tex)     BIN=/usr/bin                ;;
-    x--no-req)      REQUIREMENTS=false          ;;
-    x--no-bin)      NOBIN=true                  ;;
+    x--no-req)      REQUIREMENTS=0              ;;
+    x--no-bin)      NOBIN=1                     ;;
     *)
       echo "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
       exit 1
@@ -135,7 +135,7 @@ echo "Installing swathesis"
 echo "===================="
 echo ""
 echo ""
-if [ "x$VERBOSE" = "xtrue" ]; then
+if [ "$VERBOSE" -eq 1 ]; then
   __verbose_info
 fi
 
@@ -169,7 +169,7 @@ else
 fi
 
 
-if [ "x%NOBIN" != "xtrue" ]; then
+if [ "$NOBIN" -eq 0 ]; then
   if [ -z "$BIN" ]; then
     printf "
 Where shall I install the \`swth' script to?
@@ -198,18 +198,18 @@ Shall I ignore that (no linking) or overwrite that file?
     case "$ANS" in
       o|over*)  rm "$BIN"/swth ;;
       a|abort*) exit 128       ;;
-      *)        NOBIN=true     ;;
+      *)        NOBIN=1     ;;
     esac
   fi
 fi
 
 
-if [ "x$VERBOSE" = "xtrue" ]; then
+if [ "$VERBOSE" -eq 1 ]; then
   __verbose_info
 fi
 
 
-if [ "x$REQUIREMENTS" != "xfalse" ]; then
+if [ "$REQUIREMENTS" -eq 1 ]; then
   echo "> Installing Requirements"
   _PREQ="$PWD"; cd "$PROGDIR"/requirements
   TDS_DEST="$DEST_DIR" ./get_requirements.sh
@@ -240,7 +240,7 @@ if [ "$NEEDMKTEXLSR" -eq 1 ]; then
   $E mktexlsr "$DEST_DIR"
 fi
 
-if [ "x$NOBIN" != "xtrue" ]; then
+if [ "$NOBIN" -eq 0 ]; then
   echo "> Linking \`swth' into $BIN"
   $E ln -s "$DEST_DIR"/scripts/swathesis/swth.sh "$BIN"/swth
 fi
