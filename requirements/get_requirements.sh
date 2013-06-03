@@ -121,11 +121,11 @@ _has_package() {
     -output-directory "$WORKING" \
     -draftmode \
     -halt-on-error \
-    "\\relax\
-\\renewcommand{\\GenericWarning}[2]{\\GenericError{#1}{#2}{}{ERROR}}\
-\\documentclass{article}\
-\\nofiles\
-\\RequirePackage{$1}[$2]\
+    "\\relax%
+\\renewcommand{\\GenericWarning}[2]{\\GenericError{#1}{#2}{}{ERROR}}%
+\\documentclass{article}%
+\\nofiles%
+\\RequirePackage{$1}[$2]%
 \\begin{document}\\end{document}") >/dev/null 2>/dev/null
 }
 
@@ -133,10 +133,10 @@ _has_class() {
   (kpsewhich $1.cls && pdflatex -draftmode \
     -output-directory "$WORKING" \
     -halt-on-error \
-    "\\relax\
-\\renewcommand{\\GenericWarning}[2]{\\GenericError{#1}{#2}{}{ERROR}}\
-\\documentclass{$1}[$2]\
-\\nofiles
+    "\\relax%
+\\renewcommand{\\GenericWarning}[2]{\\GenericError{#1}{#2}{}{ERROR}}%
+\\documentclass{$1}[$2]%
+\\nofiles%
 \\begin{document}\\end{document}") >/dev/null 2>/dev/null
 }
 
