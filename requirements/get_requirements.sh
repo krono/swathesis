@@ -56,7 +56,7 @@ _deploy_tds() {
       *) F=$PWD/$1;;
     esac
     cd $TDS_DEST
-    unzip $F >/dev/null 2>/dev/null
+    unzip -n $F >/dev/null 2>/dev/null
     cd $_P_d
   fi
 }
@@ -79,7 +79,7 @@ _get_ctan() {
       exit 100
     fi
   fi
-  unzip $CTAN >/dev/null 2>/dev/null
+  unzip -n $CTAN >/dev/null 2>/dev/null
   cd $PKG
   if [ ! -z "$PRE_CMD" ]; then $PRE_CMD >/dev/null 2>/dev/null; fi
   $CTANIFY "$@" >/dev/null 2>/dev/null
