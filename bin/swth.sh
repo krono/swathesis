@@ -204,8 +204,8 @@ __readmain() {
 __copy_template() {
   DFLT=TEMPLATE
   $CP -r "$TEMPLATEDIR/". "$SWTHDIR"
-  $MV "${DFLT}.tex" "${MAIN}.tex"
-  $MV "${DFLT}-names.tex" "${MAIN}-names.tex"
+  $MV "$SWTHDIR/${DFLT}.tex" "$SWTHDIR/${MAIN}.tex"
+  $MV "$SWTHDIR/${DFLT}-names.tex" "$SWTHDIR/${MAIN}-names.tex"
 }
 
 
