@@ -203,7 +203,7 @@ __readmain() {
 
 __copy_template() {
   DFLT=TEMPLATE
-  $CP -r "$TEMPLATEDIR/" "$SWTHDIR"
+  $CP -r "$TEMPLATEDIR/". "$SWTHDIR"
   $MV "${DFLT}.tex" "${MAIN}.tex"
   $MV "${DFLT}-names.tex" "${MAIN}-names.tex"
 }
@@ -316,7 +316,7 @@ _author() {
     $ECHO "$PROGRAM: $AUTHOR directory already exists, don't know what to do, aborting"
     exit 6
   fi
-  $CP -r "$AU_TEMPLATEDIR" "$AU_DIR"
+  $CP -r "$AU_TEMPLATEDIR"/. "$AU_DIR"
   AU_MAIN=`__ask_for_main`
   $MV "$AU_DIR/TEMPLATE.tex" "$AU_DIR/${AU_MAIN}.tex"
 
