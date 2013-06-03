@@ -243,6 +243,17 @@ fi
 if [ "$NOBIN" -eq 0 ]; then
   echo "> Linking \`swth' into $BIN"
   $E ln -s "$DEST_DIR"/scripts/swathesis/swth.sh "$BIN"/swth
+  if echo $PATH | tr ':' '\n' | grep -q "$BIN"; then
+    :
+  else
+    echo "
+
+CAUTION: '$BIN' is not on your \$PATH. You
+         might want to add it or re-start your shell,
+         it might then get added automatically
+         (PATH is $PATH)
+
+"
 fi
 
 echo "Done"
