@@ -148,7 +148,7 @@ __readmain_bp() {
   if test `date +"%m"` -gt 9; then
     YEAR=`date +"%Y"`
   else
-    if date -v >/dev/null 2>/dev/null; then
+    if (date --version | grep GNU) >/dev/null 2>/dev/null; then
       # this worked, ie, this is GNU date
       YEAR=`date --date="1 year ago"`
     else

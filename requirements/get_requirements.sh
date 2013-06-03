@@ -79,13 +79,13 @@ _get_ctan() {
   fi
   unzip $CTAN >/dev/null 2>/dev/null
   cd $PKG
-  if [ ! -z "$PRE_CMD" ]; then $PRE_CMD; fi
+  if [ ! -z "$PRE_CMD" ]; then $PRE_CMD >/dev/null 2>/dev/null; fi
   $CTANIFY "$@" >/dev/null 2>/dev/null
   if [ ! -f "$CTANIFYOUT" ]; then
     $ECHO "ctanify failed, abort"
     exit 128
   fi
-  if [ ! -z "$POST_CMD" ]; then $POST_CMD; fi
+  if [ ! -z "$POST_CMD" ]; then $POST_CMD >/dev/null 2>/dev/null; fi
   gunzip -c $CTANIFYOUT | tar x
   mv $TDS $_P_ctan
 
