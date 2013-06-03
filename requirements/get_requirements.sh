@@ -174,6 +174,14 @@ else
   _deploy_tds $TDS
 fi
 
+if _has_package "fontaxes" "2011/12/16"; then
+  $ECHO ">> current fontaxes found."
+else
+  F=fontaxes
+  TDS=`_get_ctan $F "pdflatex $F.ins" "" $F.ins $F.pdf README "test-$F.tex=doc/latex/$F"`
+  _deploy_tds $TDS
+fi
+
 if _has_package "microtype" "2011/08/18"; then
   $ECHO ">> current microtype found."
 else
@@ -187,12 +195,4 @@ else
   C=ctable
   TDS=`_get_ctan $C "" "" $C.ins $C.dtx $C.pdf inst=doc/latex/$C "doc/*=doc/latex/$C/" README`
   _deploy_tds "$TDS"
-fi
-
-if _has_package "fontaxes" "2011/12/16"; then
-  $ECHO ">> current fontaxes found."
-else
-  F=fontaxes
-  TDS=`_get_ctan $F "pdflatex $F.ins" "" $F.ins $F.pdf README "test-$F.tex=doc/latex/$F"`
-  _deploy_tds $TDS
 fi
