@@ -103,7 +103,7 @@ case "$OSTYPE" in
     ;;
   solaris*) OPEN="xdg-open" ;;
   bsd*)     OPEN="xdg-open" ;;
-  linux*)    OPEN="xdg-open" ;;
+  linux*)   OPEN="xdg-open" ;;
   darwin*)
     OPEN="open"
     SKIM="net.sourceforge.skim-app.skim"
@@ -277,6 +277,7 @@ _bibtex() {
   elif test "x$MAIN" != "x"; then
     $BIBTEX $MAIN "$@"
   else
+    $ECHO "$PROGRAM: Not working on a main file, forgot \`$PROGRAM init'?"
     $BIBTEX "$@"
   fi
 }
@@ -285,16 +286,17 @@ _latex() {
   if test "x$MAIN" != "x"; then
     $LATEX "$@" $MAIN
   else
+    $ECHO "$PROGRAM: Not working on a main file, forgot \`$PROGRAM init'?"
     $LATEX "$@"
   fi
 }
 
 _show() {
-  if test "x$MAIN" = "x"; then
-    $ECHO "No main file. Forgot \`$PROGNAME init'?"
-    exit 3
-  else
+  if test "x$MAIN" != "x"; then
     $OPEN $PDFOUT
+  else
+    $ECHO "No main file. Forgot \`$PROGRAM init'?"
+    exit 3
   fi
 }
 
@@ -432,20 +434,14 @@ fi
 
 pushd "$SWTHDIR" >/dev/null 2>/dev/null
 
-case "x$1" in
-    xcreate) _create ;;
-    xclean)  _clean ;;
-    xinit)   _init ;;
-    xbibtex) _bibtex ;;
-    xlatex)  _latex ;;
-    xshow)   _show ;;
-    xgo)     _go ;;
-    xauthor) _author ;;
-    *)
-        $ECHO "$PROGRAM: unknown command \`$1', try --help if you need it." >&2
-        exit 2
-        ;;
-esac
+CMD="_$1"
+if type $CMD >/dev/null 2>/dev/null; then
+  shift
+  $CMD "$@"
+else
+  $ECHO "$PROGRAM: unknown command \`$1', try --help if you need it."
+  exit 2
+fi
 EXIT=$?
 
 popd 2>/dev/null >/dev/null
