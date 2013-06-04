@@ -94,7 +94,7 @@ fi
 
 
 case "$OSTYPE" in
-  cygwin)
+  cygwin*)
     OPEN="cygstart"
     RM="del"
     MKDIR="md"
@@ -103,7 +103,7 @@ case "$OSTYPE" in
     ;;
   solaris*) OPEN="xdg-open" ;;
   bsd*)     OPEN="xdg-open" ;;
-  linux)    OPEN="xdg-open" ;;
+  linux*)    OPEN="xdg-open" ;;
   darwin*)
     OPEN="open"
     SKIM="net.sourceforge.skim-app.skim"
