@@ -2,7 +2,7 @@
 
 PROGRAM=`echo $0 | sed 's%.*/%%'`
 
-ECHO="/bin/echo -e"
+ECHO="/bin/echo"
 if type wget >/dev/null 2>/dev/null; then
   FETCH="wget --quiet"
 elif type curl >/dev/null 2>/dev/null; then
