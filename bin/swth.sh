@@ -4,10 +4,12 @@
 #
 #
 
-#set -x
 VERSION="0.1"
 PROGRAM=`echo $0 | sed 's%.*/%%'`
-ECHO="/bin/echo -e"
+if [ ! -z "$ZSH_VERSION" ]; then
+  setopt shwordsplit
+fi
+ECHO="/usr/bin/printf %b\\n"
 
 USAGE="Usage: $PROGRAM [OPTIONS] COMMAND
 

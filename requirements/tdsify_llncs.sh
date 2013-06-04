@@ -1,7 +1,11 @@
 #!/bin/sh
 
 PROGRAM=`echo $0 | sed 's%.*/%%'`
-ECHO="/bin/echo -e"
+
+if [ ! -z "$ZSH_VERSION" ]; then
+  setopt shwordsplit
+fi
+ECHO="/usr/bin/printf %b\\n"
 
 if type wget >/dev/null 2>/dev/null; then
   FETCH="wget --quiet"

@@ -2,7 +2,11 @@
 
 PROGRAM=`echo $0 | sed 's%.*/%%'`
 
-ECHO="/bin/echo"
+
+if [ ! -z "$ZSH_VERSION" ]; then
+  setopt shwordsplit
+fi
+ECHO="/usr/bin/printf %b\\n"
 if type wget >/dev/null 2>/dev/null; then
   FETCH="wget --quiet"
 elif type curl >/dev/null 2>/dev/null; then
