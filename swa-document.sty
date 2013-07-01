@@ -89,26 +89,27 @@
 }
 \setupctable{pos=htbp,doinside=\tableinsidecommand,table,notespar}
 
-
-\ifthenelse{\equal{\printmode}{true}}{
-  \RequirePackage[final,pdfpagelabels,bookmarks=false]{hyperref}
-  \hypersetup{colorlinks=false}
-}{
-  \RequirePackage[final,pdfpagelabels,bookmarks=true]{hyperref}
-  \hypersetup{%
-    colorlinks=true,   %% true for printout
-    linkcolor=MidnightBlue,%
-    citecolor=MidnightBlue,%
-    urlcolor=MidnightBlue,%
+\AtEndPreamble{
+  \ifthenelse{\equal{\printmode}{true}}{
+    \RequirePackage[final,pdfpagelabels,bookmarks=false]{hyperref}
+    \hypersetup{colorlinks=false}
+  }{
+    \RequirePackage[final,pdfpagelabels,bookmarks=true]{hyperref}
+    \hypersetup{%
+      colorlinks=true,   %% true for printout
+      linkcolor=MidnightBlue,%
+      citecolor=MidnightBlue,%
+      urlcolor=MidnightBlue,%
+    }
   }
-}
 
-\hypersetup{%
-  plainpages=false,
-  breaklinks=true,
-  unicode,%
-  pdfstartpage=3,
-  % pagebackref=true,%
+  \hypersetup{%
+    plainpages=false,
+    breaklinks=true,
+    unicode,%
+    pdfstartpage=3,
+    % pagebackref=true,%
+  }
 }
 
 \expandafter%

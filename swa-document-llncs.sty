@@ -15,8 +15,13 @@
 \RequirePackage{etoolbox}
 
 \bibliographystyle{splncs03}%% llncs
-\hypersetup{%
-  pdfpagescrop={92 112 523 778}, % LNCS paper size
+\AtEndPreamble{
+  % redo document stuff:
+  \ifundefinedorrelax{hypersetup}{}{%
+    \hypersetup{%
+      pdfpagescrop={92 112 523 778}, % LNCS paper size
+    }
+  }
 }
 
 \def\swa@doubleempty{%

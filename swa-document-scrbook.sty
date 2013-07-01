@@ -61,9 +61,9 @@
 \setkomafont{title}{\rmfamily\mdseries}
 
 
-%redo document stuff:
-\ifundefinedorrelax{hypersetup}{}{%
-  \AtEndPreamble{
+\AtEndPreamble{
+  % redo document stuff:
+  \ifundefinedorrelax{hypersetup}{}{%
     \hypersetup{
       pdftitle={\@title{}: \@subtitle},
       pdfauthor={\@author},
