@@ -108,7 +108,9 @@ case "$OSTYPE" in
     OPEN="open"
     SKIM="net.sourceforge.skim-app.skim"
     HAS_SKIM=`mdfind "kMDItemCFBundleIdentifier == 'net.sourceforge.skim-app.skim'"`
-    if test "x$HAS_SKIM" != "x"; then
+    if test "x$HAS_SKIM" != "x" || \
+      [ -e /Applications/Skim.app/Contents/MacOS/Skim ] || \
+      [ -e /Applications/TeX/Skim.app/Contents/MacOS/Skim ] ; then
       OPEN="$OPEN -b $SKIM"
     fi
     ;;
@@ -150,12 +152,12 @@ __readmain_bp() {
   if test `date +"%m"` -gt 9; then
     YEAR=`date +"%Y"`
   else
-    if date --version | grep -q GNU ; then
-      # this worked, ie, this is GNU date
-      YEAR=`date --date="1 year ago" +"%Y"`
-    else
-      # this is POSIX date
+    if date -v 1d > /dev/null 2>&1 ; then
+      # this is BSDish date
       YEAR=`date -v-1y +"%Y"`
+    else
+      # this is GNUish date
+      YEAR=`date --date="1 year ago" +"%Y"`
     fi
   fi
   BP=
