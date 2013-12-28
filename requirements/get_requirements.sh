@@ -165,7 +165,7 @@ else
   $ECHO ">> installed current LLNCS"
 fi
 
-if _has_package "scrbase" "2011/06/07"; then
+if _has_package "scrbase" "2013/12/19"; then
   $ECHO ">> current KOMA-script found"
 else
   TDS=`_get_tds "koma-script" ""`
