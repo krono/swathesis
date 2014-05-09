@@ -93,7 +93,7 @@
 }
 %%%
 
-\providecaptionname{english}{\fromname}{by}
+\renewcaptionname{english}{\fromname}{by}
 
 \providecommand*{\presentationinformationHPISWA}{%
   A thesis submitted to the \\%
