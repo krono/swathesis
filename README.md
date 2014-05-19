@@ -1,6 +1,6 @@
 # SWAThesis #
 
-An unofficial LaTeX class for writing these at
+An unofficial LaTeX class for writing theses at
 the [Software Architecture Group][], [Hasso-Plattner-Institut][],
 [University of Potsdam][], Germany.
 
