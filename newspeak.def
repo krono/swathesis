@@ -1,0 +1,17 @@
+\lstdefinelanguage{Newspeak}{
+  % tag= disables the first order keywords outside of brackets, so we define them with otherkeywords
+  morekeywords={true,false,self,super,nil,thisContext,outer,class,private,public,protected},
+  sensitive=true,
+  morecomment=[s]{(*}{*)},
+  morestring=[d]',
+  style=NewspeakStyle
+}[keywords,comments,strings]
+\lstdefinestyle{NewspeakStyle}{
+  literate={^}{{\(\uparrow\)}}1
+}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
