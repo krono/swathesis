@@ -2,7 +2,7 @@
 %%
 %%
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{swathesis}[2012/06/12 v0.4
+\ProvidesClass{swathesis}[2014/05/28 v0.5
 ^^J LaTeX document class for Theses at the SWA Group]
 
 % Options.
@@ -12,24 +12,15 @@
 %  de  -  german
 %
 % Modes
-%  draft - drafting mode, esp for todos
-%  final - final mode
+%  draft     - drafting mode, esp for todos
+%  fulldraft - drafting mode, also for listings/graphics, faster
+%  final     - final mode
 %
 %
 % Fonts
-%  lmodern - Latin Modern, like TeX default (default)
-%  palatino -  Heavier, slightly more readable
-%                      Palatino Linotype, Palatino or TeX Gyre Pagella  (xetex)
-%                      TeX Gyre Pagella (luatex)
-%                      Palladio+Pazo (pdflatex)
-%  garamond - Lighter than palatino, heavier than latin modern, 
-%                         more readable.
-%                      needs EB Garamond:
-%                       http://www.georgduffner.at/ebgaramond/
-%                          download:
-%            https://github.com/downloads/georgd/EB-Garamond/EBGaramond-0.013.zip
-%                         unzip and install (xetex) or set
-%                         \garamondpath (luatex)
+%  lmodern   - Latin Modern, like TeX default (default)
+%  palatino  - Heavier, slightly more readable
+%  garamond  - Lighter than palatino, heavier than latin modern, more readable.
 %
 % Other
 %  print - do not color links
@@ -46,6 +37,13 @@
 \DeclareOption{bachelor}{\@swa@lncstrue\gdef\swa@degree{bachelor}}
 \DeclareOption{master}{\@swa@lncsfalse\gdef\swa@degree{master}}
 \DeclareOption{phd}{\@swa@lncsfalse\gdef\swa@degree{phd}}
+
+\DeclareOption{draft}{%
+  \PassOptionsToPackage{final}{graphics}
+  \PassOptionsToPackage{final}{listings}
+  \gappto\swa@miscoptions{draft,}}
+\DeclareOption{fulldraft}{\gappto\swa@miscoptions{draft,}}
+
 
 \DeclareOption{en}{\@swa@germanfalse}
 \DeclareOption{de}{\@swa@germantrue}

@@ -118,12 +118,38 @@
 % for development
 \RequirePackage{ifdraft}
 \ifdraft{%
-  %% Heavy debugging
-  %\usepackage{showframe}
-  \usepackage{blindtext}
-  \usepackage{draftwatermark}
-  \SetWatermarkLightness{0.95}
-  \SetWatermarkText{\textsc{Draft}}
+  \RequirePackage{blindtext}
+  \errorcontextlines=999
+  \RequirePackage{eso-pic}
+  \providecommand*\swa@draftFont{\sffamily}
+  \newsavebox{\swa@draftPageLine}
+  % \newsavebox{\swa@draftWatermark}
+  \AddToShipoutPicture{%
+  %  \AtPageLowerLeft{\usebox{\draftWatermark}}
+    \AtPageUpperLeft{%
+      \raisebox{-\height}[\height][0pt]{\usebox{\swa@draftPageLine}}}%
+    \AtPageLowerLeft{%
+      \raisebox{\depth}[\height][0pt]{\usebox{\swa@draftPageLine}}}%
+  }
+  \AtBeginDocument{
+    \def\swa@draftInfo{%
+      {\swa@draftFont
+      Draft Draft Draft%
+      \hspace*{5cm}\today\hspace*{5cm}%
+      Draft Draft Draft%
+      }}
+      % Draft revision\gitVtags: \gitAbbrevHash{} %
+      % (\gitCommitterIsoDate) \gitCommitterName}
+    % \sbox{\draftWatermark}{%
+    %   \includegraphics[width=\paperwidth]{img/draft}}
+    \sbox{\swa@draftPageLine}{%
+      \colorbox{black!10}{%
+        % enlarge box vertically by 2/3 lines
+        \raisebox{0pt}%
+        [\dimexpr .33\baselineskip + \height]%
+        [\dimexpr .33\baselineskip + \depth]{%
+          \makebox[\paperwidth]{\color{black!50}\swa@draftInfo}}}}
+  }
   \AtEndDocument{\listoftodos}
 }{
   \let\blindtext\relax
