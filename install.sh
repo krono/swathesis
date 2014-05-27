@@ -21,22 +21,24 @@ __usage() {
 Install swathesis.
 
 OPTIONS
-  --home      install to TEXMFHOME  ($($KPSEWHICH -var-value TEXMFHOME )) (* recommended)
-  --local     install to TEXMFLOCAL ($($KPSEWHICH -var-value TEXMFLOCAL))
-  --tex       install to TEXMFDIST  ($($KPSEWHICH -var-value TEXMFDIST )) (not recommended)
+  --home        install to TEXMFHOME  ($($KPSEWHICH -var-value TEXMFHOME )) (* recommended)
+  --local       install to TEXMFLOCAL ($($KPSEWHICH -var-value TEXMFLOCAL))
+  --tex         install to TEXMFDIST  ($($KPSEWHICH -var-value TEXMFDIST )) (not recommended)
+                
+  --bin-home    install the \`swth' script to $BIN_DEFAULT (*)
+  --bin-local   install the \`swth' script to /usr/local/bin
+  --bin-tex     install the \`swth' script to $(dirname $KPSEWHICH)
+  --bin-sys     install the \`swth' script to /usr/bin (not recommended)
+                
+  --no-req      do not atempt to install required packages
+  --no-bin      do not link the \`swth' script
+  --no-logos    do not try to find Logos.zip (Uni Potsdam/HPI logos)
 
-  --bin-home  install the \`swth' script to $BIN_DEFAULT (*)
-  --bin-local install the \`swth' script to /usr/local/bin
-  --bin-tex   install the \`swth' script to $(dirname $KPSEWHICH)
-  --bin-sys   install the \`swth' script to /usr/bin (not recommended)
+  --logos=FILE  use Logos.zip from FILE
 
-  --no-req    do not atempt to install required packages
-  --no-bin    do not link the \`swth' script
-
-
-  --update    force update; rebuild TDS package prior to installation
-  --verbose   turn verbose output on
-  --help      output this help and exit
+  --update      force update; rebuild TDS package prior to installation
+  --verbose     turn verbose output on
+  --help        output this help and exit
 
 * = default
 
@@ -83,6 +85,11 @@ DEST_DEFAULT= $DEST_DEFAULT
 BIN=          $BIN
 BIN_DEFAULT=  $BIN_DEFAULT
 "
+if [ "$NOLOGO" -eq 1 ]; then
+  $ECHON "not "
+fi
+$ECHO "deploying logos (from $LOGO)"
+
 if [ ! -z "$E" ]; then
   $ECHO "using $E as sudo";
 fi
@@ -115,7 +122,8 @@ NOBIN=0
 NEEDMKTEXLSR=0
 UPDATE=0
 E=
-
+NOLOGO=0
+LOGO=Logos.zip
 
 while test $# -gt 0; do
   case "x$1" in
@@ -123,17 +131,19 @@ while test $# -gt 0; do
       __usage
       exit 0
       ;;
-    x--verbose|x-v) VERBOSE=1                   ;;
-    x--home)        DEST=TEXMFHOME              ;;
-    x--local)       DEST=TEXMFLOCAL             ;;
-    x--tex)         DEST=TEXMFDIST              ;;
-    x--bin-home)    BIN="$BIN_DEFAULT"          ;;
-    x--bin-local)   BIN=/usr/local/bin          ;;
-    x--bin-tex)     BIN="$(dirname $KPSEWHICH)" ;;
-    x--bin-tex)     BIN=/usr/bin                ;;
-    x--no-req)      REQUIREMENTS=0              ;;
-    x--no-bin)      NOBIN=1                     ;;
-    x--update)      UPDATE=1                    ;;
+    x--verbose|x-v) VERBOSE=1                                  ;;
+    x--home)        DEST=TEXMFHOME                             ;;
+    x--local)       DEST=TEXMFLOCAL                            ;;
+    x--tex)         DEST=TEXMFDIST                             ;;
+    x--bin-home)    BIN="$BIN_DEFAULT"                         ;;
+    x--bin-local)   BIN=/usr/local/bin                         ;;
+    x--bin-tex)     BIN="$(dirname $KPSEWHICH)"                ;;
+    x--bin-tex)     BIN=/usr/bin                               ;;
+    x--no-req)      REQUIREMENTS=0                             ;;
+    x--no-bin)      NOBIN=1                                    ;;
+    x--update)      UPDATE=1                                   ;;
+    x--no-logo)     NOLOGO=1                                   ;;
+    x--logo=*)      LOGO="$($ECHON $1 | sed -e 's%--logo=%%')" ;;
     *)
       $ECHO "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
       exit 1
@@ -215,6 +225,28 @@ Shall I ignore that (no linking) or overwrite that file?
   fi
 fi
 
+if [ "$NOLOGO" -eq 0 ]; then
+  if [ \! -f "$LOGO" ]; then
+    printf "Do you have a Logo.zip with Uni Potsdam/HPI logos?
+If you have, place it in this directory
+    $PWD
+and say \`yes' (or the filename), if not, or you do not 
+know what this means, say \`no'.
+
+[yes|filename|NO] "
+    read ANS
+    if [ -z "$ANS" ]; then ANS="no"; fi
+    case "$ANS" in
+      no|NO)  NOLOGO=1                    ;;
+      yes)    if [ \! -f "$LOGO" ]; then
+                $ECHO "Cannot find $LOGO, although requested to use it, don't know what to do, aborting."
+                exit 1
+              fi                          ;;
+      *)      LOGO="$ANS"                 ;;
+    esac
+  fi
+fi
+
 
 if [ "$VERBOSE" -eq 1 ]; then
   __verbose_info
@@ -255,6 +287,11 @@ _P=$PWD
 cd "$DEST_DIR"
 
 $E unzip -u -o -q "$PROGDIR/$THE_TDS"
+if [ $NOLOGO -ne 1 ]; then
+  cd tex/latex/swathesis
+  $ECHO "> Deploying logos into $DEST_DIR/tex/latex/swathesis"
+  $E unzip -u -o -q "$PROGDIR/$LOGO"
+fi
 
 cd "$_P"
 
