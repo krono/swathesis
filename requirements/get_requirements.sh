@@ -15,6 +15,13 @@ else
   FETCH="$ECHO Please download "
 fi
 
+if type unzip >/dev/null 2>/dev/null; then
+    :
+else
+    $ECHO "\`unzip' not found, please install."
+    exit 1
+fi
+
 
 if [ -z "$TDS_DEST" ]; then
   $ECHO "run from install or run as"
@@ -51,6 +58,11 @@ else
 fi
 
 _deploy_tds() {
+  case $- in
+    *e*) RESET_E=0 ;;
+    *) RESET_E=1 ;;
+  esac
+  set -e
   if type ditto >/dev/null 2>/dev/null; then
     ditto -x -k $1 $TDS_DEST
   else
@@ -62,6 +74,9 @@ _deploy_tds() {
     cd $TDS_DEST
     unzip -n $F >/dev/null 2>/dev/null
     cd $_P_d
+  fi
+  if [ $RESET_E -ne 0 ]; then
+    set +e
   fi
 }
 
@@ -227,5 +242,9 @@ if _need_package "acronym" "2010/09/08"; then
   $ECHO ">> installed current acronym"
 fi
 
-
+if _need_package "ebgaramond" "2013/05/22"; then
+  TDS=`_get_tds "ebgaramond" ""`
+  _deploy_tds $TDS
+  $ECHO ">> installed current ebgaramond"
+fi
 # EOF
