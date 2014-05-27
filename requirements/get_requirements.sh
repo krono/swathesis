@@ -122,12 +122,12 @@ _get_tds() {
 
 _has_package() {
   PACKAGETEST=$(mktemp -q -t pkgtst$1-XXXX.tex)
-  echo "\\relax%
-\\renewcommand{\\GenericWarning}[2]{\\GenericError{#1}{#2}{}{ERROR}}%
-\\documentclass{article}%
-\\nofiles%
-\\RequirePackage{$1}[$2]%
-\\begin{document}\\end{document}" > $PACKAGETEST
+  echo "\\\\relax%
+\\\\renewcommand{\\\\GenericWarning}[2]{\\\\GenericError{#1}{#2}{}{ERROR}}%
+\\\\documentclass{article}%
+\\\\nofiles%
+\\\\RequirePackage{$1}[$2]%
+\\\\begin{document}\\\\end{document}" > $PACKAGETEST
   (kpsewhich $1.sty && pdflatex \
     -output-directory "$WORKING" \
     -draftmode \
@@ -140,11 +140,11 @@ _has_package() {
 
 _has_class() {
   CLASSTEST=$(mktemp -q -t clstst$1-XXXX.tex)
-  echo "\\relax%
-\\renewcommand{\\GenericWarning}[2]{\\GenericError{#1}{#2}{}{ERROR}}%
-\\documentclass{$1}[$2]%
-\\nofiles%
-\\begin{document}\\end{document}" > $CLASSTEST
+  echo "\\\\relax%
+\\\\renewcommand{\\\\GenericWarning}[2]{\\\\GenericError{#1}{#2}{}{ERROR}}%
+\\\\documentclass{$1}[$2]%
+\\\\nofiles%
+\\\\begin{document}\\\\end{document}" > $CLASSTEST
   (kpsewhich $1.cls && pdflatex -draftmode \
     -output-directory "$WORKING" \
     -halt-on-error $CLASSTEST ) >/dev/null 2>/dev/null
@@ -154,10 +154,34 @@ _has_class() {
   return $EXIT
 }
 
+_need() {
+  WHAT=$1
+  PKG=$2
+  VERSION=$3
+  NAME=$4
+  if [ -z "$NAME" ]; then
+    NAME="$PKG"
+  fi
+  if $WHAT "$PKG" "$VERSION"; then
+    $ECHO ">> current $NAME found [>=$VERSION]."
+    EXIT=1
+  else
+    EXIT=0
+  fi
+  (exit $EXIT)
+  return $EXIT
+}
 
-if _has_class "llncs" "2010/07/12"; then
-  $ECHO ">> llncs found."
-else
+_need_package() {
+  _need _has_package "$@"
+}
+_need_class() {
+  _need _has_class "$@"
+}
+
+
+
+if _need_class "llncs" "2010/07/12"; then
  if [ ! -f llncs.tds.zip ]; then
     ./tdsify_llncs.sh
   fi
@@ -165,51 +189,39 @@ else
   $ECHO ">> installed current LLNCS"
 fi
 
-if _has_package "scrbase" "2013/12/19"; then
-  $ECHO ">> current KOMA-script found"
-else
+if _need_package "scrbase" "2013/12/19" "KOMA-script"; then
   TDS=`_get_tds "koma-script" ""`
   _deploy_tds $TDS
   $ECHO ">> installed current KOMA-script".
 fi
 
-if _has_package "titlepage" "2012/12/18"; then
-  $ECHO ">> titlepage found"
-else
+if _need_package "titlepage" "2012/12/18"; then
   TDS=`_get_tds "titlepage" "http://www.komascript.de/files/titlepage.tds__0.zip"`
   _deploy_tds $TDS
   $ECHO ">> installed current titlepage"
 fi
 
-if _has_package "fontaxes" "2011/12/16"; then
-  $ECHO ">> current fontaxes found."
-else
+if _need_package "fontaxes" "2011/12/16"; then
   F=fontaxes
   TDS=`_get_ctan $F "pdflatex $F.ins" "" $F.ins $F.pdf README "test-$F.tex=doc/latex/$F"`
   _deploy_tds $TDS
   $ECHO ">> installed current fontaxes"
 fi
 
-if _has_package "microtype" "2011/08/18"; then
-  $ECHO ">> current microtype found."
-else
+if _need_package "microtype" "2011/08/18"; then
   TDS=`_get_tds "microtype" ""`
   _deploy_tds $TDS
   $ECHO ">> installed current microtype"
 fi
 
-if _has_package "ctable" "2012/05/28"; then
-  $ECHO ">> current ctable found."
-else
+if _need_package "ctable" "2012/05/28"; then
   C=ctable
-  TDS=`_get_ctan $C "" "" $C.ins $C.dtx $C.pdf inst=doc/latex/$C "doc/*=doc/latex/$C/" README`
+  TDS=`_get_ctan $C "pdflatex $C.ins" "" $C.ins $C.dtx $C.pdf inst=doc/latex/$C "doc/*=doc/latex/$C/" README`
   _deploy_tds "$TDS"
   $ECHO ">> installed current ctable"
 fi
 
-if _has_package "acronym" "2010/09/08"; then
-  $ECHO ">> current acronym found."
-else
+if _need_package "acronym" "2010/09/08"; then
   TDS=`_get_tds "acronym" ""`
   _deploy_tds $TDS
   $ECHO ">> installed current acronym"
