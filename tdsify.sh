@@ -11,5 +11,8 @@ if [ ! -d "$BIN" ]; then mkdir -p "$BIN"; fi
 cp bin/* "$BIN"
 
 cd tds
-zip -r -q -X ../swathesis.tds.zip *
-
+if which zip >/dev/null; then
+    zip -r -q -X ../swathesis.tds.zip *
+else
+    gzip -r -q -X ../swathesis.tds.zip *
+fi
