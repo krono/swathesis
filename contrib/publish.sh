@@ -4,7 +4,7 @@ FILE=thesis
 PDF_FILE=${FILE}.pdf
 TEX_FILE=${FILE}.tex
 
-PUBLIC="/Users/tobias/Downloads/Dropbox/Public/thesis"
+PUBLIC="${PUBLIC:-/CHANGEME/Dropbox/Public/thesis}"
 JSON="${PUBLIC}/data.js"
 WORDS="${PUBLIC}/words.part"
 PAGES="${PUBLIC}/pages.part"

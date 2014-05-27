@@ -16,6 +16,24 @@
  Dr.\,John Doe}
 \maketitle
 
+
+% BAMA-O (2009) 21.7
+%   (7) Die Bachelorarbeit ist eine Arbeit in deutscher Sprache. Mit Zustimmung
+%   der/des Betreuerin/Betreuers kann die Arbeit auch in englischer Sprache
+%   abgefasst werden. Erklären beide Gutachter/innen ihr Einverständnis,
+%   kann der Prüfungsausschuss auch eine Anfertigung der Arbeit in einer
+%   anderen Sprache zulassen. Ist die Arbeit in einer Fremdsprache verfasst,
+%   muss sie als Anhang eine kurze Zusammenfassung in deutscher Sprache ent-
+%   halten.
+% BAMA-O (2012) 26.12
+%  (12) Die Bachelorarbeit ist eine Arbeit in deutscher Sprache, sofern die
+%  fachspezifische Ordnung keine andere Sprache bestimmt. Mit Zustimmung der
+%  Betreuerin bzw. des Betreuers kann die Arbeit auch in englischer Sprache
+%  abgefasst werden. Erklären beide Prüfer ihr Einverständnis, kann der
+%  Prüfungs- ausschuss auch eine Anfertigung der Arbeit in einer anderen
+%  Sprache zulassen. Ist die Arbeit nicht in deutscher Sprache verfasst, muss
+%  sie als Anhang eine kurze Zusammenfassung in deutscher Sprache enthalten.
+
 \begin{abstract}
   Hello, here is some text without a meaning. This text should show what a
   printed text will look like at this place. If you read this text, you will
@@ -99,8 +117,6 @@ language.
 \label{sec:evaluation}
 
 \lstset{language=Smalltalk}
-\iffalse
-\begin{verbatim}\fi
 \begin{code}[lst:example]{An example code snippet}{float,numbers=left}
 exampleWithNumber: x
 
@@ -115,14 +131,11 @@ return and cascade. It has both zero argument and one argument blocks."
     |y|
     true & false not & (nil isNil) ifFalse: [self halt].
     y := self size + super size.
-    #($a #a "a" 1 1.0)
+    #(#a "a" 1 1.0)
         do: [:each | Transcript show: (each class name);
                                  show: ' '].
      ^ x < y
 \end{code}
-\iffalse
-\end{verbatim}\fi
-
 
 
 \section{Related Work}
@@ -153,14 +166,20 @@ label=tbl:things]%
 \LL
 }
 
+We have nice things: some code in \autoref{lst:example} and some information
+in \autoref{tbl:things}.
+
 
 \nocite{*}
 \bibliography{references}
 
-% BAMA-O §20.7 
-% Ist die Arbeit in einer 
-%Fremdsprache verfasst, muss sie als Anhang eine 
-% kurze Zusammenfassung in deutscher Sprache enthalten.
+% BAMA-O (2009) §21.7 
+%   Ist die Arbeit in einer Fremdsprache verfasst, muss sie als Anhang eine 
+%   kurze Zusammenfassung in deutscher Sprache enthalten.
+% BAMA-O (2013) §26.12
+%   Ist die Arbeit nicht in deutscher Sprache verfasst, muss sie als Anhang 
+%   eine kurze Zusammenfassung in deutscher Sprache enthalten.
+
 \begin{zusammenfassung}
   Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien
   leben die Blindtexte. Abgeschieden wohnen Sie in Buchstabhausen an der Küste

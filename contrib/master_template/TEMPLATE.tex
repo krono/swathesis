@@ -1,17 +1,3 @@
-%
-%   When TeX complains about microtype:
-%
-%  Installation MikTeX: see contrib/microtype.tar.xz
-%     http://docs.miktex.org/manual/localadditions.html
-%  (also for TeXLive <2011)
-%
-%
-%  TeXLive 2011: 
-%     tlmgr --repository http://tlcontrib.metatex.org/2011/ install microtype
-%  TeXLive 2012: 
-%     tlmgr --repository http://tlcontrib.metatex.org/2012/ install microtype
-
-
 % Options.
 %
 % Language
@@ -112,6 +98,52 @@ Here goes the foo.\todo{cite here}
 I will talk about what an \ac{api} is in this section.
 Normally, there are different \acp{api}. Not to forget,
 anything can be an \ac{api}. And full: \acf{api}.
+
+\begin{code}[lst:example]{An example code snippet}{float,numbers=left,language=Smalltalk}
+exampleWithNumber: x
+
+"A method that illustrates every part of Smalltalk method syntax
+except primitives. It has unary, binary, and keyword messages,
+declares arguments and temporaries, accesses a global variable
+(but not and instance variable), uses literals (array, character,
+symbol, string, integer, float), uses the pseudo variables
+true false, nil, self, and super, and has sequence, assignment,
+return and cascade. It has both zero argument and one argument blocks."
+
+    |y|
+    true & false not & (nil isNil) ifFalse: [self halt].
+    y := self size + super size.
+    #( #a "a" 1 1.0)
+        do: [:each | Transcript show: (each class name);
+                                 show: ' '].
+     ^ x < y
+\end{code}
+
+\ctable%
+[table,
+caption={Differences between things projected and things achieved}
+label=tbl:things]%
+{>{}p{.4\linewidth}@{}c}%
+{\tnote[a]{Just few things missing}}%
+{%
+\FL Part           & done
+\ML Title          & \y
+\NN Abstract       & \n
+\NN Intro          & \y
+\NN \multicolumn{2}{c}{Rest is not entirely true}
+\ML Context        & \y
+\NN Problem        & \n\tmark[a]
+\NN Solution       & \y
+\NN Implementation & \y
+\NN Evaluation     & \n
+\NN Related Work   & \n
+\NN Conclusion     & \y
+\LL
+}
+
+
+We have nice things: some code in \autoref{lst:example} and some information
+in \autoref{tbl:things}.
 
 \blinddocument
 
