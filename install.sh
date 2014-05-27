@@ -225,6 +225,10 @@ if [ \( ! -f "$PROGDIR/$THE_TDS" \) -o \( "$UPDATE" -eq 1 \) ]; then
   _PTDS="$PWD"; cd "$PROGDIR"
   rm -f $THE_TDS
   ./tdsify.sh
+  if [ $? -ne 0 ]; then
+    echo "> Failed"
+    exit 1
+  fi
   cd "$_PTDS"
 fi
 
@@ -235,10 +239,14 @@ echo "> Deploying swathesis into $DEST_DIR"
 _P=$PWD
 cd "$DEST_DIR"
 
-$E unzip -u -o -q "$PROGDIR/$THE_TDS"
+if which unzip >/dev/null; then
+    $E unzip -u -o -q "$PROGDIR/$THE_TDS"
+else
+    echo "> You need to install 'unzip'." >&2
+    exit 1
+fi
 
 cd "$_P"
-
 
 if [ "$NEEDMKTEXLSR" -eq 1 ]; then
   echo "> Rebuilding TeX file database"

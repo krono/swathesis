@@ -11,5 +11,9 @@ if [ ! -d "$BIN" ]; then mkdir -p "$BIN"; fi
 cp bin/* "$BIN"
 
 cd tds
-zip -r -q -X ../swathesis.tds.zip *
-
+if which zip >/dev/null; then
+    zip -r -q -X ../swathesis.tds.zip *
+else
+    echo "> You need to install 'zip'." >&2
+    exit 1
+fi
