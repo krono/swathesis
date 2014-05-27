@@ -50,7 +50,7 @@ fi
 
 WORKING=$(mktemp -q -d -t "$PROGRAM-XXXXXX")
 if [ $? -ne 0 ]; then
-  $ECHO "$0: Can't create temp dir, exiting..."
+  $ECHO "Cannot create temp dir, abort"
   exit 1
 else
   mkdir -p $WORKING
