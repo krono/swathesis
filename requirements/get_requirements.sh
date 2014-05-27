@@ -181,7 +181,7 @@ _need_class() {
 
 
 
-if _need_class "llncs" "2010/07/12"; then
+if _need_class "llncs" "2013/09/27"; then
  if [ ! -f llncs.tds.zip ]; then
     ./tdsify_llncs.sh
   fi
