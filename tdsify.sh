@@ -14,6 +14,5 @@ cd tds
 if which zip >/dev/null; then
     zip -r -q -X ../swathesis.tds.zip *
 else
-    echo "> You need to install 'zip'." >&2
-    exit 1
+    gzip -r -q -X ../swathesis.tds.zip *
 fi
