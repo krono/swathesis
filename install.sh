@@ -3,6 +3,12 @@
 PROGRAM=`echo $0 | sed 's%.*/%%'`
 PROGDIR="$(cd `dirname $0`; echo $PWD)"
 
+if [ ! -z "$ZSH_VERSION" ]; then
+  setopt shwordsplit
+fi
+ECHON="/usr/bin/printf %b"
+ECHO="/usr/bin/printf %b\\n"
+
 THE_TDS=swathesis.tds.zip
 
 KPSEWHICH=`command -v kpsewhich`
@@ -38,10 +44,10 @@ OPTIONS
 }
 
 __find_bin() {
-  if [ -d "${HOME}/.bin" ] && echo $PATH | tr : \n | grep -q "${HOME}/.bin"; then
-    echo "${HOME}/.bin"
+  if [ -d "${HOME}/.bin" ] && $ECHO $PATH | tr : \n | grep -q "${HOME}/.bin"; then
+    $ECHO "${HOME}/.bin"
   else
-    echo "${HOME}/bin"
+    $ECHO "${HOME}/bin"
   fi
 }
 
@@ -78,22 +84,24 @@ BIN=          $BIN
 BIN_DEFAULT=  $BIN_DEFAULT
 "
 if [ ! -z "$E" ]; then
-  echo "using $E as sudo";
+  $ECHO "using $E as sudo";
 fi
+
 if [ "$REQUIREMENTS" -eq 0 ]; then
-  printf "not "
+  $ECHON "not "
 fi
-echo "installing requirements"
+$ECHO "installing requirements"
+
 if [ "$NOBIN" -eq 1 ]; then
   printf "not "
 fi
-echo "installing binary"
+$ECHO "installing binary"
 
 if [ "$NEEDMKTEXLSR" -eq 0 ]; then
-  prinf "not "
+   $ECHON "not "
 fi
-echo "rebuilding tex file db"
-echo "-----------"
+$ECHO "rebuilding tex file db"
+$ECHO "-----------"
 
 }
 
@@ -127,7 +135,7 @@ while test $# -gt 0; do
     x--no-bin)      NOBIN=1                     ;;
     x--update)      UPDATE=1                    ;;
     *)
-      echo "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
+      $ECHO "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
       exit 1
       ;;
   esac
@@ -135,10 +143,10 @@ while test $# -gt 0; do
 done
 
 
-echo "Installing swathesis"
-echo "===================="
-echo ""
-echo ""
+$ECHO "Installing swathesis"
+$ECHO "===================="
+$ECHO ""
+$ECHO ""
 if [ "$VERBOSE" -eq 1 ]; then
   __verbose_info
 fi
@@ -161,8 +169,8 @@ case "$DEST" in
 esac
 
 __check_dir "$DEST_DIR"
-OLDKPATHSEA=`if [ "$KPATHSEAVERSION" -lt 6 ]; then echo 1; else echo 0; fi`
-if [ "$DIST" = TEXMFHOME ]; then
+OLDKPATHSEA=`if [ "$KPATHSEAVERSION" -lt 6 ]; then $ECHO 1; else $ECHO 0; fi`
+if [ "$DEST" = TEXMFHOME ]; then
   if [ -f "$DEST_DIR"/ls-R -o "$OLDKPATHSEA" -eq 1 ]; then
     NEEDMKTEXLSR=1
   else
@@ -214,24 +222,35 @@ fi
 
 
 if [ "$REQUIREMENTS" -eq 1 ]; then
-  echo "> Installing Requirements"
+  $ECHO "> Installing Requirements"
   _PREQ="$PWD"; cd "$PROGDIR"/requirements
   TDS_DEST="$DEST_DIR" ./get_requirements.sh
   cd "$_PREQ"
 fi
 
 if [ \( ! -f "$PROGDIR/$THE_TDS" \) -o \( "$UPDATE" -eq 1 \) ]; then
-  echo "> (re)Building TDS package"
+  $ECHO "> (re)Building TDS package"
   _PTDS="$PWD"; cd "$PROGDIR"
   rm -f $THE_TDS
-  ./tdsify.sh
-  cd "$_PTDS"
+  if ./tdsify.sh; then
+      cd "$_PTDS"
+  else 
+      cd "$_PTDS"
+      exit 1
+  fi
 fi
 
 
 
+if type unzip >/dev/null 2>/dev/null; then
+    :
+else
+    $ECHO ">> \`unzip' not found, please install."
+    exit 1
+fi
 
-echo "> Deploying swathesis into $DEST_DIR"
+
+$ECHO "> Deploying swathesis into $DEST_DIR"
 _P=$PWD
 cd "$DEST_DIR"
 
@@ -241,17 +260,17 @@ cd "$_P"
 
 
 if [ "$NEEDMKTEXLSR" -eq 1 ]; then
-  echo "> Rebuilding TeX file database"
+  $ECHO "> Rebuilding TeX file database"
   $E mktexlsr "$DEST_DIR"
 fi
 
 if [ "$NOBIN" -eq 0 ]; then
-  echo "> Linking \`swth' into $BIN"
+  $ECHO "> Linking \`swth' into $BIN"
   $E ln -s "$DEST_DIR"/scripts/swathesis/swth.sh "$BIN"/swth
-  if echo $PATH | tr ':' '\n' | grep -q "$BIN"; then
+  if $ECHO $PATH | tr ':' '\n' | grep -q "$BIN"; then
     :
   else
-    echo "
+    $ECHO "
 
 CAUTION: '$BIN' is not on your \$PATH. You
          might want to add it or re-start your shell,
@@ -262,4 +281,4 @@ CAUTION: '$BIN' is not on your \$PATH. You
   fi
 fi
 
-echo "Done"
+$ECHO "Done"
