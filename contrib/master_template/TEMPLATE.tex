@@ -41,6 +41,8 @@ Dr.\,John Doe%
 \extratitle{\raggedleft Nachname, \\ Titel Kurz\par}
 \title{Der Lange Titel der Arbeit die zu Schreiben Ist}
 \subtitle{Ein Untertitel ist Optional}
+\othertitle{The Long Title of the Work to Be Done}
+\othersubtitle{This is Optionally Optional}
 
 \begin{document}
 \frontmatter
@@ -112,7 +114,7 @@ return and cascade. It has both zero argument and one argument blocks."
 
 \ctable%
 [table,
-caption={Differences between things projected and things achieved}
+caption={Differences between things projected and things achieved},
 label=tbl:things]%
 {>{}p{.4\linewidth}@{}c}%
 {\tnote[a]{Just few things missing}}%
@@ -136,6 +138,17 @@ label=tbl:things]%
 We have nice things: some code in \autoref{lst:example} and some information
 in \autoref{tbl:things}.
 
+
+
+\[\nabla \cdot \mathbold{E} = \frac{\rho}{\varepsilon_0}\]
+\[\nabla \cdot \mathbold{B} = 0\]
+\[\nabla \times \mathbold{E} = -\frac {\partial \mathbold{B}}{\partial t}\]
+\[\nabla \times \mathbold{B} = \mu_0 \mathbold{J} + \mu_0\varepsilon_0  \frac{\partial \mathbold{E}}{\partial t}\]
+
+
+\missingfigure{Make a overview sketch of the whole system}
+
+
 \blinddocument
 
 \printbibliography
@@ -144,6 +157,15 @@ in \autoref{tbl:things}.
 \input{appendix}
 \backmatter
 \markboth{}\relax
+
+% BAMA-O (2009) §24.8
+%  Am Schluss der Arbeit hat die/der Kandidat/in  zu versichern, dass 
+%  sie/er sie selbstständig verfasst sowie keine anderen Quellen und 
+%  Hilfsmittel als die angegebenen benutzt hat.
+% BAMA-O (2013) §30.6
+%  Am Schluss der Arbeit hat die Kandidatin bzw. der Kandidat zu versichern,
+%  dass sie bzw. er die Arbeit selbstständig verfasst und keine anderen
+%  Quellen und Hilfsmittel als die angegebenen benutzt hat.
 \defaultstatement
 \end{document}
 %%% Local Variables:

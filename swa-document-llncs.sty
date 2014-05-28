@@ -54,28 +54,45 @@
 }{}{}
 
 
-\providecommand*\extratitle[1]{\gdef\swa@extratitle{#1}}
-\providecommand*\swa@extratitle{}
+\providecommand*\extratitle[1]{\gdef\@extratitle{#1}}
+\providecommand*\@extratitle{}
 
+\providecommand*\othertitle[1]{\gdef\@othertitle{#1}}
+\providecommand*\@othertitle{}
+\providecommand*\othersubtitle[1]{\gdef\@othersubtitle{#1}}
+\providecommand*\@othersubtitle{}
 
-\providecommand*\supervisor[1]{\gdef\swa@supervisor{#1}}
-\providecommand*\supervisors[1]{\gdef\swa@supervisors{#1}}
-\providecommand*\swa@supervisor{}
-\providecommand*\swa@supervisors{}
+\providecommand*\supervisor[1]{\gdef\@supervisor{#1}}
+\providecommand*\supervisors[1]{\gdef\@supervisors{#1}}
+\providecommand*\@supervisor{}
+\providecommand*\@supervisors{}
 
-
-\providecommand*\swa@faculty{%
-  Hasso-Plattner-Institute for Software~Systems~Engineering%
-  \\ at the University of Potsdam, Germany%
+\addto\captionsenglish{%
+  \providecommand*\swa@faculty{%
+    Hasso-Plattner-Institute%
+    \\ at the University of Potsdam, Germany%
+  }
+  \providecommand*\swa@university{%
+        Software Architecture Group\\
+        Hasso-Plattner-Institute\\%
+        University of Potsdam, Germany%
+  }
 }
-\providecommand*\swa@university{%
-      Software Architecture Group\\
-      Hasso-Plattner-Institute\\%
-      University of Potsdam, Germany%
+
+\addto\captionsngerman{%
+  \providecommand*\swa@faculty{%
+    Hasso-Plattner-Institut für Softwaresystemtechnik%
+    \\ an der Universität Potsdam%
+  }
+  \providecommand*\swa@university{%
+        Fachgebiet Software-Architekturen\\
+        Hasso-Plattner-Institut\\%
+        Universität Potsdam%
+  }
 }
 
 \providecommand*\swa@discipline{%
-  Software~Engineering%
+  IT-Systems~Engineering%
 }%
 
 \providecommand*\swa@whom{Dem}
@@ -114,6 +131,8 @@
   \expandafter\IfFileExists{\swa@universitylogo.eps}{\global\swa@logo@universitytrue}{}
   \expandafter\IfFileExists{\swa@facultylogo.pdf}{\global\swa@logo@facultytrue}{}
   \expandafter\IfFileExists{\swa@facultylogo.eps}{\global\swa@logo@facultytrue}{}
+  
+  
 }
 
 \providecommand*\swa@titlefont{}
@@ -138,15 +157,18 @@
   {\scshape \swa@degree@ in \swa@discipline\\}%
 }
 
-\newcommand*\swa@subject{
-  \csuse{swa@thesis@\swa@degree name}
+\newcommand*\swa@subject{%
+  \csuse{swa@thesis@\swa@degree name}%
 }
-\newcommand*\swa@degree@{
-  \csuse{swa@degree@\swa@degree name}
+\newcommand*\swa@degree@{%
+  \csuse{swa@degree@\swa@degree name}%
 }
 
 
 \swa@NowButAfterBeginDocument{%
+  
+  
+  
   \providecaptionname{english}{\swa@thesis@mastername}{Master's Thesis}
   \providecaptionname{english}{\swa@thesis@bachelorname}{Bachelor's Thesis}
   \providecaptionname{english}{\swa@thesis@phdname}{Doctoral Disstertation}
@@ -162,7 +184,7 @@
     A thesis submitted to the \\%
     \swa@faculty{}\\%
     in partial fulfillment of the requirements for the degree of \\[.5\baselineskip]
-    {\scshape \swa@degree@ in \swa@discipline\\
+    {\scshape \swa@degree@{} in \swa@discipline\\
     }%
   }
 
@@ -178,8 +200,8 @@
   \providecaptionname{german}{\swa@thesis@information}{%
     \swa@whom\space\swa@faculty{}\\
     zur Erlangung des akademischen Grades des\\[.5\baselineskip]
-    {\scshape \swa@degree@ in \swa@discipline}\\[.5\baselineskip]
-    vorgelegte \swa@subject{}.
+    {\scshape \swa@degree@{} in \swa@discipline}\\[.5\baselineskip]
+    vorgelegte \swa@subject.
   }
   \providecaptionname{ngerman}{\swa@thesis@mastername}{Masterarbeit}
   \providecaptionname{ngerman}{\swa@thesis@bachelorname}{Bachelorarbeit}
@@ -193,8 +215,8 @@
   \providecaptionname{ngerman}{\swa@thesis@information}{%
     \swa@whom\space\swa@faculty{}\\
     zur Erlangung des akademischen Grades des\\[.5\baselineskip]
-    {\scshape \swa@degree@ in \swa@discipline}\\[.5\baselineskip]
-    vorgelegte \swa@subject{}.
+    {\scshape \swa@degree@{} in \swa@discipline}\\[.5\baselineskip]
+    vorgelegte \swa@subject.
   }%
 }
 
@@ -204,10 +226,10 @@
 \pretocmd{\maketitle}{
   \begingroup
     \ifthenelse{\boolean{swa@logo@title}}{
-      \ifx\swa@extratitle\@empty\else
+      \ifx\@extratitle\@empty\else
       \pagenumbering{Roman}
       \begin{titlepage}
-        \noindent\swa@extratitle
+        \noindent\@extratitle
       \end{titlepage}
       \swa@doubleempty
       \if@mainmatter
@@ -239,10 +261,22 @@
       }%
     }{}
     \centering
-    \Large
-    \null\vfill
-    {\swa@titlefont\huge\@title}\par
-    {\ifx\@subtitle\@empty\else\swa@subtitlefont{\@subtitle}\par\fi}%
+    \ifx\@othertitle\@empty
+      \Large
+      \null\vfill
+      {\swa@titlefont\huge\@title}\par
+      {\ifx\@subtitle\@empty\else\swa@subtitlefont{\@subtitle}\par\fi}%
+    \else
+      \large
+      \null\vfill
+      {\swa@titlefont\LARGE\@title}\par
+      \ifx\@subtitle\@empty\else{\swa@subtitlefont{\@subtitle}}{\LARGE\strut\par}\fi%
+      \vspace*{\baselineskip}%
+      {\itshape
+         {\swa@titlefont\LARGE\@othertitle}\par
+         \ifx\@othersubtitle\@empty\else{\swa@subtitlefont{\@othersubtitle}}{\LARGE\strut\par}\fi%
+      }%
+    \fi
     \vspace*{\baselineskip}
     \swa@fromname\par
     \vspace*{\baselineskip}
@@ -251,10 +285,10 @@
     {\swa@titlefont\large
     \swa@thesis@information}\par
     \vfill
-    \ifx\@empty\swa@supervisors
-    \supervisorname{} \\[.5\baselineskip]{\swa@supervisor}
+    \ifx\@empty\@supervisors
+    \supervisorname{} \\[.5\baselineskip]{\@supervisor}
     \else
-    \supervisorsname{} \\[.5\baselineskip]{\let\and\\\relax \swa@supervisors}
+    \supervisorsname{} \\[.5\baselineskip]{\let\and\\\relax \@supervisors}
     \fi
     \vfill
     {\swa@university\par}

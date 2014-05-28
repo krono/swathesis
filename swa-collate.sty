@@ -16,6 +16,9 @@
 \providecommand*\globalsubtitle[1]{\gdef\swa@globalsubtitle{#1}}
 \providecommand*\extraglobaltitle[1]{\gdef\swa@extraglobaltitle{#1}}
 
+\providecommand*\globalothertitle[1]{\gdef\swa@globalothertitle{#1}}
+\providecommand*\globalothersubtitle[1]{\gdef\swa@globalothersubtitle{#1}}
+
 \providecommand*\globalsupervisor[1]{\gdef\swa@globalsupervisor{#1}}
 \providecommand*\globalsupervisors[1]{\gdef\swa@globalsupervisors{#1}}
 
@@ -23,6 +26,9 @@
 \providecommand*\swa@globaltitle{}
 \providecommand*\swa@globalsubtitle{}
 \providecommand*\swa@extraglobaltitle{}
+
+\providecommand*\swa@globalothertitle{}
+\providecommand*\swa@globalothersubtitle{}
 
 \providecommand*\swa@globalsupervisor{}
 \providecommand*\swa@globalsupervisors{}
@@ -62,10 +68,22 @@
       \fi%
     }%
     \centering
-    \Large
-    \null\vfill
-    {\swa@titlefont\huge\swa@globaltitle}\par
-    {\ifx\swa@globalsubtitle\@empty\else\swa@subtitlefont{\swa@globalsubtitle}\par\fi}%
+    \ifx\swa@globalothertitle\@empty
+      \Large
+      \null\vfill
+      {\swa@titlefont\huge\swa@globaltitle}\par
+      {\ifx\swa@globalsubtitle\@empty\else\swa@subtitlefont{\swa@globalsubtitle}\par\fi}%
+    \else
+      \large
+      \null\vfill
+      {\swa@titlefont\LARGE\swa@globaltitle}\par
+      \ifx\swa@globalsubtitle\@empty\else{\swa@subtitlefont{\swa@globalsubtitle}}{\LARGE\strut\par}\fi%
+      \vspace*{\baselineskip}%
+      {\itshape
+         {\swa@titlefont\LARGE\swa@globalothertitle}\par
+         \ifx\swa@globalothersubtitle\@empty\else{\swa@subtitlefont{\swa@globalothersubtitle}}{\LARGE\strut\par}\fi%
+      }%
+    \fi
     \vfill
     \swa@process@authors{swa@printAuthorInTitle}\par
     \vfill
@@ -165,16 +183,16 @@
   \swa@record{author}%
   \swa@record{location}%
   \swa@record{title}%
-  \swa@record{institute}%
   \swa@record{subtitle}%
-  \swa@record{supervisors}%
+  \swa@record{othertitle}%
+  \swa@record{othersubtitle}%  
   \protected@write\@mainaux{}{\string\swa@writeaut{\string\string\string\processAuthor}}%
   \swa@replay{author}%
   \swa@replay{location}%
   \swa@replay{title}%
-  \swa@replay{institute}%
   \swa@replay{subtitle}%
-  \swa@replay{supervisors}%
+  \swa@replay{othertitle}%
+  \swa@replay{othersubtitle}%
 }{}{}
 
 \apptocmd{\maketitle}{%

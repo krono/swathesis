@@ -66,6 +66,15 @@
   \end{titlepage}
 }
 
+\providecommand*{\@othertitle}{}
+\providecommand{\othertitle}[1]{\gdef\@othertitle{#1}}
+\DefineFamilyKey[HPISWA]{title}{othertitle}{\othertitle{#1}}
+\providecommand*{\@othersubtitle}{}
+\providecommand{\othersubtitle}[1]{\gdef\@othersubtitle{#1}}
+\DefineFamilyKey[HPISWA]{title}{othersubtitle}{\othersubtitle{#1}}
+
+
+
 \providecommand*{\@extratitle}{}
 \providecommand{\extratitle}[1]{\gdef\@extratitle{#1}}
 \DefineFamilyKey[HPISWA]{title}{extratitle}{\extratitle{#1}}
@@ -102,7 +111,38 @@
   {\scshape \@degree{} in  \@discipline\\}%
 }
 
+
 \NowButAfterBeginDocument{%
+  \providecaptionname{english}{\@faculty}{%
+      Hasso-Plattner-Institute%
+      \\ at the University of Potsdam, Germany%
+    }
+  \providecaptionname{english}{\@university}{%
+          Software Architecture Group\\
+          Hasso-Plattner-Institute\\%
+          University of Potsdam, Germany%
+    }
+
+  \providecaptionname{german}{\@faculty}{%
+      Hasso-Plattner-Institut für Softwaresystemtechnik%
+      \\ an der Universität Potsdam%
+    }
+  \providecaptionname{german}{\@university}{%
+          Fachgebiet Software-Architekturen\\
+          Hasso-Plattner-Institut\\%
+          Universität Potsdam%
+    }
+  \providecaptionname{ngerman}{\@faculty}{%
+      Hasso-Plattner-Institut für Softwaresystemtechnik%
+      \\ an der Universität Potsdam%
+    }
+  \providecaptionname{ngerman}{\@university}{%
+          Fachgebiet Software-Architekturen\\
+          Hasso-Plattner-Institut\\%
+          Universität Potsdam%
+    }
+
+
   \providecaptionname{english}{\supervisorname}{Supervisor}%
   \providecaptionname{english}{\supervisorsname}{Supervisors}%
 
@@ -121,7 +161,7 @@
     {\scshape \@degree{} in \@discipline}\\[.5\baselineskip]
     vorgelegte \@subject{}.
   }
-   \providecaptionname{ngerman}{\supervisorname}{Betreuer}%
+  \providecaptionname{ngerman}{\supervisorname}{Betreuer}%
   \providecaptionname{ngerman}{\supervisorsname}{\supervisorname}%
   \providecaptionname{ngerman}{\presentationinformationHPISWA}{%
     \@whom\space\@faculty{}\\
@@ -142,7 +182,7 @@
   \fi
   \ifx\@faculty\@empty
     \faculty{%
-      Hasso-Plattner-Institute for Software Systems Engineering%
+      Hasso-Plattner-Institute%
       \\ at the University of Potsdam, Germany%
     }%
   \fi
@@ -158,7 +198,7 @@
   \fi
   \ifx\@discipline\@empty
     \discipline{%
-      Software Engineering%
+      IT-Systems~Engineering%
     }%
   \fi
 
@@ -186,16 +226,6 @@
     \scr@ifundefinedorrelax{includegraphics}{%
       \if@atdocument\else
         \RequirePackage{graphics}
-        \begingroup\expandafter\expandafter\expandafter\endgroup
-	\expandafter\ifx\csname XeTeXrevision\endcsname\relax
-          % non-xetex
-          \DeclareGraphicsRule{.ai}{pdf}{*}{}
-          \DeclareGraphicsExtensions{.ai,.AI,\Gin@extensions}
-        \else
-          % non-xetex
-          \DeclareGraphicsRule{.ai}{QTm}{*}{}
-          \DeclareGraphicsExtensions{.ai,\Gin@extensions}
-        \fi
       \fi
     }{}
     \scr@ifundefinedorrelax{includegraphics}{}{%
@@ -229,10 +259,22 @@
         \@titlehead\par
       \fi
       \centering
-      \Large
-      \null\vfill
-      {\titlefont\huge\@title}\par
-      {\ifx\@subtitle\@empty\else\@subtitlefont{\@subtitle}\par\fi}%
+      \ifx\@othertitle\@empty
+        \Large
+        \null\vfill
+        {\titlefont\huge\@title}\par
+        {\ifx\@subtitle\@empty\else\@subtitlefont{\@subtitle}\par\fi}%
+      \else
+        \large
+        \null\vfill
+        {\titlefont\LARGE\@title}\par
+        \ifx\@subtitle\@empty\else{\@subtitlefont{\@subtitle}}{\LARGE\strut\par}\fi%
+        \vspace*{\baselineskip}%
+        {\itshape
+           {\titlefont\LARGE\@othertitle}\par
+           \ifx\@othersubtitle\@empty\else{\@subtitlefont{\@othersubtitle}}{\LARGE\strut\par}\fi%
+        }%
+      \fi
       \vspace*{\baselineskip}
       \fromname\par
       \vspace*{\baselineskip}
@@ -251,7 +293,6 @@
       {\@date\par}
   \end{titlepage}
 }
-
 \endinput
 %%
 %% End of file `title-hpi-swa.def'.

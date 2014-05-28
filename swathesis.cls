@@ -3,7 +3,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{swathesis}[2014/05/28 v0.5
-^^J LaTeX document class for Theses at the SWA Group]
+^^J LaTeX document class for theses at the SWA Group]
 
 % Options.
 %
@@ -16,6 +16,10 @@
 %  fulldraft - drafting mode, also for listings/graphics, faster
 %  final     - final mode
 %
+% Thesis
+%  master
+%  bachelor
+%  phd
 %
 % Fonts
 %  lmodern   - Latin Modern, like TeX default (default)
@@ -46,7 +50,9 @@
 
 
 \DeclareOption{en}{\@swa@germanfalse}
+
 \DeclareOption{de}{\@swa@germantrue}
+
 \DeclareOption{palatino}{\renewcommand*\@swa@font{palatino}}
 \DeclareOption{garamond}{\renewcommand*\@swa@font{garamond}}
 \DeclareOption{lmodern}{\renewcommand*\@swa@font{lmodern}}
@@ -77,6 +83,7 @@
   \PassOptionsToClass{\swa@miscoptions}{\swa@cls}
 \fi
 \LoadClass{\swa@cls}
+
 
 \RequirePackage{swa-language}
 \RequirePackage{swa-document}

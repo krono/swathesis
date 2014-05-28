@@ -1,69 +1,56 @@
+\RequirePackage{ebgaramond}
+
+% bold is not in eb
+\@ifclassloaded{scrbook}{
+  \addtokomafont{subject}{\mdseries}
+  \addtokomafont{disposition}{\mdseries}
+  \addtokomafont{descriptionlabel}{\mdseries}
+  \addtokomafont{captionlabel}{\mdseries}
+  \renewcommand*\labelitemii{\normalfont\textendash}
+}
+
+% scale down euler a bit more.
+% note, don't use the small option for eulervm, then
+\def\zeu@Scale{.89}
+\RequirePackage[euler-digits,T1]{eulervm}
+\let\mathbf\mathbold
 
 \ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
-  % to match EB Garamond
-  \setmonofont%
-  [Scale=.73,Microtype,Numbers={Lining,Monospaced,SlashedZero}]%
-  {DejaVu  Sans Mono}
-  
-  \defaultfontfeatures{Microtype,Ligatures=TeX,RawFeature={+calt,+clig,+tlig}}
+ 
+  \addtokomafont{partentrypagenumber}{\ebgaramondtabular}
+  \addtokomafont{chapterentrypagenumber}{\ebgaramondtabular}
+  \settocfeature{pagenumberhook}{\ebgaramondtabular}
+  \renewcommand\listingnumberfont{\ebgaramondtabular}
+  \renewcommand\tablefontcommand{\ebgaramondtabular}
 
+  \defaultfontfeatures{Scale=MatchLowercase,Microtype,Ligatures=TeX}
   \global\let\slshape\itshape\relax
   
   \ifthenelse{\boolean{xetex}}{%
-    \setmainfont{EB Garamond}%
+    \setmonofont{DejaVu Sans Mono}
   }{%
-    \ifcsundef{garamondpath}{
-      \PackageError{swa-font-garamond}{%
-        % 
-        You have requested Garamond for LuaTeX, \MessageBreak
-        but  not provided a path to the files. \MessageBreak%
-        So you have to specify the path to the \MessageBreak
-        otf-files with %
-        \MessageBreak\MessageBreak%
-        \protect\newcommand{\protect\garamondpath}{/path/to/otffiles/} %
-        \MessageBreak\MessageBreak%
-        BEFORE \protect\documentclass %
-        }{\MessageBreak
-        You have to specify the path to the otf-files with %
-        \MessageBreak\MessageBreak%
-        \protect\newcommand{\protect\garamondpath}{/path/to/otffiles/} %
-        \MessageBreak\MessageBreak%
-        BEFORE \protect\documentclass %
-      }
-    }{
-      \setmainfont[
-        Path = \garamondpath ,
-        UprightFont =EBGaramond-Regular,
-        BoldFont = EBGaramond-Bold ,
-        SmallCapsFont= EBGaramond-SC ,
-        ItalicFont = EBGaramond-Italic,
-        Ligatures=TeX
-      ]{EB Garamond}
-    }
+    \setmonofont%
+    [
+        BoldFont={* Bold},
+        ItalicFont={* Oblique},
+        BoldItalicFont={* BoldOblique}
+      ]%
+      {DejaVu Sans Mono}
   }
-
-\addtokomafont{partentrypagenumber}{%
-  \addfontfeatures{Numbers={OldStyle,Monospaced}}}
-\addtokomafont{chapterentrypagenumber}{%
-  \addfontfeatures{Numbers={OldStyle,Monospaced}}}
-\settocfeature{pagenumberhook}{%
-  \addfontfeatures{Numbers={OldStyle,Monospaced}}}
-
-\renewcommand\listingnumberfont{%
-  \rmfamily\addfontfeatures{Numbers={OldStyle,Monospaced}}}
-\renewcommand\tablefontcommand{%
-  \addfontfeatures{Numbers={OldStyle,Monospaced}}}
-
-
 }{%
-  \RequirePackage[urw-garamond]{mathdesign}
-  \renewcommand{\rmdefault}{garamond}
-  \RequirePackage[scaled=.9]{beramono}
+  \RequirePackage[scaled=.9]{DejaVuSansMono}
+  %%
+  %% Patch EB
+  %%
+  \input{TS1EBGaramond-LF.fd}
+  \input{TS1EBGaramond-OsF.fd}
+  \makeatother
+  \DeclareFontShape{TS1}{EBGaramond-OsF}{m}{sl}{ <-> ssub * EBGaramond-OsF/m/it }{}
+  \DeclareFontShape{TS1}{EBGaramond-OsF}{b}{n}{ <-> ssub * EBGaramond-OsF/m/n }{}
+  \DeclareFontShape{TS1}{EBGaramond-OsF}{b}{it}{ <-> ssub * EBGaramond-OsF/m/it }{}
+  \DeclareFontShape{TS1}{EBGaramond-OsF}{b}{sl}{ <-> ssub * EBGaramond-OsF/m/it }{}
+  \DeclareFontShape{TS1}{EBGaramond-OsF}{bx}{n}{ <-> ssub * EBGaramond-OsF/m/n }{}
+  \DeclareFontShape{TS1}{EBGaramond-OsF}{bx}{it}{ <-> ssub * EBGaramond-OsF/m/it }{}
+  \DeclareFontShape{TS1}{EBGaramond-OsF}{bx}{sl}{ <-> ssub * EBGaramond-OsF/m/it }{}
 }
-
-
-  % scale down euler a bit more.
-  % note, don't use the small option for eulervm, then
-  \def\zeu@Scale{.89}
-  \RequirePackage[euler-digits,T1]{eulervm}
 

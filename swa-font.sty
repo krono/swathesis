@@ -2,11 +2,9 @@
 % packages
 \RequirePackage{textcomp}
 \RequirePackage{textcase}
-\RequirePackage{fontaxes}
 \RequirePackage{relsize}
 
 \RequirePackage[final,babel=true]{microtype}[2011/08/18]
-
 %
 % engine-dependent, eg, encoding, loading.
 %
@@ -15,9 +13,10 @@
   \ifthenelse{\boolean{xetex}}{
     \newfontfeature{Microtype}{protrusion=default;expansion=default;}
   }{
-    \newfontfeature{Microtype}{}
+    \newfontfeature{Microtype}{protrusion=default;expansion=default;tracking}
   }
 }{
+  \RequirePackage{fontaxes}
   \RequirePackage[T1]{fontenc}
 }
 
@@ -30,14 +29,9 @@
 % microtypesetup
 %
 \ifthenelse{\boolean{xetex}}{%
-  \microtypesetup{protrusion}
   \let\textls\undefined
   \DeclareRobustCommand{\textls}[2][80]{%
     {{\addfontfeature{LetterSpace=\the\numexpr#1/10\relax}#2}}}
-}{}
-
-\ifthenelse{\boolean{luatex}}{%
-  \microtypesetup{protrusion,tracking}
 }{}
 
 \ifthenelse{\boolean{xetex} \or \boolean{luatex}}{}{%
@@ -50,9 +44,9 @@
 \DeclareRobustCommand{\spacedallcaps}[1]{%
   \textls[80]{\MakeTextUppercase{#1}}}%
 \DeclareRobustCommand{\spacedlowsmallcaps}[1]{%
-  {\MakeTextLowercase{\scshape #1}}}%s
+  {\scshape\MakeTextLowercase{#1}}}%s
 \DeclareRobustCommand\Largespacedlowsmallcaps[1]{%
-  \spacedlowsmallcaps{\Large    #1}}
+  \spacedlowsmallcaps{\Large #1}}
 
 
 %

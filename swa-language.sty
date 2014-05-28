@@ -2,10 +2,9 @@
 \setdatetoday
 
 \RequirePackage{swa-platform}
-\ifundefinedorrelax{@swa@german}{
+\ifundefinedorrelax{if@swa@german}{
   \newif\if@swa@german
 }{}
-
 
 \ifthenelse{\boolean{xetex}}{
   \RequirePackage{polyglossia}
@@ -39,15 +38,18 @@
   \RequirePackage[english]{babel}
 \fi
 
-  \RequirePackage%
-[ngerman,english]%
-%
-{babel}
-  %//fooling done.
 
   \ifthenelse{\boolean{@swa@german}}{
-  \selectlanguage{ngerman}
-  }{}
+  \RequirePackage%
+[main=ngerman,english]%
+%
+{babel}
+  }{
+  \RequirePackage%
+[main=english,ngerman]%
+%
+{babel}
+  }
 
   \addto\captionsenglish{%
     \def\figureautorefname{figure}
