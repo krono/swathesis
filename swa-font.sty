@@ -10,11 +10,7 @@
 %
 \ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
   \RequirePackage{fontspec}
-  \ifthenelse{\boolean{xetex}}{
-    \newfontfeature{Microtype}{protrusion=default;expansion=default;}
-  }{
-    \newfontfeature{Microtype}{protrusion=default;expansion=default;tracking}
-  }
+  \newfontfeature{Microtype}{protrusion=default;expansion=default;}
 }{
   \RequirePackage{fontaxes}
   \RequirePackage[T1]{fontenc}
