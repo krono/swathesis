@@ -34,10 +34,11 @@
 }
 
 % Disable single lines at the start of a paragraph (Schusterjungen)
-\clubpenalty = 10000
+\clubpenalty = \@M
 % Disable single lines at the end of a paragraph (Hurenkinder)
-\widowpenalty = 10000 
-\displaywidowpenalty = 10000 % formulas
+\widowpenalty = \@M
+\displaywidowpenalty = \@M % formulas
+\interfootnotelinepenalty = 1000
 \setlength{\textfloatsep}{\baselineskip}
 \setlength{\floatsep}{\baselineskip}
 
@@ -121,7 +122,7 @@
   \RequirePackage{blindtext}
   \errorcontextlines=999
   \RequirePackage{eso-pic}
-  \providecommand*\swa@draftFont{\sffamily}
+  \newkomafont{draftline}{\sffamily}
   \newsavebox{\swa@draftPageLine}
   % \newsavebox{\swa@draftWatermark}
   \AddToShipoutPicture{%
@@ -133,7 +134,7 @@
   }
   \AtBeginDocument{
     \def\swa@draftInfo{%
-      {\swa@draftFont
+      {\usekomafont{draftline}
       Draft Draft Draft%
       \hspace*{5cm}\today\hspace*{5cm}%
       Draft Draft Draft%
