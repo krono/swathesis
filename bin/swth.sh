@@ -66,7 +66,7 @@ if test "x$_T" = "x"; then
   $ECHO "$PROGRAM: cannot find swathesis"
   exit 200
 fi
-TEMPLATEROOT="`dirname $_T`/contrib"
+TEMPLATEROOT="`dirname \"$_T\"`/contrib"
 
 if test -z "$OSTYPE" ; then
   OSTYPE=`uname -s | tr A-Z a-z`
