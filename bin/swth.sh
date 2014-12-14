@@ -227,7 +227,7 @@ _create() {
   fi
   __readmode "What thesis do you want to create?"
   __readdir "Where do you want to create?"
-  if test -d $SWTHDIR; then
+  if test -d "$SWTHDIR"; then
     $ECHO "Found $SWTHDIR"
   else
     printf "$SWTHDIR does not yet exist, create? [YES/no]"
