@@ -66,7 +66,7 @@ if test "x$_T" = "x"; then
   $ECHO "$PROGRAM: cannot find swathesis"
   exit 200
 fi
-TEMPLATEROOT="`dirname $_T`/contrib"
+TEMPLATEROOT="`dirname \"$_T\"`/contrib"
 
 if test -z "$OSTYPE" ; then
   OSTYPE=`uname -s | tr A-Z a-z`
@@ -227,7 +227,7 @@ _create() {
   fi
   __readmode "What thesis do you want to create?"
   __readdir "Where do you want to create?"
-  if test -d $SWTHDIR; then
+  if test -d "$SWTHDIR"; then
     $ECHO "Found $SWTHDIR"
   else
     printf "$SWTHDIR does not yet exist, create? [YES/no]"
