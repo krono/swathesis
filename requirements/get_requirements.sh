@@ -247,4 +247,14 @@ if _need_package "ebgaramond" "2013/05/22"; then
   _deploy_tds $TDS
   $ECHO ">> installed current ebgaramond"
 fi
+
+if _need_package "babel" "2012/05/16"; then
+  $ECHO ">> please update babel"
+  exit 1
+fi
+
+if _need_package "babel-english" "2012/08/20"; then
+  $ECHO ">> please update babel-english"
+  exit 1
+fi
 # EOF
