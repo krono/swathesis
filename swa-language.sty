@@ -17,19 +17,20 @@
     \setotherlanguage[babelshorthands,latesthyphen=true]{german}
   }
 
-  \gappto\captionsenglish{%
-    \def\figureautorefname{figure}
-    \def\tableautorefname{table}
-    \def\lstlistingautorefname{listing}
-    \def\lstnumberautorefname{line}
-    \let\subsectionautorefname\sectionautorefname
-    \let\subsubsectionautorefname\sectionautorefname
+  \defcaptionname{english}{\figureautorefname}{figure}
+  \defcaptionname{english}{\figureautorefname}{figure}
+  \defcaptionname{english}{\tableautorefname}{table}
+  \defcaptionname{english}{\lstlistingautorefname}{listing}
+  \defcaptionname{english}{\lstnumberautorefname}{line}
+  \defcaptionname{english}{\subsectionautorefname}{\sectionautorefname}
+  \defcaptionname{english}{\subsubsectionautorefname}{\sectionautorefname}
+  \gappto\extrasenglish{%
     \@datelanguageUSenglish
     }
 
-  \gappto\captionsgerman{%
-    \let\subsectionautorefname\sectionautorefname
-    \let\subsubsectionautorefname\sectionautorefname
+  \defcaptionname{german}{\subsectionautorefname}{\sectionautorefname}
+  \defcaptionname{german}{\subsubsectionautorefname}{\sectionautorefname}
+  \gappto\extrasgerman{%
     \@datelanguagegerman
     }
 }{
@@ -51,20 +52,23 @@
 {babel}
   }
 
-  \addto\captionsenglish{%
-    \def\figureautorefname{figure}
-    \def\tableautorefname{table}
-    \def\lstlistingautorefname{listing}
-    \def\lstnumberautorefname{line}
-    \let\subsectionautorefname\sectionautorefname
-    \let\subsubsectionautorefname\sectionautorefname
+  \defcaptionname{english}{\figureautorefname}{figure}
+  \defcaptionname{english}{\figureautorefname}{figure}
+  \defcaptionname{english}{\tableautorefname}{table}
+  \defcaptionname{english}{\lstlistingautorefname}{listing}
+  \defcaptionname{english}{\lstnumberautorefname}{line}
+  \defcaptionname{english,german,ngerman}{\subsectionautorefname}{\sectionautorefname}
+  \defcaptionname{english,german,ngerman}{\subsubsectionautorefname}{\sectionautorefname}
+  \addto\extrasenglish{%
     \@datelanguageUSenglish
-    }
+  }
 
-  \addto\captionsngerman{%
-    \let\subsectionautorefname\sectionautorefname
-    \let\subsubsectionautorefname\sectionautorefname
+  \addto\extrasngerman{%
+    \@datelanguagegerman
+    }
+  \addto\extrasgerman{%
     \@datelanguagegerman
     }
 
 }
+\endinput
