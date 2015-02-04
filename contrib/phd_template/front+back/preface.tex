@@ -1,0 +1,39 @@
+\input{front+back/title}
+\pagenumbering{roman}	
+\cleardoublepage
+\input{front+back/selbstaendigkeitserklaerung}
+
+{
+\pagestyle{plain}
+\markboth{}{}
+\chapter*{Abstract}
+\input{abstract}
+}
+
+{
+\pagestyle{plain}
+\markboth{}{}
+\chapter*{Zusammenfassung}
+\input{zusammenfassung}
+}
+
+\chapter*{Acknowledgements}
+\input{acknowledgments}
+{
+\tableofcontents
+\enlargethispage{\baselineskip}
+}
+\cleardoublepage
+\pagenumbering{arabic}
+\cleardoublepage
+
+
+{
+\listoffigures
+% \listoftables
+% \lstlistoflistings
+\glsaddall
+%\printglossary[title=List of Abbreviations,toctitle=Abbreviations]
+\printglossary[title=List of Technical Terms,toctitle=Terms and Abbreviations]
+
+}

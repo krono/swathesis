@@ -1,0 +1,337 @@
+%% ------------------------------------------------------------------------
+\input{preambel/preambel-commands}
+%%
+%%%% Doc: www.cs.brown.edu/system/software/latex/doc/calc.pdf
+%% Calculation with LaTeX
+%\usepackage{calc}
+%
+%%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/required/babel/babel.pdf
+%% Languagesetting
+%\usepackage[
+%%	german,
+%%	ngerman,
+%	english,
+%%	frensh,
+%]{babel}
+
+% \usepackage[%
+%	final,
+%	%draft % do not include images (faster)
+% ]{graphicx}
+
+
+
+\usepackage{marginnote}
+
+
+%% Doc: (inside relsize.sty )
+%% ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/misc/relsize.sty
+%  Set the font size relative to the current font size
+%\usepackage{relsize}
+
+%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/ms/ragged2e.pdf
+% Besserer Flatternsatz (Linksbuendig, statt Blocksatz)
+%\usepackage{ragged2e}
+%% Fonts
+\usepackage{lmodern}
+
+
+%% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%% PDF related packages
+%% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/microtype/microtype.pdf
+% Optischer Randausgleich mit pdfTeX
+\ifpdf
+\usepackage[%
+	expansion=true, % better typography, but with much larger PDF file.
+	protrusion=true
+]{microtype}
+\fi
+%
+
+
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/oberdiek/hypcap.pdf
+% Links auf Gleitumgebungen springen nicht zur Beschriftung,
+% sondern zum Anfang der Gleitumgebung
+\IfPackageLoaded{hyperref}{%
+	\usepackage[figure]{hypcap}
+}
+
+
+
+% Pakete Laden die nach Hyperref geladen werden sollen
+\LoadPackagesNow % (ltxtable, tabularx)
+
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% figures and placement
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+%% Bilder und Graphiken ==================================================
+
+%%% Doc: only dtx Package
+%\usepackage{float}             % Stellt die Option [H] für Floats zur Verfügung
+
+%%% Doc: No Documentation
+%b\usepackage{flafter}          % Floats immer erst nach der Referenz setzen
+
+% Defines a \FloatBarrier command, beyond which floats may not
+% pass; useful, for example, to ensure all floats for a section
+% appear before the next \section command.
+%\usepackage[
+%	section		% "\section" command will be redefined with "\FloatBarrier"
+%]{placeins}
+%
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/subfig/subfig.pdf
+% Incompatible: loads package capt-of. Loading of 'capt-of' afterwards will fail therefor
+%\usepackage{subfig} % Layout wird weiter unten festgelegt !
+
+
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% verbatim packages
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/upquote/upquote.sty
+\usepackage{upquote} % Setzt "richtige" Quotes in verbatim-Umgebung
+
+
+%%% Doc: No documentation - documented in 'The LaTeX Companion'
+% \usepackage{fancybox}   % for shadowbox, ovalbox
+
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/misc/framed.sty
+% \usepackage{framed}
+% \renewcommand\FrameCommand{\fcolorbox{black}{shadecolor}}
+
+\makeatletter
+\IfPackageLoaded{framed}{%
+   \IfPackageLoaded{marginnote}{%
+      \begingroup
+         \g@addto@macro\framed{%
+            \let\marginnoteleftadjust\FrameSep
+               \let\marginnoterightadjust\FrameSep
+         }
+      \makeatother
+  }
+}
+\makeatother
+%
+
+
+\iffalse % CLASH mit dissertation.tex
+
+% Layout mit 'geometry'
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/geometry/manual.pdf
+\usepackage{geometry}
+\geometry{%
+%%% Paper Groesse
+   a4paper, % Andere a0paper, a1paper, a2paper, a3paper, , a5paper, a6paper,
+            % b0paper, b1paper, b2paper, b3paper, b4paper, b5paper, b6paper
+            % letterpaper, executivepaper, legalpaper
+   %screen,  % a special paper size with (W,H) = (225mm,180mm)
+   %paperwidth=,
+   %paperheight=,
+   %papersize=, %{ width , height }
+   %landscape,  % Querformat
+   portrait,    % Hochformat
+%%% Koerper Groesse
+   %hscale=,      % ratio of width of total body to \paperwidth
+                  % hscale=0.8 is equivalent to width=0.8\paperwidth. (0.7 by default)
+   %vscale=,      % ratio of height of total body to \paperheight
+                  % vscale=0.9 is equivalent to height=0.9\paperheight.
+   %scale=,       % ratio of total body to the paper. scale={ h-scale , v-scale }
+   %totalwidth=,    % width of total body % (Generally, width >= textwidth)
+   %totalheight=,   % height of total body, excluding header and footer by default
+   %total=,        % total={ width , height }
+   %textwidth=,    % modifies \textwidth, the width of body
+   %textheight=,   % modifies \textheight, the height of body
+   %body=,        % { width , height } sets both \textwidth and \textheight of the body of page.
+   lines=44,       % enables users to specify \textheight by the number of lines.
+   %includehead,  % includes the head of the page, \headheight and \headsep, into total body.
+   %includefoot,  % includes the foot of the page, \footskip, into body.
+   %includeheadfoot, % sets both includehead and includefoot to true
+   %includemp,    % includes the margin notes, \marginparwidth and \marginparsep, into body
+   %includeall,   % sets both includeheadfoot and includemp to true.
+   %ignorehead,   % disregards the head of the page, headheight and headsep in determining vertical layout
+   %ignorefoot,   % disregards the foot of page, footskip, in determining vertical layout
+   %ignoreheadfoot, % sets both ignorehead and ignorefoot to true.
+   %ignoremp,     % disregards the marginal notes in determining the horizontal margins
+   ignoreall,     % sets both ignoreheadfoot and ignoremp to true
+   heightrounded, % This option rounds \textheight to n-times (n: an integer) of \baselineskip
+   %hdivide=,     % { left margin , width , right margin }
+                  % Note that you should not specify all of the three parameters
+   %vdivide=,     % { top margin , height , bottom margin }
+   %divide=,      % ={A,B,C} %  is interpreted as hdivide={A,B,C} and vdivide={A,B,C}.
+%%% Margin
+   %left=,        % left margin (for oneside) or inner margin (for twoside) of total body
+                  % alias: lmargin, inner
+   %right=,       % right or outer margin of total body
+                  % alias: rmargin outer
+   %top=,         % top margin of the page.
+                  % Alias : tmargin
+   %bottom=,      % bottom margin of the page
+                  % Alias : bmargin
+   %hmargin=,     % left and right margin. hmargin={ left margin , right margin }
+   %vmargin=,     % top and bottom margin. vmargin={ top margin , bottom margin }
+   %margin=,      % margin={A,B} is equivalent to hmargin={A,B} and vmargin={A,B}
+   %hmarginratio, % horizontal margin ratio of left (inner) to right (outer).
+   %vmarginratio, % vertical margin ratio of top to bottom.
+   %marginratio,  % marginratio={ horizontal ratio , vertical ratio }
+   %hcentering,   % sets auto-centering horizontally and is equivalent to hmarginratio=1:1
+   %vcentering,   % sets auto-centering vertically and is equivalent to vmarginratio=1:1
+   centering,    % sets auto-centering and is equivalent to marginratio=1:1
+   twoside,       % switches on twoside mode with left and right margins swapped on verso pages.
+   %asymmetric,   % implements a twosided layout in which margins are not swapped on alternate pages
+                  % and in which the marginal notes stay always on the same side.
+   bindingoffset=5mm,  % removes a specified space for binding
+%%% Dimensionen
+   %headheight=,  % Alias:  head
+   %headsep=,     % separation between header and text
+   %footskip=,    % distance separation between baseline of last line of text and baseline of footer
+                  % Alias: foot
+   %nohead,       % eliminates spaces for the head of the page
+                  % equivalent to both \headheight=0pt and \headsep=0pt.
+   %nofoot,       % eliminates spaces for the foot of the page
+                  % equivalent to \footskip=0pt.
+   %noheadfoot,   % equivalent to nohead and nofoot.
+   %footnotesep=, % changes the dimension \skip\footins,.
+                  % separation between the bottom of text body and the top of footnote text
+   marginparwidth=0pt, % width of the marginal notes
+                  % Alias: marginpar
+   %marginparsep=,% separation between body and marginal notes.
+   %nomarginpar,  % shrinks spaces for marginal notes to 0pt
+   %columnsep=,   % the separation between two columns in twocolumn mode.
+   %hoffset=,
+   %voffset=,
+   %offset=,      % horizontal and vertical offset.
+                  % offset={ hoffset , voffset }
+   %twocolumn,    % twocolumn=false denotes onecolumn
+   %twoside,
+   textwidth=400pt,   % sets \textwidth directly
+   %textheight=600pt,  % sets \textheight directly
+   %reversemp,    % makes the marginal notes appear in the left (inner) margin
+                  % Alias: reversemarginpar
+} % Endif
+
+\fi
+
+
+\raggedbottom     % Variable Seitenhoehen zulassen
+
+
+
+%% Schriften (Sections )==================================================
+
+\IfElsePackageLoaded{fourier}{
+   \newcommand\SectionFontStyle{\rmfamily}
+}{
+   \newcommand\SectionFontStyle{\sffamily}
+}
+
+% -- Koma Schriften --
+\IfChapterDefined{%
+   \setkomafont{chapter}{\huge\SectionFontStyle}    % Chapter
+}
+\setkomafont{descriptionlabel}{\SectionFontStyle}
+\setkomafont{sectioning}{\SectionFontStyle} %  % Titelzeilen % \bfseries
+\setkomafont{pagenumber}{\bfseries\SectionFontStyle}             % Seitenzahl
+\setkomafont{pageheadfoot}{\small\sffamily}        % Kopfzeile \setkomafont{pagehead}{\small\sffamily}
+%\setkomafont{pagefoot}{\small\sffamily}        % Kopfzeile
+%\setkomafont{descriptionlabel}{\itshape}        % Kopfzeile
+%
+
+\renewcommand*{\raggedsection}{\raggedright} % Titelzeile linksbuendig, haengend
+%
+%% UeberSchriften (Chapter und Sections) =================================
+% -- Ueberschriften komlett Umdefinieren --
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/titlesec/titlesec.pdf
+
+%\usepackage{titlesec} 
+
+%\titleformat{\chapter}[block]
+%{\vspace{-5pc}\usekomafont{chapter}\Large \color{black}}
+%{\Huge \textsubscript{\thechapter} \filright }
+%{1px}
+%{\titlerule\vspace{.5pc}\\ \LARGE  }   % {before}[after] (before chaptertitle and after)
+%  [\color{black} \vspace{0.6pc} \filright {\titlerule}]
+
+
+%% Captions (Schrift, Aussehen) ==========================================
+
+% % Folgende Befehle werden durch das Paket caption und subfig ersetzt !
+% \setcapindent{1em} % Einrueckung der Beschriftung
+% \setkomafont{caption}{\color{black}\small\sffamily\RaggedRight}  % Schrift für Caption
+% \setkomafont{captionlabel}{\color{black}\small}   % Schrift für 'Abbildung' usw.
+
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/caption/caption.pdf
+\usepackage{caption}
+% Aussehen der Captions
+\captionsetup{
+   margin = 10pt,
+   font = {small,rm},
+   labelfont = {small,bf},
+   format = plain, % oder 'hang'
+   indention = 0em,  % Einruecken der Beschriftung
+   labelsep = colon, %period, space, quad, newline
+   justification = RaggedRight, % justified, centering
+   singlelinecheck = true, % false (true=bei einer Zeile immer zentrieren)
+   position = bottom %top
+}
+%%% Bugfix Workaround
+\DeclareCaptionOption{parskip}[]{}
+\DeclareCaptionOption{parindent}[]{}
+
+% Aussehen der Captions für subfigures (subfig-Paket)
+\IfPackageLoaded{subfig}{
+ \captionsetup[subfloat]{%
+   margin = 10pt,
+   font = {small,rm},
+   labelfont = {small,bf},
+   format = plain, % oder 'hang'
+   indention = 0em,  % Einruecken der Beschriftung
+   labelsep = space, %period, space, quad, newline
+   justification = RaggedRight, % justified, centering
+   singlelinecheck = true, % false (true=bei einer Zeile immer zentrieren)
+   position = bottom, %top
+   labelformat = parens % simple, empty % Wie die Bezeichnung gesetzt wird
+ }
+}
+
+\usepackage{rotating}
+
+
+% Malte
+\newcommand{\bv}{behavioral variations\xspace}
+\newcommand{\Bv}{Behavioral variations\xspace}
+\newcommand{\BV}{Behavioral Variations\xspace}
+
+\newcommand{\forsubject}{\code{subject}\xspace}
+\newcommand{\context}{\code{context}\xspace}
+\newcommand{\LPAREN}{\code{\textbf{(}}}
+\newcommand{\RPAREN}{\code{\textbf{)}}}
+\newcommand{\LBRACE}{\code{\textbf{\{}}}
+\newcommand{\RBRACE}{\code{\textbf{\}}}}
+\newcommand{\LBRACKET}{\code{\textbf{[}}}
+\newcommand{\RBRACKET}{\code{\textbf{]}}}
+%\newcommand{\ind}{\hspace*{1.5em}}
+\newcommand{\nl}{\newline}
+\newcommand{\OR}{~\textbar}
+\newcommand{\LBr}{ \texttt{(} }
+\newcommand{\RBr}{\texttt{)}}
+\newcommand{\LB}{\texttt{\{~}}
+\newcommand{\RB}{\texttt{\}}}
+%\newcommand{\OR}{\textbar~}
+\newcommand{\SEMICOLON}{\texttt{;}}
+
+\newcommand{\supervisor}[2] { %
+ %\begin{tabular}{l l}
+ \par{%
+   \begin{minipage}[t]{3cm}
+     \large #1 :
+   \end{minipage}\begin{minipage}[t]{10cm}
+     \large #2 
+   \end{minipage}
+ }
+ }
+
+
+
