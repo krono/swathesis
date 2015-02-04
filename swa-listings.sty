@@ -8,25 +8,74 @@
 
 \RequirePackage{textcomp}
 
-\lstset{%
-  basicstyle=\ttfamily,
-  keywordstyle=\bfseries,
-%  stringstyle=\sffamily,
-  commentstyle=\slshape,
-  captionpos=b,
-  showstringspaces=false,
-  tabsize=2,
-  resetmargins=true,
-  frame=lines,
-  upquote=true,
-  floatplacement=hbtp,
-  % columns=[c]fixed,
-  columns=fullflexible,
-  % basewidth={0.57em,0.45em},
-  % aboveskip=\bigskipamount,
-  lineskip=-.5ex,
-  %linewidth=\linewidth,
-  escapechar=\`,
+% ZEBRA
+\makeatletter
+\newcommand{\zebra}{
+    \begingroup
+    \ifodd\value{lstnumber}
+        \color{Gray!5}
+    \else
+        \color{White}
+    \fi
+    \rlap{
+     \hspace*{-5pt}
+        \color@block{\linewidth}{\ht\strutbox}{\dp\strutbox}
+    }
+    \endgroup
+}
+\makeatother
+
+\newcommand{\sdvspace}{
+    \stepcounter{seqlevel}
+}
+
+\lstset{
+    language=Newspeak,
+    % BASIC STYLE
+    aboveskip=25pt,
+    basicstyle=\ttfamily,
+    lineskip=-.5ex,
+    escapechar=\`,
+    % KEYWORDS
+    keywordstyle=\bfseries,
+    % morekeywords=[2]{
+    %   with
+    % },
+    % keywordstyle={[3]\color{Emerald}\textit},
+    % keywords=[3]{
+    %   True, False
+    % },
+    % keywordstyle={[4]\color{Red}},
+    % keywords=[4]{
+    %   @contextmanager
+    % },
+    % STRING
+    stringstyle=\color{Green},
+    showstringspaces=false,
+    upquote=true,
+    % COMMENT
+    commentstyle=\color{RoyalBlue}\slshape,
+    % LINES
+    xleftmargin=15pt,
+    xrightmargin=-15pt,
+    numbers=left,
+    stepnumber=1,
+    numberstyle=\zebra\tiny\color{black!60},
+    tabsize=2,
+    % CAPTION
+    captionpos=b,
+    % FRAME
+    frame=lines,
+    framexleftmargin=15.5pt,
+    framexrightmargin=-15.5pt,
+    framextopmargin=3pt,
+    framexbottommargin=3pt,
+    framesep=0pt,
+    resetmargins=true,
+    % POSITION
+    columns=fullflexible,
+    float=htpb,
+    floatplacement=hbtp
 }
 
 \providecaptionname{english}{\lstlistlistingname}{List of Listings}
@@ -36,8 +85,6 @@
 % \renewcaptionname{german}{\lstlistlistingname}{Listingverzeichnis}
 % \renewcaptionname{ngerman}{\lstlistlistingname}{Listingverzeichnis}
 
-\providecommand{\listingnumberfont}{{}}
-\lstset{numberstyle=\listingnumberfont}
 
 \newcommand{\swaListingInlineMode}{
   \lstset{%
