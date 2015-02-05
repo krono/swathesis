@@ -142,9 +142,9 @@ __readdir() {
   printf "$1 [$PWD] "
     read ANS
     if test "x$ANS" = "x"; then
-      SWTHDIR=$PWD
+      SWTHDIR="$PWD"
     else
-      SWTHDIR=$ANS
+      SWTHDIR="$ANS"
     fi
 }
 
@@ -234,7 +234,7 @@ _create() {
     read $ANS
     case "x$ANS" in
       x[Nn][Oo]?) ;;
-      *) $MKDIR $SWTHDIR ;;
+      *) $MKDIR "$SWTHDIR" ;;
     esac
   fi
   if test "x$MODE" != "xbachelor" ; then
@@ -248,7 +248,7 @@ _init() {
   __readmode "What thesis do you have?"
   __readmain
   if test "x$SWTHFILE" = "x"; then
-    SWTHFILE=$SWTHDIR/.swth
+    SWTHFILE="$SWTHDIR/.swth"
   fi
   if test "x$DRY" != "xtrue"; then
     : > $SWTHFILE
@@ -256,7 +256,7 @@ _init() {
     printf "MODE=$MODE\n"         >> $SWTHFILE
     printf "LATEX=$LATEX\n"       >> $SWTHFILE
     printf "BIBTEX=$BIBTEX\n"     >> $SWTHFILE
-    printf "MAIN=$MAIN\n"         >> $SWTHFILE
+    printf "MAIN=\"$MAIN\"\n"     >> $SWTHFILE
   fi
 }
 
@@ -277,7 +277,7 @@ _bibtex() {
       popd 2>/dev/null >/dev/null;
     done
   elif test "x$MAIN" != "x"; then
-    $BIBTEX $MAIN "$@"
+    $BIBTEX "$MAIN" "$@"
   else
     $ECHO "$PROGRAM: Not working on a main file, forgot \`$PROGRAM init'?"
     $BIBTEX "$@"
@@ -286,7 +286,7 @@ _bibtex() {
 
 _latex() {
   if test "x$MAIN" != "x"; then
-    $LATEX "$@" $MAIN
+    $LATEX "$@" "$MAIN"
   else
     $ECHO "$PROGRAM: Not working on a main file, forgot \`$PROGRAM init'?"
     $LATEX "$@"
@@ -295,7 +295,7 @@ _latex() {
 
 _show() {
   if test "x$MAIN" != "x"; then
-    $OPEN $PDFOUT
+    $OPEN "$PDFOUT"
   else
     $ECHO "No main file. Forgot \`$PROGRAM init'?"
     exit 3
