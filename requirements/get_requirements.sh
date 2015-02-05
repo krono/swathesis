@@ -248,6 +248,12 @@ if _need_package "ebgaramond" "2013/05/22"; then
   $ECHO ">> installed current ebgaramond"
 fi
 
+if _need_package "lstlinebgrd" "2012/05/03"; then
+  TDS=`_get_tds "lstaddons" ""`
+  _deploy_tds $TDS
+  $ECHO ">> installed current lstlinebgrd"
+fi
+
 if _need_package "babel" "2012/05/16"; then
   $ECHO ">> please update babel"
   exit 1

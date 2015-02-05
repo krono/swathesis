@@ -58,6 +58,8 @@
 \DeclareOption{lmodern}{\renewcommand*\@swa@font{lmodern}}
 \DeclareOption{print}{\renewcommand*\printmode{true}}
 
+\DeclareOption{zebralistings}{\PassOptionsToPackage{zebra}{swa-listings}}
+
 \DeclareOption*{\gappto\swa@miscoptions{\CurrentOption,}}
 
 

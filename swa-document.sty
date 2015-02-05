@@ -6,8 +6,7 @@
 \RequirePackage{ifpdf}
 \RequirePackage{url}
 
-\RequirePackage{color}
-\RequirePackage[table,svgnames]{xcolor}
+\RequirePackage[table,fixpdftex,dvipsnames,svgnames]{xcolor}
 
 
 
@@ -81,12 +80,12 @@
 \renewcommand{\tmark}[1][a]{%
   \rlap{\hbox{\@textsuperscript{\rmfamily\itshape #1}}}}
 
-\definecolor{swatableshadecolor}{rgb}{0.93,0.93,0.93}
+\definecolor{swashadecolor}{gray}{0.93}
 \providecommand*\tablefontcommand{}
 \providecommand*\tableinsidecommand[1][2]{%
   \def\y{\ding{52}\relax\xspace}\relax%
   \def\n{\ding{56}\relax\xspace}\relax%
-  \smaller\rowcolors*{#1}{swatableshadecolor}{white}\tablefontcommand%
+  \smaller\rowcolors*{#1}{swashadecolor}{white}\tablefontcommand%
 }
 \setupctable{pos=htbp,doinside=\tableinsidecommand,table,notespar}
 
