@@ -142,7 +142,7 @@ while test $# -gt 0; do
     x--no-req)      REQUIREMENTS=0                             ;;
     x--no-bin)      NOBIN=1                                    ;;
     x--update)      UPDATE=1                                   ;;
-    x--no-logo)     NOLOGO=1                                   ;;
+    x--no-logos)    NOLOGO=1                                   ;;
     x--logo=*)      LOGO="$($ECHON $1 | sed -e 's%--logo=%%')" ;;
     *)
       $ECHO "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
