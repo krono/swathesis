@@ -4,13 +4,18 @@
 \RequirePackage{textcase}
 \RequirePackage{relsize}
 
-\RequirePackage[final,babel=true]{microtype}[2011/08/18]
+\ifthenelse{\boolean{luatex}}{%
+  \RequirePackage[final]{microtype}[2013/05/23]
+}{
+  \RequirePackage[final,babel=true]{microtype}[2013/05/23]
+}
+
 %
 % engine-dependent, eg, encoding, loading.
 %
 \ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
   \RequirePackage{fontspec}
-  \newfontfeature{Microtype}{protrusion=default;expansion=default;}
+  % \newfontfeature{Microtype}{protrusion=default;expansion=default;}
 }{
   \RequirePackage{fontaxes}
   \RequirePackage[T1]{fontenc}
@@ -30,7 +35,9 @@
     {{\addfontfeature{LetterSpace=\the\numexpr#1/10\relax}#2}}}
 }{}
 
-\ifthenelse{\boolean{xetex} \or \boolean{luatex}}{}{%
+\ifthenelse{\boolean{xetex}\OR\boolean{luatex}}{
+  \microtypesetup{stretch=9,shrink=15,step=3}
+}{
   \microtypesetup{stretch=9,shrink=15,step=3,tracking=smallcaps,letterspace=75}
 }
 
