@@ -4,8 +4,31 @@
 \RequirePackage{swa-platform}
 \RequirePackage{swa-language}
 
+\ifcsstring{swa@degree}{phd}{
+  \newcommand*\swa@statementname{Erklärung}
+  \xdef\statementcontent{%
+    Hiermit erkläre ich an Eides statt, dass ich die vorliegende Dissertation
+    selbst angefertigt und nur die im Literaturverzeichnis aufgeführten Quellen
+    und Hilfsmittel verwendet habe.
+
+    Diese Dissertation oder Teile davon wurden nicht als Prüfungsarbeit für
+    eine staatliche oder andere wissenschaftliche Prüfung eingereicht.
+
+    Ich versichere weiterhin, dass ich diese Arbeit oder eine andere Abhandlung
+    nicht bei einer anderen Fakultät oder einer anderen Universität eingereicht
+    habe
+  }
+}{
+  \newcommand*\swa@statementname{Eigenständigkeitserklärung}
+  \xdef\statementcontent{%
+      Hiermit versichere ich, dass ich die vorliegende Arbeit selbständig
+      verfasst sowie keine anderen Quellen und Hilfsmittel als die angegebenen
+      benutzt habe.
+  }
+}
+
 \providecommand*\swa@author{}
-\newenvironment*{statement}[1][Eigenständigkeitserklärung]{
+\newenvironment*{statement}[1][\swa@statementname]{
   \cleardoubleemptypage
   \ifthenelse{\boolean{xetex}}{
     \begin{german}
@@ -43,14 +66,8 @@
   }
 }
 
-\edef\statementcontent{%
-    Hiermit versichere ich, dass ich die vorliegende Arbeit selbständig
-    verfasst sowie keine anderen Quellen und Hilfsmittel als die angegebenen
-    benutzt habe.
-}
-
 \newcommand*{\statementby}{
-  \begin{statement}[Eigenständigkeitserklärung von \@author]
+  \begin{statement}[\swa@statementname\ von \@author]
     \statementcontent
   \end{statement}
 }
