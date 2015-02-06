@@ -63,7 +63,7 @@
 \DeclareOption*{\gappto\swa@miscoptions{\CurrentOption,}}
 
 
-\ExecuteOptions{master,en,lmodern}
+\ExecuteOptions{master,en,palatino}
 \ProcessOptions\relax
 
 
