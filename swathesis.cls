@@ -104,7 +104,15 @@
   \RequirePackage{swa-bibliography}
 }
 
-\RequirePackage{swa-acronyms}
+\ifthenelse{\equal{\swa@degree}{phd}}{
+  \PassOptionsToPackage{shortcuts,nopostdot,nonumberlist,acronym,xindy}{glossaries}
+  \RequirePackage{glossaries}
+  \setacronymstyle{long-sc-short}
+  \AtEndPreamble{\makeglossaries}
+  \AtEndDocument{\glsaddallunused}
+}{
+  \RequirePackage{swa-acronyms}
+}
 \RequirePackage{swa-statement}
 
 
@@ -116,10 +124,12 @@
 %\recalctypearea
 \raggedbottom
 
-\InputIfFileExists {\jobname-names.tex}{
-  \ClassInfo{swathesis}{Using names-file `\jobname-names.tex'}
-}{
-  \ClassInfo{swathesis}{Not using a names-file.}
+\AtEndOfClass{
+  \InputIfFileExists {\jobname-names.tex}{
+    \ClassInfo{swathesis}{Using names-file `\jobname-names.tex'}
+  }{
+    \ClassInfo{swathesis}{Not using a names-file.}
+  }
 }
 
 %%% Local Variables: 

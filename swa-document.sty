@@ -76,10 +76,11 @@
 \RequirePackage{pifont}
 % Table stuff
 \RequirePackage{longtable}
-\RequirePackage{ctable}
-% ctable is dumb sometimes
-\renewcommand{\tmark}[1][a]{%
-  \rlap{\hbox{\@textsuperscript{\rmfamily\itshape #1}}}}
+\RequirePackage{threeparttable}
+% \RequirePackage{ctable}
+% % ctable is dumb sometimes
+% \renewcommand{\tmark}[1][a]{%
+%   \rlap{\hbox{\@textsuperscript{\rmfamily\itshape #1}}}}
 
 \definecolor{swashadecolor}{gray}{0.93}
 \providecommand*\tablefontcommand{}
@@ -88,7 +89,7 @@
   \def\n{\ding{56}\relax\xspace}\relax%
   \smaller\rowcolors*{#1}{swashadecolor}{white}\tablefontcommand%
 }
-\setupctable{pos=htbp,doinside=\tableinsidecommand,table,notespar}
+% \setupctable{pos=htbp,doinside=\tableinsidecommand,table,notespar}
 
 \AtEndPreamble{
   \ifthenelse{\equal{\printmode}{true}}{

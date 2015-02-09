@@ -66,6 +66,8 @@
   \end{titlepage}
 }
 
+\def\@phd@{phd}
+
 \providecommand*{\@othertitle}{}
 \providecommand{\othertitle}[1]{\gdef\@othertitle{#1}}
 \DefineFamilyKey[HPISWA]{title}{othertitle}{\othertitle{#1}}
@@ -108,41 +110,31 @@
   A thesis submitted to the \\%
   \@faculty{}\\%
   in partial fulfillment of the requirements for the degree of \\[.5\baselineskip]
-  {\scshape \@degree{} in  \@discipline\\}%
+  \if
+{\scshape \@degree{} in  \@discipline\\}%
 }
 
 
 \NowButAfterBeginDocument{%
-  \providecaptionname{english}{\@faculty}{%
-      Hasso-Plattner-Institute%
-      \\ at the University of Potsdam, Germany%
-    }
+  % \providecaptionname{english}{\@faculty}{%
+  %     Hasso-Plattner-Institute%
+  %     \\ at the University of Potsdam, Germany%
+  %   }
   \providecaptionname{english}{\@university}{%
           Software Architecture Group\\
           Hasso-Plattner-Institute\\%
           University of Potsdam, Germany%
     }
 
-  \providecaptionname{german}{\@faculty}{%
-      Hasso-Plattner-Institut für Softwaresystemtechnik%
-      \\ an der Universität Potsdam%
-    }
-  \providecaptionname{german}{\@university}{%
+  % \providecaptionname{german,ngerman}{\@faculty}{%
+  %     Hasso-Plattner-Institut für Softwaresystemtechnik%
+  %     \\ an der Universität Potsdam%
+  %   }
+  \providecaptionname{german,ngerman}{\@university}{%
           Fachgebiet Software-Architekturen\\
           Hasso-Plattner-Institut\\%
           Universität Potsdam%
     }
-  \providecaptionname{ngerman}{\@faculty}{%
-      Hasso-Plattner-Institut für Softwaresystemtechnik%
-      \\ an der Universität Potsdam%
-    }
-  \providecaptionname{ngerman}{\@university}{%
-          Fachgebiet Software-Architekturen\\
-          Hasso-Plattner-Institut\\%
-          Universität Potsdam%
-    }
-
-
   \providecaptionname{english}{\supervisorname}{Supervisor}%
   \providecaptionname{english}{\supervisorsname}{Supervisors}%
 
@@ -150,24 +142,24 @@
     A thesis submitted to the \\%
     \@faculty{}\\%
     in partial fulfillment of the requirements for the degree of \\[.5\baselineskip]
-    {\scshape \@degree{} in \@discipline\\
-    }%
+    \ifx\@discipline\@phd@\relax
+    {\scshape \@degree{} \\    }%
+    \else
+    {\scshape \@degree{} in \@discipline\\    }%
+    \fi
   }
-  \providecaptionname{german}{\supervisorname}{Betreuer}%
-  \providecaptionname{german}{\supervisorsname}{\supervisorname}%
-  \providecaptionname{german}{\presentationinformationHPISWA}{%
-    \@whom\space\@faculty{}\\
+  \providecaptionname{german,ngerman}{\supervisorname}{Betreuer}%
+  \providecaptionname{german,ngerman}{\supervisorsname}{\supervisorname}%
+  \providecaptionname{german,ngerman}{\presentationinformationHPISWA}{%
+    \@subject{}\\
     zur Erlangung des akademischen Grades des\\[.5\baselineskip]
-    {\scshape \@degree{} in \@discipline}\\[.5\baselineskip]
-    vorgelegte \@subject{}.
-  }
-  \providecaptionname{ngerman}{\supervisorname}{Betreuer}%
-  \providecaptionname{ngerman}{\supervisorsname}{\supervisorname}%
-  \providecaptionname{ngerman}{\presentationinformationHPISWA}{%
-    \@whom\space\@faculty{}\\
-    zur Erlangung des akademischen Grades des\\[.5\baselineskip]
-    {\scshape \@degree{} in \@discipline}\\[.5\baselineskip]
-    vorgelegte \@subject{}.
+    \ifx\@discipline\@phd@\relax
+      {\scshape \@degree{}}%
+    \else
+      {\scshape \@degree{} in \@discipline}%
+    \fi\\[\baselineskip]
+    vorgelegt \\
+    \@whom\space\@faculty{}.
   }%
 }
 \renewcommand*{\inittitle}{%
@@ -194,15 +186,14 @@
     }%
   \fi
   \ifx\@whom\@empty
-  \whom{Dem}
+  \whom{dem}
   \fi
   \ifx\@discipline\@empty
     \discipline{%
       IT-Systems~Engineering%
     }%
   \fi
-
-
+  %
   \ifx\@universitylogo\@empty
   % see http://www.intern.uni-potsdam.de/u/zavz/logos.htm
   \universitylogo{Unilogo}
@@ -210,19 +201,19 @@
   \ifx\@facultylogo\@empty
   \facultylogo{hpi_logo_v2_cmyk_sl2}
   \fi
- 
+ %
   \ifx\@titlehead\@empty
     \global\newif\if@logo@university
     \@logo@universityfalse
     \global\newif\if@logo@faculty
     \@logo@facultyfalse
-
+    %
     \expandafter\IfFileExists{\@universitylogo.ai}{\global\@logo@universitytrue}{}
     \expandafter\IfFileExists{\@universitylogo.pdf}{\global\@logo@universitytrue}{}
     \expandafter\IfFileExists{\@universitylogo.eps}{\global\@logo@universitytrue}{}
     \expandafter\IfFileExists{\@facultylogo.pdf}{\global\@logo@facultytrue}{}
     \expandafter\IfFileExists{\@facultylogo.eps}{\global\@logo@facultytrue}{}
-    
+    %
     \scr@ifundefinedorrelax{includegraphics}{%
       \if@atdocument\else
         \RequirePackage{graphics}
@@ -249,6 +240,36 @@
 }
 \renewcommand*{\makemaintitle}{%
   \begin{titlepage}
+    \ifcsundef{if@titlepageiscoverpage}{\global\let\if@titlepageiscoverpage\iffalse}
+    \if@titlepageiscoverpage
+      \edef\titlepage@restore{%
+        \noexpand\endgroup
+        \noexpand\global\noexpand\@colht\the\@colht
+        \noexpand\global\noexpand\@colroom\the\@colroom
+        \noexpand\global\vsize\the\vsize
+        \noexpand\global\noexpand\@titlepageiscoverpagefalse
+        \noexpand\let\noexpand\titlepage@restore\noexpand\relax
+      }%
+      \begingroup
+      \topmargin=\dimexpr \coverpagetopmargin-1in\relax
+      \oddsidemargin=\dimexpr \coverpageleftmargin-1in\relax
+      \evensidemargin=\dimexpr \coverpageleftmargin-1in\relax
+      \textwidth=\dimexpr
+      \paperwidth-\coverpageleftmargin-\coverpagerightmargin\relax
+      \textheight=\dimexpr
+      \paperheight-\coverpagetopmargin-\coverpagebottommargin\relax
+      \headheight=0pt
+      \headsep=0pt
+      \footskip=\baselineskip
+      \@colht=\textheight
+      \@colroom=\textheight
+      \vsize=\textheight
+      \columnwidth=\textwidth
+      \hsize=\columnwidth
+      \linewidth=\hsize
+    \else
+      \let\titlepage@restore\relax
+    \fi
     \setlength{\parskip}{\z@}%
     \setlength{\parindent}{\z@}%
     \setlength{\parfillskip}{\z@\@plus 1fil}%
@@ -283,7 +304,11 @@
       \presentationinformationHPISWA\par
       \vfill
       \ifx\@empty\@supervisors
-        \supervisorname{} \\[.5\baselineskip]{\@supervisor}
+        \ifx\@empty\@supervisor
+          \advisorname{} \\[.5\baselineskip]{\@advisor}
+        \else
+          \supervisorname{} \\[.5\baselineskip]{\@supervisor}
+         \fi
       \else
         \supervisorsname{} \\[.5\baselineskip]{\let\and\\\relax \@supervisors}
       \fi
@@ -291,6 +316,8 @@
       {\@university\par}
       \vspace*{2\baselineskip}
       {\@date\par}
+      \clearpage
+      \csname titlepage@restore\endcsname
   \end{titlepage}
 }
 \endinput

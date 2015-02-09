@@ -19,7 +19,7 @@ Create or manage swathesis documents.
 OPTIONS
   --bachelor operate in BSc mode
   --master   operate in MSc mode
-  --phd      operate in PHd mode
+  --phd      operate in PhD mode
 
   --xe       use XeLaTeX
   --pdf      use PDFLaTeX (default)
@@ -37,6 +37,7 @@ COMMAND
 
   bibtex     run bibtex [especially for BSc mode]
   latex      run latex (honors OPTIONS and management file)
+  gloss      run makeglossaries [especially for PhD mode]
   show       open result document
   clean      clean auxiliary files
   go         short for latex; bibtex; latex; latex; latex; show
@@ -53,6 +54,7 @@ MAIN=
 
 BIBTEX=bibtex
 LATEX=pdflatex
+MKGLOSS=makeglossaries
 RM=rm
 MKDIR="mkdir -p"
 CP=cp
@@ -293,6 +295,15 @@ _latex() {
   fi
 }
 
+_gloss() {
+  if test "x$MAIN" != "x"; then
+    $MKGLOSS "$@" "$MAIN"
+  else
+    $ECHO "$PROGRAM: Not working on a main file, forgot \`$PROGRAM init'?"
+    $MKGLOSS "$@"
+  fi
+}
+
 _show() {
   if test "x$MAIN" != "x"; then
     $OPEN "$PDFOUT"
@@ -303,7 +314,9 @@ _show() {
 }
 
 _go() {
-  _latex && _bibtex && _latex && _latex && _latex && _show
+  _latex && \
+   [ "$MODE" = "phd" ] && _gloss || true && \
+   _bibtex && _latex && _latex && _latex && _show
 }
 
 _author() {

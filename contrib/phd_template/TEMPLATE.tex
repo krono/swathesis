@@ -1,247 +1,67 @@
-\documentclass[%
-   %draft,     % Entwurfsstadium
-   final,      % fertiges Dokument
-%%%% --- Schriftgröße ---
-   fontsize=12pt,
-   %smallheadings,    % kleine Überschriften
-   %normalheadings,   % normale Überschriften
-   %bigheadings,       % große Überschriften
-%%%% --- Sprache ---
-%   ngerman,           % wird an andere Pakete weitergereicht
-%%%% === Seitengröße ===
-   % letterpaper,
-   % legalpaper,
-   % executivepaper,
-   paper=a4,
-   % a5paper,
-   % landscap,
-%%%% === Optionen für den Satzspiegel ===
-   BCOR=5mm,          % Zusaetzlicher Rand auf der Innenseite
-   %DIV11,            % Seitengroesse (siehe Koma Skript Dokumentation !)
-   DIV=calc,         % automatische Berechnung einer guten Zeilenlaenge
-   1.1headlines,     % Zeilenanzahl der Kopfzeilen
-   %headinclude,     % Kopf einbeziehen
-   %headexclude,      % Kopf nicht einbeziehen
-   %footinclude,     % Fuss einbeziehen
-   %footexclude,      % Fuss nicht einbeziehen
-   %mpinclude,       % Margin einbeziehen
-   %mpexclude,        % Margin nicht einbeziehen
-   pagesize,         % Schreibt die Papiergroesse in die Datei.
-                     % Wichtig für Konvertierungen
-%%%% === Layout ===
-   %oneside,         % einseitiges Layout
-   twoside,          % Seitenraender für zweiseitiges Layout
-   onecolumn,        % Einspaltig
-   %twocolumn,       % Zweispaltig
-   %openany,         % Kapitel beginnen auf jeder Seite
-   open=right,        % Kapitel beginnen immer auf der rechten Seite
-                     % (macht nur bei 'twoside' Sinn)
-   %cleardoubleplain,    % leere, linke Seite mit Seitenstil 'plain'
-   %cleardoubleempty,    % leere, linke Seite mit Seitenstil 'empty'
-   titlepage,        % Titel als einzelne Seite ('titlepage' Umgebung)
-   %notitlepage,     % Titel in Seite integriert
-%%%% --- Absatzeinzug ---
-   %                 % Absatzabstand: Einzeilig,
-   %parskip,         % Freiraum in letzter Zeile: 1em
-   %parskip*,        % Freiraum in letzter Zeile: Viertel einer Zeile
-   %parskip+,        % Freiraum in letzter Zeile: Drittel einer Zeile
-   %parskip-,        % Freiraum in letzter Zeile: keine Vorkehrungen
-   %                 % Absatzabstand: Halbzeilig
-   %halfparskip,     % Freiraum in letzter Zeile: 1em
-   %halfparskip*,    % Freiraum in letzter Zeile: Viertel einer Zeile
-   %halfparskip+,    % Freiraum in letzter Zeile: Drittel einer Zeile
-   %halfparskip,     % Freiraum in letzter Zeile: keine Vorkehrungen
-   %                 % Absatzabstand: keiner
-   %parindent,        % Eingerückt (Standard)
-%%%% --- Kolumnentitel ---
-   headsepline,      % Linie unter Kolumnentitel
-   %headnosepline,   % keine Linie unter Kolumnentitel
-   %footsepline,     % Linie unter Fussnote
-   %footnosepline,   % keine Linie unter Fussnote
-%%%% --- Kapitel ---
-   %chapterprefix,   % Ausgabe von 'Kapitel:'
-   %nochapterprefix,  % keine Ausgabe von 'Kapitel:'
-%%%% === Verzeichnisse (TOC, LOF, LOT, BIB) ===
-   %liststotoc,      % Tabellen & Abbildungsverzeichnis ins TOC
-   %idxtotoc,        % Index ins TOC
-   %bibtotoc,         % Bibliographie ins TOC
-   %bibtotocnumbered, % Bibliographie im TOC nummeriert
-   %liststotocnumbered, % Alle Verzeichnisse im TOC nummeriert
-   %tocindent,        % eingereuckte Gliederung
-   %tocleft,         % Tabellenartige TOC
-   %listsindent,      % eingereuckte LOT, LOF
-   %listsleft,       % Tabellenartige LOT, LOF
-   %pointednumbers,  % Überschriftnummerierung mit Punkt, siehe DUDEN !
-   numbers=noenddot, % Überschriftnummerierung ohne Punkt, siehe DUDEN !
-   %openbib,         % alternative Formatierung des Literaturverzeichnisses
-%%%% === Matheformeln ===
-   %leqno,           % Formelnummern links
-   fleqn,            % Formeln werden linksbuendig angezeigt
-]{scrbook}%     Klassen: scrartcl, scrreprt, scrbook
-
-\makeatletter
-\@ifpackagelater{scrbase}{2013/12/19}{%
-  \KOMAoption{titlepage}{firstiscover}
-}{
-  \KOMAoption{titlepage}{yes}
-}
-\renewcommand*\toc@heading{%
- \chapter*{\contentsname}%
- \@mkboth{\MakeMarkcase{\contentsname}}{\MakeMarkcase{\contentsname}}%
-}
-\renewcommand*{\scr@float@listhead@warning}{%
-}
-\renewcommand*{\scr@float@addtolists@warning}{%
-  \global\let\scr@float@addtolists@warning\relax
-}
-\makeatother
-\listfiles
-\usepackage{datenumber}
-\usepackage[utf8x]{inputenc}
-\usepackage{graphicx}
-
-
-\def\svnId{$$Id:$$}
-\makeindex
-
-\input{preambel/preambel}
-\input{preambel/auxiliary}
-
-% \usepackage{todonotes}
-
-\usepackage{makeidx} 
-%\usepackage{glossaries}
-%\usepackage{marginnote}
-\usepackage{mparhack}
-\usepackage[framed]{ntheorem}
-\theoremstyle{plain}
-
-\definecolor{gray}{rgb}{0.6,0.6,0.6}
-\renewcommand*\FrameCommand{{\color{gray}\vrule width 5pt \hspace{10pt}}}
-\newframedtheorem{definition}{Definition}
-\usepackage{bibentry}
-
-%\iftrue
-\iffalse % #TODO
-\usepackage{eso-pic}
-\usepackage{xcolor}
-\newsavebox{\draftPageLine}
-  % \newsavebox{\draftWatermark}
-  \AddToShipoutPicture{%
-  %  \AtPageLowerLeft{\usebox{\draftWatermark}}
-    \AtPageUpperLeft{%
-      \raisebox{-\height}[\height][0pt]{\usebox{\draftPageLine}}}%
-    \AtPageLowerLeft{%
-      \raisebox{\depth}[\height][0pt]{\usebox{\draftPageLine}}}%
-  }
-
-  \def\draftFont{\rmfamily\bfseries}
-  \AtBeginDocument{
-    \def\draftInfo{%
-      {\draftFont
-      Draft Draft Draft%
-      \hspace*{3cm}\today\hspace*{3cm}%
-      Draft Draft Draft%
-      }}
-      % Draft revision\gitVtags: \gitAbbrevHash{} %
-      % (\gitCommitterIsoDate) \gitCommitterName}
-    % \sbox{\draftWatermark}{%
-    %   \includegraphics[width=\paperwidth]{img/draft}}
-    \sbox{\draftPageLine}{%
-      \colorbox{black!10}{%
-        % enlarge box vertically by 2/3 lines
-        \raisebox{0pt}%
-        [\dimexpr .33\baselineskip + \height]%
-        [\dimexpr .33\baselineskip + \depth]{%
-          \makebox[\paperwidth]{\color{black!50}\draftInfo}}}}
-  }
-\fi
-
+% Options.
 %
-%\marginparsepmm
-% \newcommand{\note}[1]{}%{\marginpar{\footnotesize{\textit{#1}}}}
+% Language
+%  en  -  english (default)
+%  de  -  german
+%
+% Modes
+%  draft     - drafting mode, esp for todos
+%  fulldraft - drafting mode, also for listings/graphics, faster
+%  final     - final mode
+%
+% Fonts
+%  lmodern   - Latin Modern, like TeX default
+%  palatino  - Heavier, slightly more readable (default)
+%  garamond  - Lighter than palatino, heavier than latin modern, more readable.
+%
+% Other
+%  print - do not color links
+%  zebralistings - alternating row colors for listings
+%
+\documentclass[draft,phd]{swathesis}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{thesis.bib}
 
-\nobibliography*
-%\renewcommand{\baselinestretch}{1}
-%\parindent 0cm			%Kein Einzug bei neuen Absatz
-%\setlength{\parskip}{2ex}
 \setcounter{tocdepth}{1}
 \setcounter{secnumdepth}{3}
 
-\addtokomafont{disposition}{\rmfamily}
-\addtokomafont{paragraph}{\bfseries}
-\setkomafont{pagination}{\normalfont\small}
+\renewcommand*{\glsnamefont}[1]{\textbf{#1}}
 
-\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
-\renewcommand{\sectionmark}[1]{\markright{#1}{}}
-\newcommand{\soabooks}{YourBook\xspace}
-\newcounter{pbsavefigurecounter}
-% 1: pos [tbh]
-% 2: width of the left
-% 3: width of the right
-% 4: code left
-% 5: code right
-% 6: caption
-% 7: label
-%
-\newcommand{\listingcaption}[2]{
-\vspace{-4mm}
-\renewcommand{\figurename}{Listing}
-\setcounter{pbsavefigurecounter}{\value{figure}}\setcounter{figure}{\value{lstlisting}}
-\caption{#1}
-\label{#2}
-\setcounter{lstlisting}{\value{figure}}
-\setcounter{figure}{\value{pbsavefigurecounter}}}
+\usepackage{titlepage}
+\TitlePageStyle[discipline=phd, whom={der}, subject=degree]{hpi-swa}
+\degree{Doktor der Naturwissenschaften\\ (Doctor rerum naturalium)}
+% \degree{Doktor der Ingenieurwissenschaften\\ (Doktor-Ingerneur)}
+\faculty{%
+Mathematisch-Naturwissenschaftlichen Fakultät\\
+der Universität Potsdam}
+
+\advisor{Prof.\,Dr.\,Jack Hasaname}
 
 
-%\usepackage[amsmath,thmmarks,framed]{ntheorem}
-%\theoremstyle{plain}
-%\theorembodyfont{\small}
+% ABGABEDATUM
+% \setdate{2012}{04}{05}
+% \date{\datedate}
 
-%\usepackage{color}
-\definecolor{yellow}{rgb}{1,0.88,0}
-%\pagecolor{yellow}
-%\renewcommand*\FrameCommand{{\color{gray}\vrule width 5pt \hspace{10pt}}}
-%\newframedtheorem{defn}{Definition}
-
-%paul
-%\linespread{1.8}
-\sloppy  % #TODO begin sloppypar begin sloppypar
-
-%\usepackage{showframe}
-
-\usepackage{tgpagella}       % Majuskelziffern
-%\usepackage[osf,sc]{mathpazo} % Minuskelziffern
-\linespread{1.05}
-\let\sffamily\rmfamily
-
-\usepackage{hyperref}
-\hypersetup{colorlinks=true, breaklinks=true, citecolor=black, linkcolor=black, menucolor=black, urlcolor=black}
-\newcommand{\CtxMS}{CtxMS\xspace}
-
-% \input{00_glossary}
-% \loadglsentries{00_glossary}
-
-%% keine Schusterjungen und Witwen
-
-\widowpenalty=10000
-\clubpenalty=10000 
-
-\def\sectionautorefname{Section}
-\def\subsectionautorefname{Section}
-\def\subsubsectionautorefname{Section}
-\def\tableautorefname{Table}
-\def\figureautorefname{Figure}
-
-\title{I am a Rocket Man}
-\author{William Shatner}
+\author{Vorname Nachname}
+\location{Berlin}
+\extratitle{\raggedleft Nachname, \\ Titel Kurz\par}
+\title{Der Lange Titel der Arbeit die zu Schreiben Ist}
+\subtitle{Ein Untertitel ist Optional}
+\othertitle{The Long Title of the Work to Be Done}
+\othersubtitle{This is Optionally Optional}
 
 \begin{document}
-\input{front+back/preface}
+\frontmatter
+\begin{otherlanguage}{ngerman}
+\maketitle
+\end{otherlanguage}
+\input{frontmatter}
+\mainmatter
 \input{content}
 \input{publications}
-\bibliographystyle{plain} % alpha
-\bibliography{thesis}
+\printbibliography
+\input{appendix}
+\backmatter
 \end{document}
 
 %%% Local Variables:

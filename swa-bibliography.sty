@@ -1,21 +1,25 @@
 
 \RequirePackage{csquotes}
-\RequirePackage[%
-citestyle=numeric,%
-maxnames=20,%
-defernumbers=true
-]{biblatex}
+\PassOptionsToPackage{%
+  citestyle=numeric,%
+  maxnames=20,%
+  defernumbers=true
+}{biblatex}
+\AtEndPreamble{
+  \RequirePackage{biblatex}}
 
-\ifthenelse{\boolean{@swa@german}}{
-  \ExecuteBibliographyOptions{
-    url=false,%
-    language=ngerman,%
-    urldate=iso8601%
-  }
-}{
-  \ExecuteBibliographyOptions{%
-    url=false,%
-    language=american,%
-    urldate=iso8601%
+\AfterPackage{biblatex}{
+  \ifthenelse{\boolean{@swa@german}}{
+    \ExecuteBibliographyOptions{
+      url=false,%
+      language=ngerman,%
+      urldate=iso8601%
+    }
+  }{
+    \ExecuteBibliographyOptions{%
+      url=false,%
+      language=american,%
+      urldate=iso8601%
+    }
   }
 }
