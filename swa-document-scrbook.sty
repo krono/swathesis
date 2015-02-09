@@ -11,7 +11,6 @@
 }
 
 
-
 \KOMAoptions{
     pagesize,
     DIV=9,
@@ -22,6 +21,59 @@
   }
 \areaset[current]{\textwidth}{1.61803399\textwidth}
 
+\newif\if@swa@bindingcorrection@set
+\@swa@bindingcorrection@setfalse
+
+\newcommand*\bindingcorrection[3][1]{
+  % #1 -> "Volumen", typically 1
+  % #2 -> pages
+  % #3 -> gammage
+
+  % Kohm: Die Bindekorrektur macht bei guter Bindung und gutem Papier maximal die
+  % Hälfte des Buchblocks aus.
+ %
+ % BCOR = (gamage/1000 * sheets * volume) / 2
+ %     = gammage/1000 * pages/2 * volume/1 * 1/2
+ %     = gammage * pages / 4000 * volume
+ %     = gammage * pages * volume * 0.00025
+  \if@swa@bindingcorrection@set\relax
+    \message{^^J Binding correction already set. ignoring}
+  \else
+    \csdimdef{tempcorrection}{\dimexpr #1\dimexpr 0.00025\dimexpr #3mm * #2}
+    % Set and force recalculation
+    \KOMAoptions{BCOR=\tempcorrection,DIV=9}
+    \areaset[current]{\textwidth}{1.61803399\textwidth}
+    \@swa@bindingcorrection@settrue
+  \fi
+}
+\csletcs{bindekorrektur}{bindingcorrection}
+
+\providecommand*\gammage{80}
+\providecommand*\pagevolume{1}
+\providecommand*\BCORTotPages{0}
+\AfterEndDocument{
+  %
+  % We cannot rely on the aux file here (where totpages writes TotPages)
+  %  beacuse when the aux file is read, the page dimesions are already set,
+  %  which is too late.
+  %
+  \if@filesw
+    \newwrite\swa@pagesfile
+    \immediate\openout\swa@pagesfile=\jobname.pgs\relax
+    \immediate\write\swa@pagesfile{\relax}
+    \immediate\write\swa@pagesfile{\string\xdef\string\BCORTotPages{\theTotPages}}
+    \immediate\write\swa@pagesfile{\relax}
+    \immediate\closeout\swa@pagesfile
+    \fi
+}
+\AtEndPreamble{%
+  \@input{\jobname.pgs}
+  \ifnumcomp{\BCORTotPages}{=}{0}{
+      \bindingcorrection[\pagevolume]{60}{\gammage}
+    }{%
+      \bindingcorrection[\pagevolume]{\BCORTotPages}{\gammage}
+    }
+}
 
 \RequirePackage{tocstyle}
 \usetocstyle{KOMAlike}
