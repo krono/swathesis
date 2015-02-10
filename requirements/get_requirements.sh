@@ -229,13 +229,6 @@ if _need_package "microtype" "2011/08/18"; then
   $ECHO ">> installed current microtype"
 fi
 
-if _need_package "ctable" "2012/05/28"; then
-  C=ctable
-  TDS=`_get_ctan $C "pdflatex $C.ins" "" $C.ins $C.dtx $C.pdf inst=doc/latex/$C "doc/*=doc/latex/$C/" README`
-  _deploy_tds "$TDS"
-  $ECHO ">> installed current ctable"
-fi
-
 if _need_package "acronym" "2010/09/08"; then
   TDS=`_get_tds "acronym" ""`
   _deploy_tds $TDS

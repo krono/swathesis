@@ -155,30 +155,35 @@ in \autoref{tbl:things}.
 \section{Conclusion}
 \label{sec:conclusion}
 
-\ctable%
-[table,
-caption={Differences between things projected and things achieved},
-label=tbl:things]%
-{>{}p{.4\linewidth}@{}c}%
-{\tnote[a]{Just few things missing}}%
-{%
-\FL Part           & done
-\ML Title          & \y
-\NN Abstract       & \n
-\NN Intro          & \y
-\NN \multicolumn{2}{c}{Rest is not entirely true}
-\ML Context        & \y
-\NN Problem        & \n\tmark[a]
-\NN Solution       & \y
-\NN Implementation & \y
-\NN Evaluation     & \n
-\NN Related Work   & \n
-\NN Conclusion     & \y
-\LL
-}
+\begin{table}
+  \centering
+  \tableinsidecommand
+  \begin{threeparttable}
+    \caption{Differences between things projected and things achieved}
+    \label{tab:things}
+    \begin{tabular}{>{}p{.4\linewidth}@{}c} \toprule
+      Part           & done        \\ \midrule
+      Title          & \y          \\
+      Abstract       & \n          \\
+      Intro          & \y          \\
+      \multicolumn{2}{c}{Rest is not entirely true} \\ \midrule
+      Context        & \y          \\
+      Problem        & \n\tnote{a} \\
+      Solution       & \y          \\
+      Implementation & \y          \\
+      Evaluation     & \n          \\
+      Related Work   & \n          \\
+      Conclusion     & \y          \\ \bottomrule
+    \end{tabular}
+    \begin{tablenotes}
+      \item [a] Just few things missing
+    \end{tablenotes}
+  \end{threeparttable}
+\end{table}
 
 We have nice things: some code in \autoref{lst:example} and some information
-in \autoref{tbl:things}.
+in \autoref{tab:things}.
+
 
 
 \nocite{*}
