@@ -11,8 +11,8 @@ ECHO="/usr/bin/printf %b\\n"
 
 THE_TDS=swathesis.tds.zip
 
-KPSEWHICH=`command -v kpsewhich`
-KPATHSEAVERSION=`$KPSEWHICH --version | head -1 | cut -d" " -f3 | cut -d. -f1`
+KPSEWHICH="${KPSEWHICH:-kpsewhich}"
+KPATHSEAVERSION=$($KPSEWHICH --version | head -1 | cut -d" " -f3 | cut -d. -f1)
 
 
 __usage() {
@@ -24,12 +24,12 @@ OPTIONS
   --home        install to TEXMFHOME  ($($KPSEWHICH -var-value TEXMFHOME )) (* recommended)
   --local       install to TEXMFLOCAL ($($KPSEWHICH -var-value TEXMFLOCAL))
   --tex         install to TEXMFDIST  ($($KPSEWHICH -var-value TEXMFDIST )) (not recommended)
-                
+
   --bin-home    install the \`swth' script to $BIN_DEFAULT (*)
   --bin-local   install the \`swth' script to /usr/local/bin
   --bin-tex     install the \`swth' script to $(dirname $KPSEWHICH)
   --bin-sys     install the \`swth' script to /usr/bin (not recommended)
-                
+
   --no-req      do not atempt to install required packages
   --no-bin      do not link the \`swth' script
   --no-logos    do not try to find Logos.zip (Uni Potsdam/HPI logos)
@@ -174,12 +174,12 @@ Where shall I install swathesis to,
   if [ -z "$DEST" ]; then DEST=TEXMFHOME; fi
 fi
 case "$DEST" in
-  TEXMF*) DEST_DIR=$("$KPSEWHICH" -var-value "$DEST") ;;
+  TEXMF*) DEST_DIR=$($KPSEWHICH -var-value "$DEST") ;;
   *)      DEST_DIR="$DIR"                             ;;
 esac
 
 __check_dir "$DEST_DIR"
-OLDKPATHSEA=`if [ "$KPATHSEAVERSION" -lt 6 ]; then $ECHO 1; else $ECHO 0; fi`
+OLDKPATHSEA=$(if [ "$KPATHSEAVERSION" -lt 6 ]; then $ECHO 1; else $ECHO 0; fi)
 if [ "$DEST" = TEXMFHOME ]; then
   if [ -f "$DEST_DIR"/ls-R -o "$OLDKPATHSEA" -eq 1 ]; then
     NEEDMKTEXLSR=1
