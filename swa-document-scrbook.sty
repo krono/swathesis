@@ -39,7 +39,7 @@
   \if@swa@bindingcorrection@set\relax
     \message{^^J Binding correction already set. ignoring}
   \else
-    \csdimdef{tempcorrection}{\dimexpr #1\dimexpr 0.00025\dimexpr #3mm * #2}
+    \csdimdef{tempcorrection}{\dimexpr #1\dimexpr 0.00025\dimexpr #3mm\relax * #2}
     % Set and force recalculation
     \KOMAoptions{BCOR=\tempcorrection,DIV=9}
     \areaset[current]{\textwidth}{1.61803399\textwidth}
