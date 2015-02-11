@@ -48,8 +48,8 @@
 }
 \csletcs{bindekorrektur}{bindingcorrection}
 
-\providecommand*\gammage{80}
-\providecommand*\pagevolume{1}
+\providecommand*\papergammage{80}
+\providecommand*\papervolume{1}
 \providecommand*\BCORTotPages{0}
 \AfterEndDocument{
   %
@@ -69,9 +69,9 @@
 \AtEndPreamble{%
   \@input{\jobname.pgs}
   \ifnumcomp{\BCORTotPages}{=}{0}{
-      \bindingcorrection[\pagevolume]{60}{\gammage}
+      \bindingcorrection[\papervolume]{60}{\papergammage}
     }{%
-      \bindingcorrection[\pagevolume]{\BCORTotPages}{\gammage}
+      \bindingcorrection[\papervolume]{\BCORTotPages}{\papergammage}
     }
 }
 
