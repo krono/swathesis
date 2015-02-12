@@ -117,7 +117,7 @@
 % for development
 \RequirePackage{ifdraft}
 \ifdraft{%
-  \RequirePackage{blindtext}
+  \RequirePackage{blindtext,scrtime}
   \errorcontextlines=999
   \RequirePackage{eso-pic}
   \newkomafont{draftline}{\sffamily}
@@ -134,7 +134,7 @@
     \def\swa@draftInfo{%
       {\usekomafont{draftline}
       Draft Draft Draft%
-      \hspace*{5cm}\today\hspace*{5cm}%
+      \hspace*{4.5cm}\today\ \thistime\hspace*{4.5cm}%
       Draft Draft Draft%
       }}
       % Draft revision\gitVtags: \gitAbbrevHash{} %
