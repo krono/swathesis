@@ -2,14 +2,14 @@
 \RequirePackage[euler-digits,T1]{eulervm}
 \let\mathbf\mathbold
 \ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
-  \setmainfont{texgyrepagella}[ExternalLocation,%
+  \setmainfont[ExternalLocation,%
       Numbers={Proportional,OldStyle},%
       UprightFont= *-regular,%
       BoldFont=*-bold,%
       ItalicFont=*-italic,%
       BoldItalicFont=*-bolditalic,%
       Ligatures={Common,TeX},%
-      ]
+      ]{texgyrepagella}
   %
   % Set a Vera mono descendant as monofont.
   %
