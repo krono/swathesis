@@ -116,15 +116,23 @@
 
 \@ifpackagelater{scrbase}{2014/10/28}{%
   \RedeclareSectionCommand[%
-    beforeskip=-2\baselineskip,afterskip=\baselineskip]{section}
+    afterskip = 1\baselineskip,%
+    beforeskip = -1\baselineskip,%
+    ]{section}
   \RedeclareSectionCommand[%
-    beforeskip=-\baselineskip,afterskip=\baselineskip]{subsection}
+    afterskip = 1\baselineskip,%
+    beforeskip = -1\baselineskip,%
+    ]{subsection}
   \RedeclareSectionCommand[%
-    beforeskip=-\baselineskip,afterskip=1sp plus -1sp minus 1sp]{subsubsection}
+    afterskip = 1sp plus -1sp minus 1sp,%
+    beforeskip = -1\baselineskip,%
+    ]{subsubsection}
   \RedeclareSectionCommand[%
-    beforeskip=\baselineskip]{paragraph}
+    beforeskip = 1\baselineskip,%
+    ]{paragraph}
   \RedeclareSectionCommand[%
-    beforeskip=\baselineskip]{subparagraph}
+    beforeskip = 1\baselineskip,%
+    ]{subparagraph}
 }{
   % for sections, not so easy.
   \def\TR@patchw{\TR@warn{Cannot patch sectioning command.\MessageBreak This is
