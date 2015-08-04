@@ -10,6 +10,13 @@
     }
 }
 
+\newif@swa@birdseye
+\DeclareOption{birdseyeview}{\@swa@birdseyetrue}
+\DeclareOption{birdseyeview=true}{\@swa@birdseyetrue}
+\DeclareOption{birdseyeview=false}{\@swa@birdseyefalse}
+\ProcessOptions\relax
+
+
 
 \KOMAoptions{
     pagesize,
@@ -156,5 +163,16 @@
       pdfsubject={\@subject}
     }
   }
+  \ifthenelse{\boolean{@swa@birdseye}}{
+    \KOMAoptions{
+      twocolumn=true,
+      twoside=semi,
+      fontsize=8pt,
+      headings=small,
+      footinclude=false,
+      headinclude=false,
+      DIV=calc,
+      BCOR=0pt,
+    }
+  }{}
 }
-
