@@ -41,15 +41,15 @@
 
 
   \ifthenelse{\boolean{@swa@german}}{
-  \RequirePackage%
-[main=ngerman,english]%
-%
-{babel}
+    % hyperref can't handle that.
+    % \RequirePackage[main=english,ngerman]{babel}
+    % order matters!
+    \RequirePackage[english,ngerman]{babel}
   }{
-  \RequirePackage%
-[main=english,ngerman]%
-%
-{babel}
+    % hyperref can't handle that.
+    % \RequirePackage[main=english,ngerman]{babel}
+    % order matters!
+    \RequirePackage[ngerman,english]{babel}
   }
 
   \defcaptionname{english}{\figureautorefname}{figure}
