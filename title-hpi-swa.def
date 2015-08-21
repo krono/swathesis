@@ -117,12 +117,12 @@
 
 \NowButAfterBeginDocument{%
   % \providecaptionname{english}{\@faculty}{%
-  %     Hasso-Plattner-Institute%
+  %     Hasso Plattner Institute%
   %     \\ at the University of Potsdam, Germany%
   %   }
   \providecaptionname{english}{\@university}{%
           Software Architecture Group\\
-          Hasso-Plattner-Institute\\%
+          Hasso Plattner Institute\\%
           University of Potsdam, Germany%
     }
 
