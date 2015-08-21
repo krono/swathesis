@@ -174,14 +174,14 @@
   \fi
   \ifx\@faculty\@empty
     \faculty{%
-      Hasso-Plattner-Institute%
+      Hasso Plattner Institute%
       \\ at the University of Potsdam, Germany%
     }%
   \fi
   \ifx\@university\@empty
     \university{%
       Software Architecture Group\\
-      Hasso-Plattner-Institute\\%
+      Hasso Plattner Institute\\%
       University of Potsdam, Germany%
     }%
   \fi
