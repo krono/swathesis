@@ -93,6 +93,7 @@ echo "var theOwn = '${HOW_I_HIT}';" >> ${JSON}
 echo "var theStuff = '${HOW_I_HOLLA}';" >> ${JSON}
 
 # thumbnails
+mkdir -p ${PUBLIC}/images
 convert ${PDF_FILE} -alpha off -resize '60' ${PUBLIC}/images/thumbnail.png
 
 EXIT=$?
