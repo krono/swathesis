@@ -40,6 +40,7 @@ PAGES="${PUBLIC}/pages.part"
 
 if [ ! -f ${PDF_FILE} ];
 then
+  echo "${PDF_FILE} not found"
   exit 1;
 # ./make.sh
 fi
