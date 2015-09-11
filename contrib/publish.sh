@@ -48,8 +48,13 @@ fi
 # publish stuff
 
 DATE=$(date +%s)
-START_DATE=$(date -j -f "%Y-%m-%d|%H:%M:%S" "${FIRST_DAY}|00:00:00" "+%s")
-END_DATE=$(date -j -f "%Y-%m-%d|%H:%M:%S" "${EXPECTED_END}|23:59:59" "+%s")
+if [ "$(uname)" == "Darwin" ]; then
+  START_DATE=$(date -j -f "%Y-%m-%d|%H:%M:%S" "${FIRST_DAY}|00:00:00" "+%s")
+  END_DATE=$(date -j -f "%Y-%m-%d|%H:%M:%S" "${EXPECTED_END}|23:59:59" "+%s")
+elif [ "$(uname)" == "Linux" ]; then
+  START_DATE=$(date -d "${FIRST_DAY} 00:00" +%s)
+  END_DATE=$(date -d "${EXPECTED_END} 23:59" +%s)
+fi
 
 PDFTOTEX_COUNT_1=$(pdftotext  -nopgbrk ${PDF_FILE} - | wc -w)
 PDFTOTEX_COUNT_2=$(pdftotext -raw -nopgbrk ${PDF_FILE} - | wc -w)
