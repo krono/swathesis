@@ -40,6 +40,7 @@ PAGES="${PUBLIC}/pages.part"
 
 if [ ! -f ${PDF_FILE} ];
 then
+  echo "${PDF_FILE} not found"
   exit 1;
 # ./make.sh
 fi
@@ -47,8 +48,13 @@ fi
 # publish stuff
 
 DATE=$(date +%s)
-START_DATE=$(date -j -f "%Y-%m-%d|%H:%M:%S" "${FIRST_DAY}|00:00:00" "+%s")
-END_DATE=$(date -j -f "%Y-%m-%d|%H:%M:%S" "${EXPECTED_END}|23:59:59" "+%s")
+if [ "$(uname)" == "Darwin" ]; then
+  START_DATE=$(date -j -f "%Y-%m-%d|%H:%M:%S" "${FIRST_DAY}|00:00:00" "+%s")
+  END_DATE=$(date -j -f "%Y-%m-%d|%H:%M:%S" "${EXPECTED_END}|23:59:59" "+%s")
+elif [ "$(uname)" == "Linux" ]; then
+  START_DATE=$(date -d "${FIRST_DAY} 00:00" +%s)
+  END_DATE=$(date -d "${EXPECTED_END} 23:59" +%s)
+fi
 
 PDFTOTEX_COUNT_1=$(pdftotext  -nopgbrk ${PDF_FILE} - | wc -w)
 PDFTOTEX_COUNT_2=$(pdftotext -raw -nopgbrk ${PDF_FILE} - | wc -w)
@@ -87,7 +93,8 @@ echo "var theOwn = '${HOW_I_HIT}';" >> ${JSON}
 echo "var theStuff = '${HOW_I_HOLLA}';" >> ${JSON}
 
 # thumbnails
-convert thesis.pdf -alpha off -resize '60' ${PUBLIC}/images/thumbnail.png
+mkdir -p ${PUBLIC}/images
+convert ${PDF_FILE} -alpha off -resize '60' ${PUBLIC}/images/thumbnail.png
 
 EXIT=$?
 
