@@ -122,6 +122,21 @@
         return element.x >= today;
       }
 
+      function reduceArrayPerDay(array) {
+        var day = 0;
+        var result = [];
+        if (array.length > 0)
+          result[0] = array[0].y
+        for (i = 1; i < array.length; i++) {
+          if (array[i].x > firstDay + day * 24 * 3600) {
+            day++;
+            result[day] = 0;
+          }
+          result[day] += (array[i].y - array[i-1].y);
+        }
+        return result;
+      }
+
       if (typeof expectedEnd != 'undefined') {
 
         var wordcount = words[words.length-1].y;
@@ -148,6 +163,9 @@
 
         var pace_to_finish_ontime = Math.floor(remaining_words / (remaining_seconds / 3600 / 24)) - words_today;
         pace_to_finish_ontime *= 1.1; // error margin, better let user configure 5 or 6 day work week
+
+        var words_per_day = reduceArrayPerDay(words);
+
 
         jQuery(function($) {
           $('meta[name=author]').attr('content', theName);
@@ -204,6 +222,14 @@
 
           $("#days").html(Math.ceil(total_seconds / 24 / 3600))
           $("#days-left").html(Math.floor(remaining_seconds / 24 / 3600))
+
+          for(var i = 0; i < Object.keys(words_per_day).slice(-14).length; i++){
+            var key = Object.keys(words_per_day).slice(-14)[i];
+            $('#words-week').append($('<li>').append(
+              new Date(parseInt(key)).toLocaleDateString() + ': ' +
+              words_per_day[key]
+              ));
+          }
 
           // thumbnail insertions.
 
@@ -296,7 +322,12 @@
 
           <ul id="thumbnails" class="media-grid">
           </ul>
+        </div>
 
+        <div class="span16">
+          <h2>Last 14 Days</h2>
+          <ul id="words-week">
+          </ul>
         </div>
       </div>
 
