@@ -31,9 +31,10 @@
         width: 640px;
         height: 340px;
       }
-      .hero-unit {
+      .heading {
              background-color: #e0e0e0;
              text-shadow: #fff 0 1px 0;
+             padding: 60px !important
       }
     </style>
 
@@ -116,16 +117,55 @@
     </script>
 
     <script type="text/javascript">
+      function fromToday(element, index, array) {
+        var today = new Date().setHours(0,0,0,0) / 1000;
+        return element.x >= today;
+      }
+
+      function reduceArrayPerDay(array) {
+        var day = 0;
+        var result = {};
+        if (array.length > 0)
+          result[new Date(array[0].x * 1000).setHours(0,0,0,0)] = array[0].y
+        for (i = 1; i < array.length; i++) {
+          if (array[i].x > firstDay + day * 24 * 3600) {
+            day++;
+            result[new Date(array[i].x * 1000).setHours(0,0,0,0)] = 0;
+          }
+          result[new Date(array[i].x * 1000).setHours(0,0,0,0)] += (array[i].y - array[i-1].y);
+        }
+        return result;
+      }
 
       if (typeof expectedEnd != 'undefined') {
 
         var wordcount = words[words.length-1].y;
         var pagecount = pages[pages.length-1].y;
 
-        var per_time = (expectedEnd - Date.now() / 1000 ) / (expectedEnd - firstDay);
-        var per_words = (targetWords - wordcount) / targetWords;
+        var total_seconds = expectedEnd - firstDay;
+        var remaining_seconds = expectedEnd - Date.now() / 1000;
+        var remaining_words = targetWords - wordcount;
+
+        var per_time = remaining_seconds / total_seconds;
+        var per_words = remaining_words / targetWords;
 
         var add_words = Math.max(0, Math.floor((per_words - per_time) * targetWords) + 1);
+
+        var words_today = 0, pages_today = 0;
+        if (words.filter(fromToday).length > 0)
+          words_today = wordcount - words[words.indexOf(words.filter(fromToday)[0]) - 1].y;
+        if (pages.filter(fromToday).length > 0)
+          pages_today = pagecount - pages[pages.indexOf(pages.filter(fromToday)[0]) - 1].y;
+
+        var days_current_pace = remaining_words / words_today;
+        var endDate_current_pace = new Date();
+            endDate_current_pace.setDate(endDate_current_pace.getDate() + days_current_pace);
+
+        var pace_to_finish_ontime = Math.floor(remaining_words / (remaining_seconds / 3600 / 24)) - words_today;
+        pace_to_finish_ontime *= 1.1; // error margin, better let user configure 5 or 6 day work week
+
+        var words_per_day = reduceArrayPerDay(words);
+
 
         jQuery(function($) {
           $('meta[name=author]').attr('content', theName);
@@ -141,20 +181,55 @@
           $('#verboseEndDate').html((new Date(expectedEnd * 1000)).format('mmmm d, yyyy'))
           // number insertions.
 
-          $("#words").html(wordcount);
-          $("#pages").html(pagecount);
+          $("#words").html(words_today);
+          $("#pages").html(pages_today);
+
+          $("#words-today").html(words_today);
+          $("#pages-today").html(pages_today);
 
           $("#target-words").html(targetWords);
           $("#target-pages").html(targetPages);
 
+          $('#remaining-words-today-keep-deadline').html(pace_to_finish_ontime)
+          if (!isNaN(endDate_current_pace))
+            $('#date-current-pace').html(endDate_current_pace.format('mmmm d, yyyy'))
 
-          $("#words-missing").html(targetWords - wordcount);
+          if(endDate_current_pace < new Date(expectedEnd * 1000)) {
+            $("#words-today").addClass('label important').addClass('label success');
+            $("#pages-today").addClass('label important').addClass('label success');
+            $('#date-current-pace').addClass('label success');
+            $('#remaining-words-today-keep-deadline').addClass('label success');
+
+            $('.heading').addClass('alert-message block-message success');
+            $('.heading h1').append(' :)')
+          } else {
+            $("#words-today").addClass('label warning');
+            $("#pages-today").addClass('label warning');
+            $('#date-current-pace').addClass('label important');
+            $('#remaining-words-today-keep-deadline').addClass('label important');
+
+            $('.heading').addClass('alert-message block-message warning');
+            $('.heading h1').append(' :(')
+          }
+
+          $("#words-missing").html(remaining_words);
           $("#pages-missing").html(targetPages - pagecount);
 
           $("#per-time").html(Math.floor(1000 * per_time) / 10 + "%");
           $("#per-words").html(Math.floor(1000 * per_words) / 10 + "%");
 
           $("#add-words").html(add_words);
+
+          $("#days").html(Math.ceil(total_seconds / 24 / 3600))
+          $("#days-left").html(Math.floor(remaining_seconds / 24 / 3600))
+
+          for(var i = 0; i < Object.keys(words_per_day).slice(-14).length; i++){
+            var key = Object.keys(words_per_day).slice(-14)[i];
+            $('#words-week').append($('<li>').append(
+              new Date(parseInt(key)).toLocaleDateString() + ': ' +
+              words_per_day[key]
+              ));
+          }
 
           // thumbnail insertions.
 
@@ -175,14 +250,13 @@
 
     <div class="container">
 
-      <div class="hero-unit">
+      <div class="heading hero-unit">
         <h1>Thesis Progress!</h1>
         <p><span class="hero">Our Hero</span> is a <span class="kind">student</span>. This is procrastination. It is also an exclusive view on <span class="hero">our hero</span>'s thesis writing progress. Keep your fingers crossed, <span class="theThing">she</span>'ll need it.</p>
       </div>
 
       <div class="row">
         <div class="span5">
-          <h2>Numbers</h2>
           <p>
 
             <span class="hero">Our Hero</span> is writing <span class="theOwn">her</span> thesis and <span class="theThing">she</span> wants to be done before <span id="verboseEndDate">the end of the world as we know it</end>, and to achieve that goal, the writing must get a lot faster.
@@ -201,14 +275,23 @@
             words and
             <span id="target-pages" class="label default">80</span>
             pages total, there are still
-            <span id="pages-missing" class="label important">?</span>
+            <span id="pages-missing" class="label warning">?</span>
             pages and
-            <span id="words-missing" class="label important">?</span>
+            <span id="words-missing" class="label warning">?</span>
             words missing.
 
           </p>
-          <p>
 
+          <h2>Today</h2>
+          <p>
+            Today <span class="theThing">she</span> already wrote <span id="words-today">?</span> and <span id="pages-today">?</span> pages. If <span class="theThing">she</span> would keep that pace she would be done on the <span id="date-current-pace">?</span>.
+
+             <span class="hero">Our Hero</span> needs to write <span id="remaining-words-today-keep-deadline"></span> additional words today so  <span class="theThing">she</span> will finish on time.
+          </p>
+
+          <h2>Overall</h2>
+          <p>
+            There are <span id="days-left">?</span>/<span id="days">?</span> days left.
             This means that in the remaining
             <span id="per-time" class="label notice">?</span>
             of the time <span class="theThing">she</span> has to do
@@ -220,7 +303,6 @@
 
             If you happen to see <span class="hero">our hero</span> doing something that is not
             writing, you may punch <span class="theStuff">her</span>.
-
           </p>
 
         </div>
@@ -240,7 +322,12 @@
 
           <ul id="thumbnails" class="media-grid">
           </ul>
+        </div>
 
+        <div class="span16">
+          <h2>Last 14 Days</h2>
+          <ul id="words-week">
+          </ul>
         </div>
       </div>
 
