@@ -60,6 +60,7 @@ MKDIR="mkdir -p"
 CP=cp
 MV=mv
 SED="sed -r"
+SED_INPLACE="$SED -i"
 
 THESESMARKER="%SWTH_do_not_remove"
 TEMPLATEMARKER="TEMPLATE"
@@ -109,6 +110,7 @@ case "$OSTYPE" in
   linux*)   OPEN="xdg-open" ;;
   darwin*)
     SED="sed -E"
+    SED_INPLACE="$SED -i '' "
     OPEN="open"
     SKIM="net.sourceforge.skim-app.skim"
     HAS_SKIM=`mdfind "kMDItemCFBundleIdentifier == 'net.sourceforge.skim-app.skim'"`
@@ -215,9 +217,9 @@ __copy_template() {
   $CP -r "$TEMPLATEDIR/". "$SWTHDIR"
   $MV "$SWTHDIR/${DFLT}.tex" "$SWTHDIR/${MAIN}.tex"
   $MV "$SWTHDIR/${DFLT}-names.tex" "$SWTHDIR/${MAIN}-names.tex"
-  $SED -e "s!${TEMPLATEMARKER}!${MAIN}!g" -i "" "${SWTHDIR}"/*.tex
+  $SED_INPLACE -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}"/*.tex
   if [ -d "${SWTHDIR}/common" ]; then
-    $SED -e "s!${TEMPLATEMARKER}!${MAIN}!g" -i "" "${SWTHDIR}/common"/*.tex
+    $SED_INPLACE -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}/common"/*.tex
   fi
   $ECHO "" > "$SWTHDIR/${MAIN}.tex.latexmain"
 }
@@ -347,13 +349,13 @@ _author() {
   __ask_for_main_to_OUT
   AU_MAIN="$OUT"
   $MV "$AU_DIR/TEMPLATE.tex" "$AU_DIR/${AU_MAIN}.tex"
-  $SED -e "s!$TEMPLATEMARKER!$AU_MAIN!g" -i "" "${AU_DIR}"/*.tex
+  $SED_INPLACE -e "s!$TEMPLATEMARKER!$AU_MAIN!g" "${AU_DIR}"/*.tex
   $ECHO "" > "$AU_DIR/${AU_MAIN}.tex.latexmain"
 
   if grep -q "$THESESMARKER" "$SWTHDIR/${MAIN}.tex" 2>/dev/null >/dev/null; then
     $SED -i.bak -e "s!$THESESMARKER!$AUTHOR,$THESESMARKER!" "$SWTHDIR/${MAIN}.tex"
   else
-    $ECHO "$PROGRAM: Cannont find Thesesmarker \`$THESESMARKER' in $MAIN, you're on your own."
+    $ECHO "$PROGRAM: Cannot find Thesesmarker \`$THESESMARKER' in $MAIN, you're on your own."
   fi
 }
 
