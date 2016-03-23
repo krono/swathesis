@@ -279,12 +279,12 @@ __set_biber() {
 }
 
 _bibtex() {
-  if test "$MODE" = "bachelor"; then
+  if test "x$MODE" = "xbachelor"; then
     find "$SWTHDIR" -mindepth 2 -name \*.aux | while read FILENAME; do
-      dir=`dirname "$FILENAME"`;
-      base=`basename "$FILENAME" | sed -E -e 's/\.aux$//'`
-      pushd $dir 2>/dev/null >/dev/null;
-        $BIBTEX $base "$@"
+      dir=$(dirname "$FILENAME");
+      base=$(basename "$FILENAME" | $SED -e 's/\.aux$//')
+      pushd "$dir" 2>/dev/null >/dev/null;
+        $BIBTEX "$base" "$@"
       popd 2>/dev/null >/dev/null;
     done
   elif test "x$MAIN" != "x"; then
