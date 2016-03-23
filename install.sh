@@ -227,7 +227,7 @@ fi
 
 if [ "$NOLOGO" -eq 0 ]; then
   if [ \! -f "$LOGO" ]; then
-    printf "Do you have a Logo.zip with Uni Potsdam/HPI logos?
+    printf "Do you have a Logos.zip with Uni Potsdam/HPI logos?
 If you have, place it in this directory
     $PWD
 and say \`yes' (or the filename), if not, or you do not 
