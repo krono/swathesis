@@ -5,15 +5,19 @@
 \RequirePackage{ifluatex}
 \RequirePackage{ifxetex}
 
-\ifthenelse{\boolean{xetex}}{% xetex
-}{ % luatex and pdftex
-  \ifthenelse{\boolean{luatex}}{}{
-    \RequirePackage[utf8]{inputenc}
-  }
-  \RequirePackage{cmap}
-  \input glyphtounicode
-  \pdfgentounicode=1
+\ifthenelse{\boolean{luatex}}{%
+  \IfFileExists{luatex85.sty}{%
+    \RequirePackage{luatex85}}{}}{}%
+
+\ifthenelse{\boolean{xetex}}{}{\RequirePackage{cmap}}
+\RequirePackage[LGR,OT1,LY1,T1]{fontenc}
+
+\ifthenelse{\boolean{xetex} \or \boolean{luatex}}{}{%
+  \RequirePackage[utf8]{inputenx}
+  \input{ix-utf8enc.dfu}
+  \RequirePackage{alphabeta}
 }
+
 
 \ifcsname ifundefinedorrelax\endcsname
 \else
