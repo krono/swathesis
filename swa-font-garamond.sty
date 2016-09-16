@@ -1,5 +1,7 @@
 \RequirePackage{ebgaramond}
-
+\PassOptionsToPackage{cmintegrals,cmbraces}{newtxmath}
+\RequirePackage{newtxmath}
+\RequirePackage{ebgaramond-maths}
 % bold is not in eb
 \@ifclassloaded{scrbook}{
   \addtokomafont{subject}{\mdseries}
@@ -8,12 +10,6 @@
   \addtokomafont{captionlabel}{\mdseries}
   \renewcommand*\labelitemii{\normalfont\textendash}
 }
-
-% scale down euler a bit more.
-% note, don't use the small option for eulervm, then
-\def\zeu@Scale{.89}
-\RequirePackage[euler-digits,T1]{eulervm}
-\let\mathbf\mathbold
 
 \ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
  
