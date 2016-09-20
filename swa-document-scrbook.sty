@@ -48,7 +48,7 @@
   \else
     \csdimdef{tempcorrection}{\dimexpr #1\dimexpr 0.00025\dimexpr #3mm\relax * #2}
     % Set and force recalculation
-    \KOMAoptions{BCOR=\tempcorrection,DIV=9}
+    \KOMAoptions{BCOR=\tempcorrection}
     \areaset[current]{\textwidth}{1.61803399\textwidth}
     \@swa@bindingcorrection@settrue
   \fi
