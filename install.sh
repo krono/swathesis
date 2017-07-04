@@ -179,8 +179,8 @@ case "$DEST" in
 esac
 
 __check_dir "$DEST_DIR"
-OLDKPATHSEA=$(if [ "$KPATHSEAVERSION" -lt 6 ]; then $ECHO 1; else $ECHO 0; fi)
 if [ "$DEST" = TEXMFHOME ]; then
+  OLDKPATHSEA=$(if [ "$KPATHSEAVERSION" -lt 6 ]; then $ECHO 1; else $ECHO 0; fi)
   if [ -f "$DEST_DIR"/ls-R -o "$OLDKPATHSEA" -eq 1 ]; then
     NEEDMKTEXLSR=1
   else
