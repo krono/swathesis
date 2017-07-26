@@ -110,7 +110,7 @@ case "$OSTYPE" in
   linux*)   OPEN="xdg-open" ;;
   darwin*)
     SED="sed -E"
-    SED_INPLACE="$SED -i '' "
+    SED_INPLACE="$SED -i \"\" "
     OPEN="open"
     SKIM="net.sourceforge.skim-app.skim"
     HAS_SKIM=`mdfind "kMDItemCFBundleIdentifier == 'net.sourceforge.skim-app.skim'"`
