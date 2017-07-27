@@ -433,6 +433,10 @@ if test $# -lt 1; then
   exit 2
 fi
 
+if type texfot >/dev/null 2>/dev/null; then
+    LATEX="texfot --quiet $LATEX"
+fi
+
 if test "x$DRY" = "xtrue"; then
   RM="$ECHO $RM"
   MKDIR="$ECHO $MKDIR"
