@@ -59,8 +59,6 @@ RM=rm
 MKDIR="mkdir -p"
 CP=cp
 MV=mv
-SED="sed -r"
-SED_INPLACE="$SED -i"
 
 THESESMARKER="%SWTH_do_not_remove"
 TEMPLATEMARKER="TEMPLATE"
@@ -109,8 +107,6 @@ case "$OSTYPE" in
   bsd*)     OPEN="xdg-open" ;;
   linux*)   OPEN="xdg-open" ;;
   darwin*)
-    SED="sed -E"
-    SED_INPLACE="$SED -i \"\" "
     OPEN="open"
     SKIM="net.sourceforge.skim-app.skim"
     HAS_SKIM=`mdfind "kMDItemCFBundleIdentifier == 'net.sourceforge.skim-app.skim'"`
@@ -126,6 +122,19 @@ case "$OSTYPE" in
     ;;
 esac
 
+_sed() {
+case "$OSTYPE" in
+  darwin*) sed -E "$@" ;;
+  *) sed -r "$@";;
+esac
+}
+
+_sed_inplace() {
+case "$OSTYPE" in
+  darwin*) sed -E -i '' "$@" ;;
+  *) sed -r -i "$@";;
+esac
+}
 _clean() {
   $RM -f *.log *.aux *.aut *.out *.toc *.synctex.gz *.bbl *.blg *.lol *.loc *.lot *.loa *.idx *.ind *.ilg *.glo *.gls *.glg *.fdb_latexmk *.run.xml *.bcf *.lof *.tdo
   $RM -f */*.log */*.aux */*.aut */*.out */*.toc */*.synctex.gz */*.bbl */*.blg */*.lol */*.loc */*.lot */*.loa */*.idx */*.ind */*.ilg */*.glo */*.gls */*.glg */*.fdb_latexmk */*.run.xml */*.bcf */*.lof */*.tdo
@@ -217,9 +226,9 @@ __copy_template() {
   $CP -r "$TEMPLATEDIR/". "$SWTHDIR"
   $MV "$SWTHDIR/${DFLT}.tex" "$SWTHDIR/${MAIN}.tex"
   $MV "$SWTHDIR/${DFLT}-names.tex" "$SWTHDIR/${MAIN}-names.tex"
-  $SED_INPLACE -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}"/*.tex
+  _sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}"/*.tex
   if [ -d "${SWTHDIR}/common" ]; then
-    $SED_INPLACE -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}/common"/*.tex
+    _sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}/common"/*.tex
   fi
   $ECHO "" > "$SWTHDIR/${MAIN}.tex.latexmain"
 }
@@ -282,7 +291,7 @@ _bibtex() {
   if test "x$MODE" = "xbachelor"; then
     find "$SWTHDIR" -mindepth 2 -name \*.aux | while read FILENAME; do
       dir=$(dirname "$FILENAME");
-      base=$(basename "$FILENAME" | $SED -e 's/\.aux$//')
+      base=$(basename "$FILENAME" | _sed -e 's/\.aux$//')
       pushd "$dir" 2>/dev/null >/dev/null;
         $BIBTEX "$base" "$@"
       popd 2>/dev/null >/dev/null;
@@ -349,11 +358,11 @@ _author() {
   __ask_for_main_to_OUT
   AU_MAIN="$OUT"
   $MV "$AU_DIR/TEMPLATE.tex" "$AU_DIR/${AU_MAIN}.tex"
-  $SED_INPLACE -e "s!$TEMPLATEMARKER!$AU_MAIN!g" "${AU_DIR}"/*.tex
+  _sed_inplace -e "s!$TEMPLATEMARKER!$AU_MAIN!g" "${AU_DIR}"/*.tex
   $ECHO "" > "$AU_DIR/${AU_MAIN}.tex.latexmain"
 
   if grep -q "$THESESMARKER" "$SWTHDIR/${MAIN}.tex" 2>/dev/null >/dev/null; then
-    $SED -i.bak -e "s!$THESESMARKER!$AUTHOR,$THESESMARKER!" "$SWTHDIR/${MAIN}.tex"
+    _sed -i.bak -e "s!$THESESMARKER!$AUTHOR,$THESESMARKER!" "$SWTHDIR/${MAIN}.tex"
   else
     $ECHO "$PROGRAM: Cannot find Thesesmarker \`$THESESMARKER' in $MAIN, you're on your own."
   fi
@@ -429,7 +438,6 @@ if test "x$DRY" = "xtrue"; then
   MKDIR="$ECHO $MKDIR"
   CP="$ECHO $CP"
   MV="$ECHO $MV"
-  SED="$ECHO $SED"
   OPEN="$ECHO $OPEN"
   LATEX="$ECHO $LATEX"
   BIBTEX="$ECHO $BIBTEX"
