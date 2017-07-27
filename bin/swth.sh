@@ -485,3 +485,5 @@ if test $EXIT -ne 0; then
 else
   $ECHO "Done"
 fi
+
+exit $EXIT
