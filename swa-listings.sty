@@ -65,6 +65,17 @@
 }
 \fi
 
+\lstset{numberbychapter=true}
+
+\BeforePackage{hyperref}{%
+  \newcommand*\theHlstlisting{\theHsection.\arabic{lstlisting}}}%
+\AtBeginDocument{
+  \def\thelstlisting{\@arabic\c@lstlisting}%
+  \def\theHlstnumber{\ifx\lst@@caption\@empty \lst@neglisting
+    \else \theHlstlisting \fi%
+    .\thelstnumber}}%
+
+
 \providecaptionname{english}{\lstlistlistingname}{List of Listings}
 \providecaptionname{german}{\lstlistlistingname}{Listingverzeichnis}
 \providecaptionname{ngerman}{\lstlistlistingname}{Listingverzeichnis}
