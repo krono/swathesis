@@ -59,6 +59,9 @@ to generate a [TDS][] compatible package for manual installation.
 
 The `get_requirements.sh` script installs these automatically, if needed.
 
+### Logos ###
+
+`swtathesis` uses a `Logos.zip` when put next to the `install.sh`. If you do not know how to obtain it, ask the creator of this repository. If you have no idea what this is about, please ignore it.
 
 ## Contents ##
 
