@@ -12,17 +12,21 @@
 }
 
 \ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
- 
+
+  \providecommand*\ebgaramondtabulartext[1]{\ebgaramondtabular #1}
   \addtokomafont{partentrypagenumber}{\ebgaramondtabular}
   \addtokomafont{chapterentrypagenumber}{\ebgaramondtabular}
-  \settocfeature{pagenumberhook}{\ebgaramondtabular}
   \renewcommand\listingnumberfont{\ebgaramondtabular}
   \renewcommand\tablefontcommand{\ebgaramondtabular}
+  \RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{section}
+  \RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{subsection}
+  \RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{subsubsection}
+
 
   % \defaultfontfeatures{Scale=MatchLowercase,Microtype,Ligatures=TeX}
   \defaultfontfeatures{Scale=MatchLowercase,Ligatures=TeX}
   \global\let\slshape\itshape\relax
-  
+
   \ifthenelse{\boolean{xetex}}{%
     \setmonofont{DejaVu Sans Mono}
   }{%
@@ -49,4 +53,3 @@
   \DeclareFontShape{TS1}{EBGaramond-OsF}{bx}{it}{ <-> ssub * EBGaramond-OsF/m/it }{}
   \DeclareFontShape{TS1}{EBGaramond-OsF}{bx}{sl}{ <-> ssub * EBGaramond-OsF/m/it }{}
 }
-
