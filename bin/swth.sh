@@ -273,9 +273,9 @@ _init() {
   if test "x$DRY" != "xtrue"; then
     : > $SWTHFILE
     printf "# swth config file\n" >> $SWTHFILE
-    printf "MODE=$MODE\n"         >> $SWTHFILE
-    printf "LATEX=$LATEX\n"       >> $SWTHFILE
-    printf "BIBTEX=$BIBTEX\n"     >> $SWTHFILE
+    printf "MODE=\"$MODE\"\n"         >> $SWTHFILE
+    printf "LATEX=\"$LATEX\"\n"       >> $SWTHFILE
+    printf "BIBTEX=\"$BIBTEX\"\n"     >> $SWTHFILE
     printf "MAIN=\"$MAIN\"\n"     >> $SWTHFILE
   fi
 }
