@@ -15,6 +15,7 @@
 \ifthenelse{\boolean{xetex} \or \boolean{luatex}}{}{%
   \RequirePackage[utf8]{inputenx}
   \input{ix-utf8enc.dfu}
+  \ProvideTextCommandDefault{\textblacksquare}{\vrule \@width .3em \@height .4em \@depth -.1em\relax}
   \RequirePackage{alphabeta}
 }
 
