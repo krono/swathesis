@@ -1,55 +1,31 @@
-\RequirePackage{ebgaramond}
+\RequirePackage[osf,p]{ebgaramond}
 \PassOptionsToPackage{cmintegrals,cmbraces}{newtxmath}
 \RequirePackage{newtxmath}
 \RequirePackage{ebgaramond-maths}
-% bold is not in eb
-\@ifclassloaded{scrbook}{
-  \addtokomafont{subject}{\mdseries}
-  \addtokomafont{disposition}{\mdseries}
-  \addtokomafont{descriptionlabel}{\mdseries}
-  \addtokomafont{captionlabel}{\mdseries}
-  \renewcommand*\labelitemii{\normalfont\textendash}
-}
+\addtokomafont{subject}{\mdseries}
+\addtokomafont{disposition}{\mdseries}
+\addtokomafont{descriptionlabel}{\mdseries}
+\addtokomafont{captionlabel}{\mdseries}
+\renewcommand*\labelitemii{\normalfont\textendash}
 
 \ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
-
-  \providecommand*\ebgaramondtabulartext[1]{\ebgaramondtabular #1}
-  \addtokomafont{partentrypagenumber}{\ebgaramondtabular}
-  \addtokomafont{chapterentrypagenumber}{\ebgaramondtabular}
-  \renewcommand\listingnumberfont{\ebgaramondtabular}
-  \renewcommand\tablefontcommand{\ebgaramondtabular}
-  \RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{section}
-  \RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{subsection}
-  \RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{subsubsection}
-
-
-  % \defaultfontfeatures{Scale=MatchLowercase,Microtype,Ligatures=TeX}
-  \defaultfontfeatures{Scale=MatchLowercase,Ligatures=TeX}
+  \providecommand*\ebgaramondtabulartext[1]{{\ebgaramondtabular #1}}
   \global\let\slshape\itshape\relax
-
-  \ifthenelse{\boolean{xetex}}{%
-    \setmonofont{DejaVu Sans Mono}
-  }{%
-    \setmonofont%
-    [
-        BoldFont={* Bold},
-        ItalicFont={* Oblique},
-        BoldItalicFont={* BoldOblique}
-      ]%
-      {DejaVu Sans Mono}
-  }
+  \setmonofont[ExternalLocation,
+    Scale=MatchLowercase,Ligatures=TeX,
+    BoldFont={*-Bold},
+    ItalicFont={*-Oblique},
+    BoldItalicFont={*-BoldOblique}
+    ]%
+    {DejaVuSansMono}
 }{%
   \RequirePackage[scaled=.9]{DejaVuSansMono}
-  %%
-  %% Patch EB
-  %%
-  \input{TS1EBGaramond-LF.fd}
-  \input{TS1EBGaramond-OsF.fd}
-  \DeclareFontShape{TS1}{EBGaramond-OsF}{m}{sl}{ <-> ssub * EBGaramond-OsF/m/it }{}
-  \DeclareFontShape{TS1}{EBGaramond-OsF}{b}{n}{ <-> ssub * EBGaramond-OsF/m/n }{}
-  \DeclareFontShape{TS1}{EBGaramond-OsF}{b}{it}{ <-> ssub * EBGaramond-OsF/m/it }{}
-  \DeclareFontShape{TS1}{EBGaramond-OsF}{b}{sl}{ <-> ssub * EBGaramond-OsF/m/it }{}
-  \DeclareFontShape{TS1}{EBGaramond-OsF}{bx}{n}{ <-> ssub * EBGaramond-OsF/m/n }{}
-  \DeclareFontShape{TS1}{EBGaramond-OsF}{bx}{it}{ <-> ssub * EBGaramond-OsF/m/it }{}
-  \DeclareFontShape{TS1}{EBGaramond-OsF}{bx}{sl}{ <-> ssub * EBGaramond-OsF/m/it }{}
+  \providecommand*\ebgaramondtabulartext[1]{\tabularnums{#1}}
 }
+\addtokomafont{partentrypagenumber}{\ebgaramondtabular}
+\addtokomafont{chapterentrypagenumber}{\ebgaramondtabular}
+\renewcommand\listingnumberfont{\ebgaramondtabular}
+\renewcommand\tablefontcommand{\ebgaramondtabular}
+\RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{section}
+\RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{subsection}
+\RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{subsubsection}

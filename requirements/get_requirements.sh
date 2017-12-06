@@ -2,10 +2,21 @@
 
 PROGRAM=`echo $0 | sed 's%.*/%%'`
 
-
+# PREAMBLE
+#####################################################################
+# SHELL SPECIFICS
 if [ ! -z "$ZSH_VERSION" ]; then
   setopt shwordsplit
 fi
+
+# SEE IF WE SHOULD RUN
+if [ -z "$TDS_DEST" ]; then
+  $ECHO "run from install or run as"
+  $ECHO "\tTDS_DEST=$(kpsewhich -var-value TEXMFHOME) $0"
+  exit 1
+fi
+
+# COMMAND DETECTION
 ECHO="/usr/bin/printf %b\\n"
 if type wget >/dev/null 2>/dev/null; then
   FETCH="wget --quiet"
@@ -20,13 +31,6 @@ if type unzip >/dev/null 2>/dev/null; then
 else
     $ECHO "\`unzip' not found, please install."
     exit 1
-fi
-
-
-if [ -z "$TDS_DEST" ]; then
-  $ECHO "run from install or run as"
-  $ECHO "\tTDS_DEST=$(kpsewhich -var-value TEXMFHOME) $0"
-  exit 1
 fi
 
 if type ctanify >/dev/null 2>/dev/null; then
@@ -44,10 +48,11 @@ else
   chmod +x $CTANIFY
 fi
 
+# DETECT DESTINATION
 if [ ! -d "$TDS_DEST" ]; then
   mkdir -p "$TDS_DEST"
 fi
-
+# TEMP DIRECTORY
 WORKING=$(mktemp -q -d -t "$PROGRAM-XXXXXX")
 if [ $? -ne 0 ]; then
   $ECHO "Cannot create temp dir, abort"
@@ -57,6 +62,8 @@ else
   trap 'rm -rf "$WORKING"' EXIT
 fi
 
+# HELPERS
+########################################################################
 _deploy_tds() {
   case $- in
     *e*) RESET_E=0 ;;
@@ -194,8 +201,17 @@ _need_class() {
   _need _has_class "$@"
 }
 
+########################################################################
+########################################################################
+########################################################################
+########################################################################
 
+# REQUIREMENTS
 
+########################################################################
+########################################################################
+########################################################################
+########################################################################
 if _need_class "llncs" "2013/09/27"; then
  if [ ! -f llncs.tds.zip ]; then
     ./tdsify_llncs.sh
@@ -204,14 +220,14 @@ if _need_class "llncs" "2013/09/27"; then
   $ECHO ">> installed current LLNCS"
 fi
 
-if _need_package "scrbase" "2013/12/19" "KOMA-script"; then
+if _need_package "scrbase" "2014/10/28" "KOMA-script"; then
   TDS=`_get_tds "koma-script" ""`
   _deploy_tds $TDS
   $ECHO ">> installed current KOMA-script".
 fi
 
 if _need_package "titlepage" "2012/12/18"; then
-  TDS=`_get_tds "titlepage" "http://www.komascript.de/files/titlepage.tds__0.zip"`
+  TDS=`_get_tds "titlepage" "https://komascript.de/repository/tds/titlepage-9.tds.zip"`
   _deploy_tds $TDS
   $ECHO ">> installed current titlepage"
 fi

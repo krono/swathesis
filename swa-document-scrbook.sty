@@ -118,38 +118,24 @@
 \addtokomafont{disposition}{\rmfamily}
 \setkomafont{title}{\rmfamily\mdseries}
 
-\@ifpackagelater{scrbase}{2014/10/28}{%
-  \RedeclareSectionCommand[%
-    afterskip = 1\baselineskip,%
-    beforeskip = -1\baselineskip,%
-    ]{section}
-  \RedeclareSectionCommand[%
-    afterskip = 1\baselineskip,%
-    beforeskip = -1\baselineskip,%
-    ]{subsection}
-  \RedeclareSectionCommand[%
-    afterskip = 1sp plus -1sp minus 1sp,%
-    beforeskip = -1\baselineskip,%
-    ]{subsubsection}
-  \RedeclareSectionCommand[%
-    beforeskip = 1\baselineskip,%
-    ]{paragraph}
-  \RedeclareSectionCommand[%
-    beforeskip = 1\baselineskip,%
-    ]{subparagraph}
-}{
-  % for sections, not so easy.
-  \def\TR@patchw{\TR@warn{Cannot patch sectioning command.\MessageBreak This is
-      not severe.}}
-  \patchcmd{\section}{-3.5ex \@plus -1ex \@minus -.2ex}{-2\baselineskip}{}{\TR@patchw}
-  \patchcmd{\section}{2.3ex \@plus.2ex}{\baselineskip}{}{\TR@patchw}
-  \patchcmd{\subsection}{-3.25ex\@plus -1ex \@minus -.2ex}{-\baselineskip}{}{\TR@patchw}
-  \patchcmd{\subsection}{1.5ex \@plus .2ex}{\baselineskip}{}{\TR@patchw}
-  \patchcmd{\subsubsection}{-3.25ex\@plus -1ex \@minus -.2ex}{-\baselineskip}{}{\TR@patchw}
-  \patchcmd{\subsubsection}{1.5ex \@plus .2ex}{1sp \@plus 1sp \@minus 1sp}{}{\TR@patchw}
-  \patchcmd{\paragraph}{3.25ex \@plus1ex \@minus .2ex}{\baselineskip}{}{\TR@patchw}
-  \patchcmd{\subparagraph}{3.25ex \@plus1ex \@minus .2ex}{\baselineskip}{}{\TR@patchw}
-}
+\RedeclareSectionCommand[%
+  afterskip = 1\baselineskip,%
+  beforeskip = -1\baselineskip,%
+  ]{section}
+\RedeclareSectionCommand[%
+  afterskip = 1\baselineskip,%
+  beforeskip = -1\baselineskip,%
+  ]{subsection}
+\RedeclareSectionCommand[%
+  afterskip = 1sp plus -1sp minus 1sp,%
+  beforeskip = -1\baselineskip,%
+  ]{subsubsection}
+\RedeclareSectionCommand[%
+  beforeskip = 1\baselineskip,%
+  ]{paragraph}
+\RedeclareSectionCommand[%
+  beforeskip = 1\baselineskip,%
+  ]{subparagraph}
 
 \AtEndPreamble{
   % redo document stuff:
