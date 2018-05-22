@@ -124,11 +124,21 @@ _get_ctan() {
 }
 
 _get_tds() {
+  _get_tds_ 'marcos/latex/contrib' "$@"
+}
+
+_get_tds_font() {
+  _get_tds_ 'fonts' "$@"
+}
+
+
+_get_tds() {
+  PART="$1"; shift
   PKG="$1"; shift
   URL="$1"; shift
   if [ -z "$URL" ]; then
     TDS=$PKG.tds.zip
-    URL="http://mirrors.ctan.org/install/macros/latex/contrib/$TDS"
+    URL="http://mirrors.ctan.org/install/$PART/$TDS"
   else
     TDS=`basename "$URL"`
   fi
@@ -252,8 +262,8 @@ if _need_package "acronym" "2010/09/08"; then
 fi
 
 
-if _need_package "newpx" "2017/08/18"; then
-  TDS=`_get_tds "newpx" ""`
+if _need_package "newpxmath" "2017/08/18"; then
+  TDS=`_get_tds_font "newpx" ""`
   _deploy_tds $TDS
   $ECHO ">> installed current newpx"
 fi
