@@ -21,7 +21,7 @@ ECHO="/usr/bin/printf %b\\n"
 if type wget >/dev/null 2>/dev/null; then
   FETCH="wget --quiet"
 elif type curl >/dev/null 2>/dev/null; then
-  FETCH="curl -s -S -O"
+  FETCH="curl -L -s -S -O"
 else
   FETCH="$ECHO Please download "
 fi
