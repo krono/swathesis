@@ -155,9 +155,9 @@ _get_tds_() {
 _has_package() {
   PACKAGETEST=$(mktemp -q -t pkgtst$1-XXXX.tex)
   echo "\\\\relax%
-\\\\renewcommand{\\\\GenericWarning}[2]{\\\\GenericError{#1}{#2}{}{ERROR}}%
 \\\\documentclass{article}%
 \\\\nofiles%
+\\\\def\\\\GenericWarning#1#2{\\\\GenericError{#1}{#2}{ERROR}{ERROR}}
 \\\\RequirePackage{$1}[$2]%
 \\\\begin{document}\\\\end{document}" > $PACKAGETEST
   (kpsewhich $1.sty && pdflatex \
@@ -173,7 +173,7 @@ _has_package() {
 _has_class() {
   CLASSTEST=$(mktemp -q -t clstst$1-XXXX.tex)
   echo "\\\\relax%
-\\\\renewcommand{\\\\GenericWarning}[2]{\\\\GenericError{#1}{#2}{}{ERROR}}%
+\\\\def\\\\GenericWarning#1#2{\\\\GenericError{#1}{#2}{ERROR}{ERROR}}
 \\\\documentclass{$1}[$2]%
 \\\\nofiles%
 \\\\begin{document}\\\\end{document}" > $CLASSTEST
