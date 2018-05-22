@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 PROGRAM=`echo $0 | sed 's%.*/%%'`
 PROGDIR="$(cd `dirname $0`; echo $PWD)"

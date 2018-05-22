@@ -1,5 +1,5 @@
 #!/bin/sh
-
+set -e
 PROGRAM=`echo $0 | sed 's%.*/%%'`
 
 # PREAMBLE
