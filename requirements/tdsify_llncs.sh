@@ -71,13 +71,13 @@ DOC=tds/doc/latex/llncs
 BST=tds/bibtex/bst/llncs
 
 if [ ! -d "$TEX" ]; then mkdir -p "$TEX"; fi
-_cp llncs.cls sprmindx.sty "$TEX"
+_cp llncs.cls "$TEX"
 
 if [ ! -d "$BST" ]; then mkdir -p "$BST"; fi
 _cp *.bst "$BST"
 
 if [ ! -d "$DOC" ]; then mkdir -p "$DOC"; fi
-_cp *.txt *.d* *.ind llncsdoc.* "$DOC"
+_cp *.txt *.tex *.eps llncsdoc.* "$DOC"
 
 _pkg_c tds $_P/llncs.tds.zip
 rm -rf tds $SRC

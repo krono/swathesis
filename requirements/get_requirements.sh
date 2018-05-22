@@ -132,7 +132,7 @@ _get_tds_font() {
 }
 
 
-_get_tds() {
+_get_tds_() {
   PART="$1"; shift
   PKG="$1"; shift
   URL="$1"; shift
