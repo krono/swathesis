@@ -255,7 +255,7 @@ fi
 if _need_package "newpx" "2017/08/18"; then
   TDS=`_get_tds "newpx" ""`
   _deploy_tds $TDS
-  $ECHO ">> installed current acronym"
+  $ECHO ">> installed current newpx"
 fi
 
 if _need_package "ebgaramond" "2013/05/22"; then
