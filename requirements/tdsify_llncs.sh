@@ -45,7 +45,7 @@ fi
 
 
 SRC="llncs2e.zip"
-URL="ftp://ftp.springer.de/pub/tex/latex/llncs/latex2e/$SRC"
+URL="ftp://ftp.springernature.com/cs-proceeding/llncs/$SRC"
 
 WORKING=$(mktemp -q -d -t "$PROGRAM-XXXXXX")
 if [ $? -ne 0 ]; then
