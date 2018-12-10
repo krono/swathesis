@@ -124,7 +124,7 @@ _get_ctan() {
 }
 
 _get_tds() {
-  _get_tds_ 'marcos/latex/contrib' "$@"
+  _get_tds_ 'macros/latex/contrib' "$@"
 }
 
 _get_tds_font() {
