@@ -44,6 +44,10 @@
 \DefineSimpleTitleKey[HPISWA]{facultylogo}
 \DefineSimpleTitleKey[HPISWA]{universitylogo}
 
+\DefineSimpleTitleKey[HPISWA]{titlepagelanguage}
+\DefineSimpleTitleKey[HPISWA]{titlelanguage}
+\DefineSimpleTitleKey[HPISWA]{othertitlelanguage}
+
 
 %%% to be KOMA-like, nearly straight from title-KOMAScript.def
 \providecommand*{\@uppertitleback}{}
@@ -240,6 +244,11 @@
 }
 \renewcommand*{\makemaintitle}{%
   \begin{titlepage}
+    \def\@titlepagelanguageback{}
+    \ifx\@titlepagelanguage\@empty\else
+      \edef\@titlepagelanguageback{\languagename}
+      \expandafter\selectlanguage\expandafter{\@titlepagelanguage}
+    \fi
     \ifcsundef{if@titlepageiscoverpage}{\global\let\if@titlepageiscoverpage\iffalse}
     \if@titlepageiscoverpage
       \edef\titlepage@restore{%
@@ -280,21 +289,44 @@
         \@titlehead\par
       \fi
       \centering
+      \def\@titlellanguageback{}
+      \def\@othertitlelanguageback{}
       \ifx\@othertitle\@empty
         \Large
         \null\vfill
+                \ifx\@titlelanguage\@empty\else%
+                  \edef\@titlellanguageback{\languagename}%
+                  \expandafter\selectlanguage\expandafter{\@titlelanguage}%
+                \fi%
         {\titlefont\huge\@title}\par
         {\ifx\@subtitle\@empty\else\@subtitlefont{\@subtitle}\par\fi}%
+                \ifx\@titlellanguageback\@empty\else%
+                  \expandafter\selectlanguage\expandafter{\@titlellanguageback}%
+                \fi%
       \else
         \large
         \null\vfill
+                \ifx\@titlelanguage\@empty\else%
+                  \edef\@titlellanguageback{\languagename}%
+                  \expandafter\selectlanguage\expandafter{\@titlelanguage}%
+                \fi%
         {\titlefont\LARGE\@title}\par
         \ifx\@subtitle\@empty\else{\@subtitlefont{\@subtitle}}{\LARGE\strut\par}\fi%
+                \ifx\@titlellanguageback\@empty\else%
+                  \expandafter\selectlanguage\expandafter{\@titlellanguageback}%
+                \fi%
         \vspace*{\baselineskip}%
+                \ifx\@othertitlelanguage\@empty\else%
+                  \edef\@othertitlelanguageback{\languagename}%
+                  \expandafter\selectlanguage\expandafter{\@othertitlelanguage}%
+                \fi%
         {\itshape
            {\titlefont\LARGE\@othertitle}\par
            \ifx\@othersubtitle\@empty\else{\@subtitlefont{\@othersubtitle}}{\LARGE\strut\par}\fi%
         }%
+                \ifx\@othertitlelanguageback\@empty\else%
+                  \expandafter\selectlanguage\expandafter{\@othertitlelanguageback}%
+                \fi%
       \fi
       \vspace*{\baselineskip}
       \fromname\par
@@ -318,6 +350,9 @@
       {\@date\par}
       \clearpage
       \csname titlepage@restore\endcsname
+      \ifx\@titlepagelanguageback\@empty\else
+        \expandafter\selectlanguage\expandafter{\@titlepagelanguageback}
+      \fi
   \end{titlepage}
 }
 \endinput

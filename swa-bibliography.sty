@@ -1,25 +1,30 @@
 
+\PassOptionsToPackage{autostyle}{csquotes}
 \RequirePackage{csquotes}
-\PassOptionsToPackage{%
-  citestyle=numeric,%
-  maxnames=20,%
-  defernumbers=true
-}{biblatex}
-\AtEndPreamble{
-  \RequirePackage{biblatex}}
+\renewcommand{\mkenddispquote}[2]{#1\par\nopagebreak\hfill{\normalfont #2}}
+\newenvironment*{swa@itquote}
+  {\quote\itshape}
+  {\endquote}
+\SetBlockEnvironment{swa@itquote}
 
+\PassOptionsToPackage{style=numeric,sortcites,defernumbers=true}{biblatex}
 \AfterPackage{biblatex}{
-  \ifthenelse{\boolean{@swa@german}}{
-    \ExecuteBibliographyOptions{
-      url=false,%
-      language=ngerman,%
-      urldate=iso8601%
-    }
-  }{
-    \ExecuteBibliographyOptions{%
-      url=false,%
-      language=american,%
-      urldate=iso8601%
-    }
+  \setcounter{biburllcpenalty}{7000}
+  \setcounter{biburlucpenalty}{8000}
+  \@ifpackagelater{biblatex}{2016/03/01}
+    {\ExecuteBibliographyOptions{giveninits=true}}
+    {\ExecuteBibliographyOptions{firstinits=true}}
+  \@ifpackagelater{biblatex}{2016/09/10}%
+    {\@ifpackagelater{biblatex}{2017/12/19}%
+      {\ExecuteBibliographyOptions{urldate=iso,seconds=true}}%
+      {\ExecuteBibliographyOptions{urldate=edtf,seconds=true}}}%
+    {\ExecuteBibliographyOptions{urldate=iso8601}}
+  \ifthenelse{\boolean{@swa@german}}{\def\swa@bibl@lang{ngerman}}{\def\swa@bibl@lang{american}}
+  \ExecuteBibliographyOptions{
+    url=false,%
+    abbreviate=false,%
+    maxnames=99,%
+    language=\swa@bibl@lang,%
   }
 }
+\BeforeBeginEnvironment{document}{\RequirePackage{biblatex}}

@@ -4,15 +4,14 @@
 
 
 \RequirePackage{ifpdf}
-\RequirePackage{url}
 
 \RequirePackage[table,fixpdftex,dvipsnames,svgnames]{xcolor}
 
+\RequirePackage{fnpct}
+\setfnpct{after-punct-space={-.2em}}
+
 \RequirePackage{totpages}
-
-
 \RequirePackage{pdfpages}
-\ifthenelse{\boolean{xetex}}{}{\pdfcompresslevel=6}
 
 % macros for comments
 \RequirePackage[%
@@ -32,6 +31,7 @@
 \end{minipage}
 }%
 }
+
 
 % Disable single lines at the start of a paragraph (Schusterjungen)
 \clubpenalty = \@M
@@ -90,26 +90,41 @@
   \smaller\rowcolors*{#1}{swashadecolor}{white}\tablefontcommand%
 }
 
-\AtEndPreamble{
+\PassOptionsToPackage{hyphens}{url}
+\ifthenelse{\equal{\printmode}{true}}{
+  \PassOptionsToPackage{bookmarks=false}{hyperref}
+}{
+  \PassOptionsToPackage{bookmarks=true}{hyperref}
+}
+\PassOptionsToPackage{%
+  final,%
+  unicode=true,%
+  plainpages=false,%
+  pdfpagelabels=true,%
+}{hyperref}
+
+\BeforeBeginEnvironment{document}{\RequirePackage{hyperref}}
+
+\AfterPackage{hyperref}{\RequirePackage{hyperxmp}}
+\AtBeginDocument{%
+  \hypersetup{%
+    breaklinks=true,
+    %pdfborder = 0 0 0,
+    bookmarksnumbered = true,
+    pdfdisplaydoctitle = false,
+    pdfpagemode = UseOutlines,
+    pdfstartpage=3,
+    % pagebackref=true,%
+  }
   \ifthenelse{\equal{\printmode}{true}}{
-    \RequirePackage[final,pdfpagelabels,bookmarks=false]{hyperref}
     \hypersetup{colorlinks=false}
   }{
-    \RequirePackage[final,pdfpagelabels,bookmarks=true]{hyperref}
     \hypersetup{%
       colorlinks=true,   %% true for printout
       linkcolor=MidnightBlue,%
       citecolor=MidnightBlue,%
       urlcolor=MidnightBlue,%
     }
-  }
-
-  \hypersetup{%
-    plainpages=false,
-    breaklinks=true,
-    unicode,%
-    pdfstartpage=3,
-    % pagebackref=true,%
   }
 }
 

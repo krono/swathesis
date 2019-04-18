@@ -1,11 +1,16 @@
 \RequirePackage[osf,p]{ebgaramond}
+\ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
+  %\addfontfeatures{RawFeature={+ss06}}
+  \AtBeginDocument{\addfontfeatures{RawFeature={+ss06}}}
+}{}
 \PassOptionsToPackage{cmintegrals,cmbraces}{newtxmath}
 \RequirePackage{newtxmath}
 \RequirePackage{ebgaramond-maths}
-\addtokomafont{subject}{\mdseries}
-\addtokomafont{disposition}{\mdseries}
-\addtokomafont{descriptionlabel}{\mdseries}
-\addtokomafont{captionlabel}{\mdseries}
+\addtokomafont{subject}{\rmfamily}
+\addtokomafont{disposition}{\rmfamily\mdseries}
+\addtokomafont{descriptionlabel}{\rmfamily}
+\addtokomafont{captionlabel}{\rmfamily}
+\addtokomafont{paragraph}{\itshape}
 \renewcommand*\labelitemii{\normalfont\textendash}
 
 \ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
@@ -24,8 +29,9 @@
 }
 \addtokomafont{partentrypagenumber}{\ebgaramondtabular}
 \addtokomafont{chapterentrypagenumber}{\ebgaramondtabular}
-\renewcommand\listingnumberfont{\ebgaramondtabular}
-\renewcommand\tablefontcommand{\ebgaramondtabular}
+\AtBeginDocument{
+  \renewcommand\listingnumberfont{\ebgaramondtabular}
+  \renewcommand\tablefontcommand{\ebgaramondtabular}}
 \RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{section}
 \RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{subsection}
 \RedeclareSectionCommand[tocpagenumberformat=\ebgaramondtabulartext]{subsubsection}

@@ -105,7 +105,7 @@
 }
 
 \ifthenelse{\equal{\swa@degree}{phd}}{
-  \PassOptionsToPackage{shortcuts,nopostdot,nonumberlist,acronym,xindy}{glossaries}
+  \PassOptionsToPackage{shortcuts,nopostdot,nonumberlist,nosuper,acronym,xindy}{glossaries}
   \RequirePackage{glossaries}
   \setacronymstyle{long-sc-short}
   \AtEndPreamble{\makeglossaries}

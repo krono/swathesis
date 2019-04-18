@@ -86,13 +86,16 @@
 
 %\RequirePackage[hang,small,bf]{caption}
 \setcapindent{1em}
-\addtokomafont{caption}{\small}
-\addtokomafont{captionlabel}{\bfseries}
+% \addtokomafont{caption}{\small}
+\setkomafont{captionlabel}{\normalfont\bfseries}
+\RequirePackage{subcaption}
 
 
 \RequirePackage{enumitem}
 \setlist{noitemsep,topsep=.5\baselineskip,leftmargin=1em}
+\setlist[1]{leftmargin=0pt}
 \setdescription{noitemsep,font=\normalfont\scshape,leftmargin=\parindent}
+% \setkomafont{descriptionlabel}{\normalfont\scshape}
 
 % koma-hacks
 \RequirePackage{scrhack}

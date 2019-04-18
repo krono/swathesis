@@ -1,29 +1,32 @@
 \RequirePackage{etoolbox}
-\RequirePackage{morewrites}
-\RequirePackage{ifthen}
-\RequirePackage{ifpdf}
-\RequirePackage{ifluatex}
-\RequirePackage{ifxetex}
+\RequirePackage{ifthen,ifpdf,ifluatex,ifxetex}
 
-\ifthenelse{\boolean{luatex}}{%
-  \IfFileExists{luatex85.sty}{%
-    \RequirePackage{luatex85}}{}}{}%
+\ifcsundef{ifundefinedorrelax}%
+ {\RequirePackage{scrbase}}%
+ {}
 
-\ifthenelse{\boolean{xetex}}{}{\RequirePackage{cmap}}
-\RequirePackage[LGR,OT1,LY1,T1]{fontenc}
+\def\swa@RequireIfPackageExists#1{%
+  \IfFileExists{#1.sty}{\RequirePackage{#1}{}}{}}
 
-\ifthenelse{\boolean{xetex} \or \boolean{luatex}}{}{%
-  \RequirePackage[utf8]{inputenx}
-  \input{ix-utf8enc.dfu}
-  \ProvideTextCommandDefault{\textblacksquare}{\vrule \@width .3em \@height .4em \@depth -.1em\relax}
-  \RequirePackage{alphabeta}
-}
+\ifthenelse{\boolean{luatex}}%
+  {\swa@RequireIfPackageExists{luatex85}
+   \swa@RequireIfPackageExists{luatexbase}
+   \PreventPackageFromLoading*%
+     [\typeout{pdfcolmk unneccessary on non-pdftex}]%
+     {pdfcolmk}}%
+  {\RequirePackage{morewrites}}
 
 
-\ifcsname ifundefinedorrelax\endcsname
-\else
-\RequirePackage{scrbase}
-\fi
+\ifthenelse{\boolean{xetex}\OR\boolean{luatex}}%
+  {}%
+  {\input glyphtounicode
+   \pdfgentounicode=1
+   \RequirePackage[LGR,OT1,LY1,T1]{fontenc}
+   \RequirePackage[utf8]{inputenx}
+   \input{ix-utf8enc.dfu}
+   \ProvideTextCommandDefault{\textblacksquare}{\vrule \@width .3em \@height .4em \@depth -.1em\relax}
+   \RequirePackage{alphabeta}}
+
 
 %%
 % From titlepage.dtx by Markus Kohm

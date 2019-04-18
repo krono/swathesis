@@ -4,11 +4,7 @@
 \RequirePackage{textcase}
 \RequirePackage{relsize}
 
-\ifthenelse{\boolean{luatex}}{%
-  \RequirePackage[final]{microtype}[2013/05/23]
-}{
-  \RequirePackage[final,babel=true]{microtype}[2013/05/23]
-}
+\RequirePackage[final,babel=true]{microtype}[2013/05/23]
 
 %
 % engine-dependent, eg, encoding, loading.
