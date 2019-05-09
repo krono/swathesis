@@ -34,20 +34,21 @@
 \newcommand*\bindingcorrection[3][1]{
   % #1 -> "Volumen", typically 1
   % #2 -> pages
-  % #3 -> gammage
+  % #3 -> grammage
 
   % Kohm: Die Bindekorrektur macht bei guter Bindung und gutem Papier maximal die
   % Hälfte des Buchblocks aus.
  %
  % BCOR = (gamage/1000 * sheets * volume) / 2
- %     = gammage/1000 * pages/2 * volume/1 * 1/2
- %     = gammage * pages / 4000 * volume
- %     = gammage * pages * volume * 0.00025
+ %     = grammage/1000 * pages/2 * volume/1 * 1/2
+ %     = grammage * pages / 4000 * volume
+ %     = grammage * pages * volume * 0.00025
   \if@swa@bindingcorrection@set\relax
     \message{^^J Binding correction already set. ignoring}
   \else
     \csdimdef{tempcorrection}{\dimexpr #1\dimexpr 0.00025\dimexpr #3mm\relax * #2}
     % Set and force recalculation
+    \message{^^J Binding correction determined as \tempcorrection}
     \KOMAoptions{DIV=9,BCOR=\tempcorrection}
     \areaset[current]{\textwidth}{1.61803399\textwidth}
     \@swa@bindingcorrection@settrue
@@ -55,9 +56,16 @@
 }
 \csletcs{bindekorrektur}{bindingcorrection}
 
-\providecommand*\papergammage{80}
+\providecommand*\papergrammage{80}
 \providecommand*\papervolume{1}
 \providecommand*\BCORTotPages{0}
+\newcommand*\setbindingcorrection{%
+  \ifnumcomp{\BCORTotPages}{=}{0}{
+      \bindingcorrection[\papervolume]{60}{\papergrammage}
+    }{%
+      \bindingcorrection[\papervolume]{\BCORTotPages}{\papergrammage}
+    }
+}
 \AfterEndDocument{
   %
   % We cannot rely on the aux file here (where totpages writes TotPages)
@@ -75,11 +83,7 @@
 }
 \AtEndPreamble{%
   \@input{\jobname.pgs}
-  \ifnumcomp{\BCORTotPages}{=}{0}{
-      \bindingcorrection[\papervolume]{60}{\papergammage}
-    }{%
-      \bindingcorrection[\papervolume]{\BCORTotPages}{\papergammage}
-    }
+  \setbindingcorrection
 }
 
 \setfootnoterule{4cc}
