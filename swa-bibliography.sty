@@ -1,7 +1,14 @@
 
 \PassOptionsToPackage{autostyle}{csquotes}
+
+%must come before csquotes and does not do harm
+\RequirePackage{lineno}
+
 \RequirePackage{csquotes}
-\renewcommand{\mkenddispquote}[2]{#1\par\nopagebreak\hfill{\normalfont #2}}
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil{#1}%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+\renewcommand{\mkenddispquote}[2]{#1\signed{\normalfont #2}}
 \newenvironment*{swa@itquote}
   {\quote\itshape}
   {\endquote}

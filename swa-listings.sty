@@ -65,12 +65,12 @@
 }
 \fi
 
-\lstset{numberbychapter=true}
 
 
 
 \@ifclassloaded{scrbook}{}{%
   % not book
+  \lstset{numberbychapter=true}
   \BeforePackage{hyperref}{%
     \newcommand*\theHlstlisting{\theHsection.\arabic{lstlisting}}}%
   \AtBeginDocument{

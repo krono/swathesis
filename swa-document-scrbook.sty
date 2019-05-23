@@ -20,7 +20,7 @@
 
 \KOMAoptions{
     pagesize,
-    % DIV=9,
+    % DIV=8,
     open=right,
     appendixprefix=true,
     % headinclude=true,
@@ -49,7 +49,7 @@
     \csdimdef{tempcorrection}{\dimexpr #1\dimexpr 0.00025\dimexpr #3mm\relax * #2}
     % Set and force recalculation
     \message{^^J Binding correction determined as \tempcorrection}
-    \KOMAoptions{DIV=9,BCOR=\tempcorrection}
+    \KOMAoptions{DIV=8,BCOR=\tempcorrection}
     \areaset[current]{\textwidth}{1.61803399\textwidth}
     \@swa@bindingcorrection@settrue
   \fi
