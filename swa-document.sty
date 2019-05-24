@@ -90,7 +90,9 @@
   \smaller\rowcolors*{#1}{swashadecolor}{white}\tablefontcommand%
 }
 
+\PassOptionsToPackage{log-declarations=false}{xparse}
 \PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{all}{hypcap}
 \ifthenelse{\equal{\printmode}{true}}{
   \PassOptionsToPackage{bookmarks=false}{hyperref}
 }{
@@ -103,9 +105,14 @@
   pdfpagelabels=true,%
 }{hyperref}
 
-\BeforeBeginEnvironment{document}{\RequirePackage{hyperref}}
+\BeforeBeginEnvironment{document}{%
+  \RequirePackage{hyperref}
+  \RequirePackage{bookmark}
+  \RequirePackage{hyperxmp}
+  \RequirePackage{hypcap}
+  \RequirePackage{accsupp}
+}
 
-\AfterPackage{hyperref}{\RequirePackage{hyperxmp}}
 \AtBeginDocument{%
   \hypersetup{%
     breaklinks=true,

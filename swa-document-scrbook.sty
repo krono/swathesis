@@ -144,6 +144,13 @@
   beforeskip = 1\baselineskip,%
   ]{subparagraph}
 
+
+\ifthenelse{\equal{\swa@degree}{phd}}%
+  {\newenvironment{chaptersummary}[1][]%
+    {\addsec*{Summary}\phantomsection}
+    {}}%
+  {}
+
 \AtEndPreamble{
   % redo document stuff:
   \ifundefinedorrelax{hypersetup}{}{%

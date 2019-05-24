@@ -107,8 +107,11 @@
 
 \ifthenelse{\equal{\swa@degree}{phd}}{
   \PassOptionsToPackage{shortcuts,nopostdot,nonumberlist,nosuper,acronym,xindy}{glossaries}
-  \RequirePackage{glossaries}
-  \setacronymstyle{long-sc-short}
+  \BeforeBeginEnvironment{document}{%
+    % so as to be loaded after hyperref
+    \RequirePackage{glossaries}
+    \setacronymstyle{long-sc-short}
+  }
   \AtEndPreamble{\makeglossaries}
   \AtEndDocument{\glsaddallunused}
 }{
@@ -125,7 +128,7 @@
 %\recalctypearea
 \raggedbottom
 
-\AtEndOfClass{
+\BeforeBeginEnvironment{document}{%
   \InputIfFileExists {\jobname-names.tex}{
     \ClassInfo{swathesis}{Using names-file `\jobname-names.tex'}
   }{
