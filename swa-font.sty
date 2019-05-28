@@ -39,12 +39,12 @@
 %
 % useful commands
 %
-\DeclareRobustCommand{\spacedallcaps}[1]{%
-  \textls[80]{\MakeTextUppercase{#1}}}%
-\DeclareRobustCommand{\spacedlowsmallcaps}[1]{%
-  {\scshape\MakeTextLowercase{#1}}}%s
-\DeclareRobustCommand\Largespacedlowsmallcaps[1]{%
-  \spacedlowsmallcaps{\Large #1}}
+\DeclareRobustCommand{\spacedallcaps}[1]{\textls[80]{\MakeTextUppercase{#1}}}%
+\ifthenelse{\boolean{xetex}\OR\boolean{luatex}}%
+  {\DeclareRobustCommand{\spacedlowsmallcaps}[1]{{{\textls[75]{\scshape\MakeTextLowercase{#1}}}}}%
+  {\DeclareRobustCommand{\spacedlowsmallcaps}[1]{{\scshape\MakeTextLowercase{#1}}}}%
+
+\DeclareRobustCommand\Largespacedlowsmallcaps[1]{\spacedlowsmallcaps{\Large #1}}}
 
 
 %

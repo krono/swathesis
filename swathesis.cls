@@ -107,10 +107,10 @@
 
 \ifthenelse{\equal{\swa@degree}{phd}}{
   \PassOptionsToPackage{shortcuts,nopostdot,nonumberlist,nosuper,acronym,xindy}{glossaries}
+  \AfterPackage{glossaries}{\setacronymstyle{long-sc-short}}
   \BeforeBeginEnvironment{document}{%
     % so as to be loaded after hyperref
     \RequirePackage{glossaries}
-    \setacronymstyle{long-sc-short}
   }
   \AtEndPreamble{\makeglossaries}
   \AtEndDocument{\glsaddallunused}
