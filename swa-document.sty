@@ -72,8 +72,13 @@
       \begin{tabular}{@{}cc@{}}% 
         \multicolumn2c*\\[-2.2ex]*&*% 
       \end{tabular}}}}
-\providecommand\vskipnextgrid{\vskip\baselineskip}
-\newcommand{\ParSep}{{\vskipnextgrid\noindent\hbox to \textwidth{\hss\large\asterism\hss}\par\vskipnextgrid}}
+% \providecommand\vskipnextgrid{\vskip\baselineskip}
+\newcommand*\ParSep{%
+  \vspace{\baselineskip}\noindent%
+  \makebox[\linewidth][c]{\large\asterism}%
+  \@afterindentfalse%
+  \par\nobreak\vspace{\baselineskip}%
+  \@afterheading}
 
 \RequirePackage{pifont}
 % Table stuff

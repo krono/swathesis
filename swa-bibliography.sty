@@ -15,10 +15,15 @@
 \renewcommand{\mktextmod}[1]{{\em [#1]}}
 \renewcommand*{\mkccitation}[1]{~#1}  
 \renewcommand{\mkenddispquote}[2]{#1\signed{\normalfont #2}}
-\newenvironment{swa@itquote}
+\newenvironment{swa@itquotation}
   {\begin{quotation}\em\noindent}
   {\end{quotation}}
-\SetBlockEnvironment{swa@itquote}
+\newenvironment{swa@itnoquote}
+  {\par\begingroup\em\noindent}
+  {\endgroup\par}
+\newcommand*\SetNoQuoteDisplayquote{\SetBlockEnvironment{swa@itnoquote}}
+\newcommand*\SetQuoteDisplayquote{\SetBlockEnvironment{swa@itquotation}}
+\SetQuoteDisplayquote
 
 \PassOptionsToPackage{style=numeric,sortcites,defernumbers=true}{biblatex}
 \AfterPackage{biblatex}{
