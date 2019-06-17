@@ -67,6 +67,7 @@ The `get_requirements.sh` script installs these automatically, if needed.
 
     .
     ├── README.md         — This file
+    ├── LICENSE.txt       — The LPPL
     ├── install.sh        — Installation helper
     ├── tdsify.sh         — Packaging helper
     ├── requirements/     — Requirements helper
