@@ -237,7 +237,7 @@ if _need_package "scrbase" "2014/10/28" "KOMA-script"; then
 fi
 
 if _need_package "titlepage" "2012/12/18"; then
-  TDS=`_get_tds "titlepage" "https://komascript.de/repository/tds/titlepage-9.tds.zip"`
+  TDS=`_get_tds "titlepage" "https://komascript.de/repository/tds/titlepage-11.tds.zip"`
   _deploy_tds $TDS
   $ECHO ">> installed current titlepage"
 fi
