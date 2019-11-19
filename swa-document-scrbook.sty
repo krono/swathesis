@@ -31,11 +31,15 @@
 \newif\if@swa@bindingcorrection@set
 \@swa@bindingcorrection@setfalse
 
+\providecommand*\swa@settypearea[1]{%
+    \KOMAoptions{DIV=8,BCOR=#1}%
+    \areaset[current]{\textwidth}{1.61803399\textwidth}}
+
 \newcommand*\bindingcorrection[3][1]{
   % #1 -> "Volumen", typically 1
   % #2 -> pages
   % #3 -> grammage
-
+  %
   % Kohm: Die Bindekorrektur macht bei guter Bindung und gutem Papier maximal die
   % Hälfte des Buchblocks aus.
  %
@@ -46,11 +50,10 @@
   \if@swa@bindingcorrection@set\relax
     \message{^^J Binding correction already set. ignoring}
   \else
-    \csdimdef{tempcorrection}{\dimexpr #1\dimexpr 0.00025\dimexpr #3mm\relax * #2}
+    \csdimdef{tempcorrection}{0.9\dimexpr#2\dimexpr #1\dimexpr 0.00025\dimexpr #3mm\relax}
     % Set and force recalculation
     \message{^^J Binding correction determined as \tempcorrection}
-    \KOMAoptions{DIV=8,BCOR=\tempcorrection}
-    \areaset[current]{\textwidth}{1.61803399\textwidth}
+    \swa@settypearea{\tempcorrection}
     \@swa@bindingcorrection@settrue
   \fi
 }
