@@ -26,14 +26,9 @@
     % headinclude=true,
     % footinclude=true
   }
-% \areaset[current]{\textwidth}{1.61803399\textwidth}
 
 \newif\if@swa@bindingcorrection@set
 \@swa@bindingcorrection@setfalse
-
-\providecommand*\swa@settypearea[1]{%
-    \KOMAoptions{DIV=8,BCOR=#1}%
-    \areaset[current]{\textwidth}{1.61803399\textwidth}}
 
 \newcommand*\bindingcorrection[3][1]{
   % #1 -> "Volumen", typically 1
@@ -42,18 +37,22 @@
   %
   % Kohm: Die Bindekorrektur macht bei guter Bindung und gutem Papier maximal die
   % Hälfte des Buchblocks aus.
- %
- % BCOR = (gamage/1000 * sheets * volume) / 2
- %     = grammage/1000 * pages/2 * volume/1 * 1/2
- %     = grammage * pages / 4000 * volume
- %     = grammage * pages * volume * 0.00025
+  %
+  % BCOR_max  = (grammage/1000 * sheets * volume) / 2
+  %           = grammage/1000 * pages/2 * volume/1 * 1/2
+  %           = grammage * pages / 4000 * volume
+  %           = grammage * pages * volume * 0.00025
+  % We guess BCOR = .8 * BCOR_max
   \if@swa@bindingcorrection@set\relax
     \message{^^J Binding correction already set. ignoring}
   \else
-    \csdimdef{tempcorrection}{0.9\dimexpr#2\dimexpr #1\dimexpr 0.00025\dimexpr #3mm\relax}
+    \csdimdef{tempcorrection}{.8\dimexpr#2\dimexpr #1\dimexpr 0.00025\dimexpr #3mm\relax}
     % Set and force recalculation
     \message{^^J Binding correction determined as \tempcorrection}
-    \swa@settypearea{\tempcorrection}
+    \ifcsdef{settypearea}%
+      {\csuse{settypearea}{\tempcorrection}}%
+      {\KOMAoptions{DIV=8,BCOR=\tempcorrection}%
+       \areaset[current]{\textwidth}{1.61803399\textwidth}}
     \@swa@bindingcorrection@settrue
   \fi
 }

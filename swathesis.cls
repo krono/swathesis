@@ -80,7 +80,7 @@
   \gappto\swa@miscoptions{a4paper,runningheads,}
 }{%
   \gdef\swa@cls{scrbook}%
-  \gappto\swa@miscoptions{DIV=8,}
+  % \gappto\swa@miscoptions{DIV=8,}
 }
 \ifx\swa@miscoptions\empty\relax\else
   \PassOptionsToClass{\swa@miscoptions}{\swa@cls}
