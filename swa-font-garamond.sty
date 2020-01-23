@@ -1,5 +1,5 @@
 \RequirePackage[osf,p]{ebgaramond}
-\ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
+\ifboolexpr{bool{tutex}}{%
   %\addfontfeatures{RawFeature={+ss06}}
   \AtBeginDocument{\addfontfeatures{RawFeature={+ss06}}}
 }{}
@@ -13,7 +13,7 @@
 \addtokomafont{paragraph}{\itshape}
 \renewcommand*\labelitemii{\normalfont\textendash}
 
-\ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
+\ifboolexpr{bool{tutex}}{%
   \providecommand*\ebgaramondtabulartext[1]{{\ebgaramondtabular #1}}
   \global\let\slshape\itshape\relax
   \setmonofont[ExternalLocation,

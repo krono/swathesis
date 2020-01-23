@@ -17,7 +17,7 @@
   {\RequirePackage{morewrites}}
 
 
-\ifthenelse{\boolean{xetex}\OR\boolean{luatex}}%
+\ifboolexpr{bool{tutex}}%
   {}%
   {\input glyphtounicode
    \pdfgentounicode=1

@@ -5,7 +5,16 @@
 
 \RequirePackage{ifpdf}
 
-\RequirePackage[table,fixpdftex,dvipsnames,svgnames,x11names]{xcolor}
+\RequirePackage{color}
+\PassOptionsToPackage{table,svgnames,dvipsnames*,x11names}{xcolor}
+\AfterPackage{xcolor}{%
+  \definecolors{Aquamarine,Black,Blue,BlueViolet,Brown,CadetBlue,%
+    CornflowerBlue,Cyan,DarkOrchid,ForestGreen,Fuchsia,Goldenrod,Gray,%
+    Green,GreenYellow,Lavender,LimeGreen,Magenta,Maroon,MidnightBlue,%
+    NavyBlue,Orange,OrangeRed,Orchid,Plum,Purple,Red,RoyalBlue,Salmon,%
+    SeaGreen,SkyBlue,SpringGreen,Tan,Thistle,Turquoise,Violet,%
+    VioletRed,White,Yellow,YellowGreen}}
+\RequirePackage{xcolor}
 
 \RequirePackage{fnpct}
 \setfnpct{after-punct-space={-.2em}}
@@ -88,6 +97,8 @@
 \let\TPTtagStyle\textit
 
 \definecolor{swashadecolor}{gray}{0.93}
+% \definecolor{swalinkcolor}{cmyk}{0.95,0.8,0,0.3}
+\colorlet{swalinkcolor}{Blue4!66!black}
 \providecommand*\tablefontcommand{}
 \providecommand*\tableinsidecommand[1][2]{%
   \def\y{\ding{52}\relax\xspace}\relax%
@@ -98,17 +109,22 @@
 \PassOptionsToPackage{log-declarations=false}{xparse}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{all}{hypcap}
-\ifthenelse{\equal{\printmode}{true}}{
-  \PassOptionsToPackage{bookmarks=false}{hyperref}
-}{
-  \PassOptionsToPackage{bookmarks=true}{hyperref}
-}
+\ifcsstring{printmode}{true}%
+  {\PassOptionsToPackage{bookmarks=false,colorlinks=false}{hyperref}}%
+  {\PassOptionsToPackage{bookmarks=true,colorlinks=true}{hyperref}}
 \PassOptionsToPackage{%
-  final,%
+  final=true,%
   unicode=true,%
   plainpages=false,%
   pdfpagelabels=true,%
+  breaklinks=true,
+  %pdfborder = 0 0 0,
+  bookmarksnumbered = true,
+  pdfdisplaydoctitle = false,
+  pdfpagemode = UseOutlines,
+  pdfstartpage=3,
 }{hyperref}
+
 
 \BeforeBeginEnvironment{document}{%
   \RequirePackage{hyperref}
@@ -119,25 +135,13 @@
 }
 
 \AtBeginDocument{%
-  \hypersetup{%
-    breaklinks=true,
-    %pdfborder = 0 0 0,
-    bookmarksnumbered = true,
-    pdfdisplaydoctitle = false,
-    pdfpagemode = UseOutlines,
-    pdfstartpage=3,
-    % pagebackref=true,%
-  }
-  \ifthenelse{\equal{\printmode}{true}}{
-    \hypersetup{colorlinks=false}
-  }{
+  \ifcsstring{printmode}{false}%
+    {\message{^^JColoring all the links}%
     \hypersetup{%
-      colorlinks=true,   %% true for printout
-      linkcolor=MidnightBlue,%
-      citecolor=MidnightBlue,%
-      urlcolor=MidnightBlue,%
-    }
-  }
+      linkcolor=swalinkcolor,%
+      citecolor=swalinkcolor,%
+      urlcolor=swalinkcolor}}%
+    {\message{^^JAll links be quiet}}%
 }
 
 \expandafter%

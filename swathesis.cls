@@ -57,6 +57,8 @@
 \DeclareOption{garamond}{\renewcommand*\@swa@font{garamond}}
 \DeclareOption{lmodern}{\renewcommand*\@swa@font{lmodern}}
 \DeclareOption{print}{\renewcommand*\printmode{true}}
+\DeclareOption{printmode}{\renewcommand*\printmode{true}}
+\DeclareOption{online}{\renewcommand*\printmode{false}}
 
 \DeclareOption{zebralistings}{\PassOptionsToPackage{zebra}{swa-listings}}
 

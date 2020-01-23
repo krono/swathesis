@@ -9,7 +9,7 @@
 %
 % engine-dependent, eg, encoding, loading.
 %
-\ifthenelse{\boolean{luatex} \or \boolean{xetex}}{%
+\ifboolexpr{bool{tutex}}{%
   \RequirePackage{fontspec}
   % \newfontfeature{Microtype}{protrusion=default;expansion=default;}
 }{
@@ -30,7 +30,7 @@
     {{\addfontfeature{LetterSpace=\the\numexpr#1/10\relax}#2}}}
 }{}
 
-\ifthenelse{\boolean{xetex}\OR\boolean{luatex}}{
+\ifboolexpr{bool{tutex}}{
   \microtypesetup{stretch=9,shrink=15,step=3}
 }{
   \microtypesetup{stretch=9,shrink=15,step=3,tracking=smallcaps,letterspace=75}
@@ -40,7 +40,7 @@
 % useful commands
 %
 \DeclareRobustCommand{\spacedallcaps}[1]{\textls[80]{\MakeTextUppercase{#1}}}%
-\ifthenelse{\boolean{xetex}\OR\boolean{luatex}}%
+\ifboolexpr{bool{tutex}}%
   {\DeclareRobustCommand{\spacedlowsmallcaps}[1]{{{\textls[75]{\scshape\MakeTextLowercase{#1}}}}}%
   {\DeclareRobustCommand{\spacedlowsmallcaps}[1]{{\scshape\MakeTextLowercase{#1}}}}%
 

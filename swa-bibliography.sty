@@ -28,8 +28,10 @@
 
 \PassOptionsToPackage{style=numeric,sortcites,defernumbers=true}{biblatex}
 \AfterPackage{biblatex}{
-  \setcounter{biburllcpenalty}{7000}
-  \setcounter{biburlucpenalty}{8000}
+  \setcounter{biburlnumpenalty}{7000}\biburlnumskip=0mu plus 1mu\relax
+  \setcounter{biburllcpenalty}{7000}\biburllcskip=0mu plus 1mu\relax
+  \setcounter{biburlucpenalty}{8000}\biburlucskip=0mu plus 1mu\relax
+  \renewcommand*{\subtitlepunct}{\addcolon\space}
   \@ifpackagelater{biblatex}{2016/03/01}
     {\ExecuteBibliographyOptions{giveninits=true}}
     {\ExecuteBibliographyOptions{firstinits=true}}

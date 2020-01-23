@@ -42,6 +42,11 @@
   %           = grammage/1000 * pages/2 * volume/1 * 1/2
   %           = grammage * pages / 4000 * volume
   %           = grammage * pages * volume * 0.00025
+  % Will:
+  % Empfohlen wird ein Drittel bis die Hälfte der Buchrückenstärke (teilweise sogar die komplette Buchrückenstärke).
+  % Die Buchrückenstärke berechnet sich nach folgender Formel:
+  % (Grammatur x Volumen x Seitenzahl) : 2000
+  %
   % We guess BCOR = .8 * BCOR_max
   \if@swa@bindingcorrection@set\relax
     \message{^^J Binding correction already set. ignoring}
@@ -98,10 +103,16 @@
 
 
 \RequirePackage{enumitem}
-\setlist{noitemsep,topsep=.5\baselineskip,leftmargin=1em}
-\setlist[1]{leftmargin=0pt}
-\setdescription{noitemsep,font=\normalfont\scshape,leftmargin=\parindent}
-% \setkomafont{descriptionlabel}{\normalfont\scshape}
+\AtBeginDocument{%
+  % \setlist{noitemsep,topsep=.5\baselineskip,leftmargin=1em,partopsep=0pt}
+  % \setlist{noitemsep,leftmargin=1em,topsep=0pt,partopsep=\baselineskip}
+  \setlist{noitemsep,topsep=.5\baselineskip,leftmargin=1em,partopsep=.5\baselineskip}
+  \setlist[1]{leftmargin=0pt}
+  % \setdescription{noitemsep,font=\normalfont\scshape,leftmargin=\parindent,topsep=.5\baselineskip,partopsep=0pt}
+  % \setdescription{noitemsep,font=\normalfont\scshape,leftmargin=\parindent,topsep=0pt,partopsep=\baselineskip}
+  \setdescription{noitemsep,font=\normalfont\scshape,leftmargin=\parindent,topsep=.5\baselineskip,partopsep=.5\baselineskip}
+  % \setkomafont{descriptionlabel}{\normalfont\scshape}
+}
 
 % koma-hacks
 \RequirePackage{scrhack}
@@ -147,10 +158,34 @@
   ]{subparagraph}
 
 
+\KOMAoption{captions}{tableheading}
+\AtBeginDocument{%
+  \setlength{\abovecaptionskip}{.5\baselineskip}
+  \setlength{\belowcaptionskip}{0pt}}
+
+
+%\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+%  \hbox{}\nobreak\hfil{#1}%
+%  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
 \ifthenelse{\equal{\swa@degree}{phd}}%
-  {\newenvironment{chaptersummary}[1][]%
-    {\addsec*{Summary}\phantomsection}
-    {}}%
+  {%
+  \newsavebox{\chaptersummarybox}%
+  \newenvironment{chaptersummary}[1][]%
+    {\begingroup%
+    \setlength{\fboxsep}{4pt}%
+    \begin{lrbox}{\chaptersummarybox}% capture
+     \begin{minipage}{\dimexpr\linewidth - 2\fboxsep\relax}%
+       \addsec*{Summary}\phantomsection\vspace*{-.5\baselineskip}\ignorespaces}%
+    {\end{minipage}\end{lrbox}%
+    \par\unskip\nobreak% hmode -> vmode, no pg break
+    \vfill% fill vertically. this is end of page if no space
+    \penalty50\vskip\baselineskip% make pg break point, try to squeze a line in
+    \vbox{}\nobreak\vfill% empty box + no pg break + fill; this is fill to e o page if page break at penalty 50
+    \noindent% vmode -> hmode
+    \colorbox[gray]{.9}{{\usebox{\chaptersummarybox}}}%
+    \endgroup%
+    \vspace*{2\fboxsep}%
+    \clearpage}}%
   {}
 
 \AtEndPreamble{
