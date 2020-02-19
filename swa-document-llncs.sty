@@ -17,7 +17,7 @@
 \bibliographystyle{splncs04}%% llncs
 \AtEndPreamble{
   % redo document stuff:
-  \ifundefinedorrelax{hypersetup}{}{%
+  \Ifundefinedorrelax{hypersetup}{}{%
     \hypersetup{%
       pdfpagescrop={92 112 523 778}, % LNCS paper size
     }
@@ -30,7 +30,7 @@
   \else{\thispagestyle{empty}\mbox{}\cleardoublepage}%
   \fi%
 }
-\ifundefinedorrelax{cleardoubleemptypage}{%
+\Ifundefinedorrelax{cleardoubleemptypage}{%
   \newcommand{\cleardoubleemptypage}{\swa@doubleempty}%
 }{}
 
@@ -314,7 +314,7 @@
 \AtBeginDocument{
   \@ifpackageloaded{swa-collate}{}{
     % zusammenfassung only in non-collate
-    \ifundefinedorrelax{zusammenfassung}{
+    \Ifundefinedorrelax{zusammenfassung}{
       \newenvironment{zusammenfassung}{}{}
     }{}
 

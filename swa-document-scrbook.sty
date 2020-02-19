@@ -190,7 +190,7 @@
 
 \AtEndPreamble{
   % redo document stuff:
-  \ifundefinedorrelax{hypersetup}{}{%
+  \Ifundefinedorrelax{hypersetup}{}{%
     \hypersetup{
       pdftitle={\@title{}: \@subtitle},
       pdfauthor={\@author},
