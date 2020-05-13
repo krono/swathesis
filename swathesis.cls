@@ -77,7 +77,7 @@
 \newcommand*\location[1]{\renewcommand\@location{#1}}
 \providecommand*\@location{}
 
-\ifthenelse{\boolean{@swa@lncs}}{%
+\ifboolexpr{bool{@swa@lncs}}{%
   \gdef\swa@cls{llncs}%
   \gappto\swa@miscoptions{a4paper,runningheads,}
 }{%
@@ -99,7 +99,7 @@
 
 \RequirePackage{swa-font}
 
-\ifthenelse{\boolean{@swa@lncs}}{
+\ifboolexpr{bool{@swa@lncs}}{
   \robustify{\email}
 }{%
   % only in the koma case

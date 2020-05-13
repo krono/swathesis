@@ -40,7 +40,7 @@
       {\ExecuteBibliographyOptions{urldate=iso,seconds=true}}%
       {\ExecuteBibliographyOptions{urldate=edtf,seconds=true}}}%
     {\ExecuteBibliographyOptions{urldate=iso8601}}
-  \ifthenelse{\boolean{@swa@german}}{\def\swa@bibl@lang{ngerman}}{\def\swa@bibl@lang{american}}
+  \ifboolexpr{bool{@swa@german}}{\def\swa@bibl@lang{ngerman}}{\def\swa@bibl@lang{american}}
   \ExecuteBibliographyOptions{
     url=false,%
     abbreviate=false,%

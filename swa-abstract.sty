@@ -1,15 +1,15 @@
 \RequirePackage{swa-language}
 \RequirePackage{swa-platform}
 
-\ifundefinedorrelax{abstract}{
+\ifcsvoid{abstract}{
   \newenvironment{abstract}{}{}
 }{}
 
-\ifundefinedorrelax{zusammenfassung}{
+\ifcsvoid{zusammenfassung}{
   \newenvironment{zusammenfassung}{}{}
 }{}
 
-\ifthenelse{\boolean{xetex}}{
+\ifboolexpr{bool{xetex}}{
   \renewenvironment{abstract}{%
     \begingroup
     \let\raggedsection\centering

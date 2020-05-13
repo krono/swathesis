@@ -2,14 +2,14 @@
 \setdatetoday
 
 \RequirePackage{swa-platform}
-\ifundefinedorrelax{if@swa@german}{
+\ifcsundef{if@swa@german}{
   \newif\if@swa@german
 }{}
 
-\ifthenelse{\boolean{xetex}}{
+\ifboolexpr{bool{xetex}}{
   \RequirePackage{polyglossia}
 
-  \ifthenelse{\boolean{@swa@german}}{
+  \ifboolexpr{bool{@swa@german}}{
     \setotherlanguage{english}
     \setmainlanguage[babelshorthands,latesthyphen=true]{german}
   }{
@@ -40,7 +40,7 @@
 \fi
 
 
-  \ifthenelse{\boolean{@swa@german}}{
+  \ifboolexpr{bool{@swa@german}}{
     % hyperref can't handle that.
     % \RequirePackage[main=english,ngerman]{babel}
     % order matters!

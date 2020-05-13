@@ -39,7 +39,7 @@
  \acrodef{#1}{#3}%
  \acrodefplural{#1}[{#1\acroshortsuffixfont{#2}}]{{#3\acrolongsuffixfont{#4}}}%
  % support for one-time compilation, too.
- \ifundefinedorrelax{fn@#1}{%
+ \ifcsvoid{fn@#1}{%
    \newacro{#1}{#3}%
    \newacroplural{#1}[{#1\acroshortsuffixfont{#2}}]{{#3\acrolongsuffixfont{#4}}}%
  }{}%
@@ -62,7 +62,7 @@
     \expandafter\ifx\csname acused@#1\endcsname\AC@used%
        \item[\protect\AC@hypertarget{#1}{\acsfont{\AC@acs{#1}}}] \AC@acl{#1}%
           \ifAC@withpage%
-            \ifundefinedorrelax{r@acro:#1}{%
+            \ifcsvoid{r@acro:#1}{%
               \PackageInfo{acronym}{%
                 Acronym #1 used in text but not spelled out in
                 full in text}%
@@ -87,8 +87,8 @@
   \fi
 }
 
-\ifundefinedorrelax{@listoftoc}{%
-  \ifundefinedorrelax{toc@heading}{%
+\ifcsvoid{@listoftoc}{%
+  \ifcsvoid{toc@heading}{%
     % neither tocbasic, komascript not float available
     % so missuse listoffigures here
     \gdef\ac@listhead{

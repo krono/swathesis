@@ -30,10 +30,10 @@
 \providecommand*\swa@author{}
 \newenvironment*{statement}[1][\swa@statementname]{
   \cleardoubleemptypage
-  \ifthenelse{\boolean{xetex}}{
+  \ifboolexpr{bool{xetex}}{
     \begin{german}
   }{
-    \ifthenelse{\boolean{@swa@german}}{}
+    \ifboolexpr{bool{@swa@german}}{}
     {\selectlanguage{ngerman}}
   }
   \dateselectlanguage{german}
@@ -42,7 +42,7 @@
 }{
   ~\\[7\baselineskip]%
   %
-  \ifundefinedorrelax{@location}{}{%
+  \ifcsvoid{@location}{}{%
     \ifx\@location\@empty%
     \else
     \@location, den %
@@ -58,10 +58,10 @@
   \swa@author%
   \fi%
   \makeatother\par
-  \ifthenelse{\boolean{xetex}}{
+  \ifboolexpr{bool{xetex}}{
     \end{german}
   }{
-    \ifthenelse{\boolean{@swa@german}}{}
+    \ifboolexpr{bool{@swa@german}}{}
     {\selectlanguage{english}}
   }
 }

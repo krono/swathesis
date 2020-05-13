@@ -17,7 +17,7 @@
 \bibliographystyle{splncs04}%% llncs
 \AtEndPreamble{
   % redo document stuff:
-  \ifundefinedorrelax{hypersetup}{}{%
+  \ifcsvoid{hypersetup}{}{%
     \hypersetup{%
       pdfpagescrop={92 112 523 778}, % LNCS paper size
     }
@@ -30,7 +30,7 @@
   \else{\thispagestyle{empty}\mbox{}\cleardoublepage}%
   \fi%
 }
-\ifundefinedorrelax{cleardoubleemptypage}{%
+\ifcsvoid{cleardoubleemptypage}{%
   \newcommand{\cleardoubleemptypage}{\swa@doubleempty}%
 }{}
 
@@ -225,7 +225,7 @@
 
 \pretocmd{\maketitle}{
   \begingroup
-    \ifthenelse{\boolean{swa@logo@title}}{
+    \ifboolexpr{bool{swa@logo@title}}{
       \ifx\@extratitle\@empty\else
       \pagenumbering{Roman}
       \begin{titlepage}
@@ -248,7 +248,7 @@
     \linespread{1}\selectfont
     \swa@titlefont
     \centering
-    \ifthenelse{\boolean{swa@logo@title}}{
+    \ifboolexpr{bool{swa@logo@title}}{
       \vspace*{-\dimexpr\baselineskip+\headheight+\headsep\relax}%
       \hbox to \linewidth{%
         \ifswa@logo@university%
@@ -294,7 +294,7 @@
     {\swa@university\par}
     \vspace*{2\baselineskip}
     {\@date\par}
-    \ifthenelse{\boolean{swa@logo@title}}{
+    \ifboolexpr{bool{swa@logo@title}}{
       \endtitlepage
     }{}
     \endgroup
@@ -314,11 +314,11 @@
 \AtBeginDocument{
   \@ifpackageloaded{swa-collate}{}{
     % zusammenfassung only in non-collate
-    \ifundefinedorrelax{zusammenfassung}{
+    \ifcsvoid{zusammenfassung}{
       \newenvironment{zusammenfassung}{}{}
     }{}
 
-    \ifthenelse{\boolean{xetex}}{
+    \ifboolexpr{bool{xetex}}{
       \renewenvironment{zusammenfassung}{%
         \clearpage
         \begingroup

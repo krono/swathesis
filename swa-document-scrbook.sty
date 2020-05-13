@@ -190,14 +190,14 @@
 
 \AtEndPreamble{
   % redo document stuff:
-  \ifundefinedorrelax{hypersetup}{}{%
+  \ifcsvoid{hypersetup}{}{%
     \hypersetup{
       pdftitle={\@title{}: \@subtitle},
       pdfauthor={\@author},
       pdfsubject={\@subject}
     }
   }
-  \ifthenelse{\boolean{@swa@birdseye}}{
+  \ifboolexpr{bool{@swa@birdseye}}{
     \KOMAoptions{
       twocolumn=true,
       twoside=semi,

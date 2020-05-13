@@ -132,7 +132,7 @@
 
 \newwrite\ft@aut
 \AtBeginDocument{
-  \ifthenelse{\boolean{@filesw}}{
+  \ifboolexpr{bool{@filesw}}{
     \protected@write\@mainaux{}{%
       \string\AtEndDocument{%
       \string\immediate%
@@ -143,7 +143,7 @@
   }{}
 }
 \long\def\swa@writeaut#1{
-  \ifthenelse{\boolean{@filesw}}{
+  \ifboolexpr{bool{@filesw}}{
     \AtEndDocument{\immediate\write\ft@aut{#1}}%
   }{}
 }

@@ -1,9 +1,9 @@
 % Graphics
 \RequirePackage{graphicx}
 
-\ifthenelse{\boolean{pdf}\OR\boolean{xetex}}{
+\ifboolexpr{bool {pdf} or  bool {xetex}}{
   % ai's are just pdfs.
-  \ifthenelse{\boolean{xetex}}{
+  \ifboolexpr{bool{xetex}}{
     \DeclareGraphicsRule{.ai}{QTm}{*}{}
     \DeclareGraphicsExtensions{.ai,\Gin@extensions}
   }{

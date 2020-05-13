@@ -24,7 +24,7 @@
 %
 % microtypesetup
 %
-\ifthenelse{\boolean{xetex}}{%
+\ifboolexpr{bool{xetex}}{%
   \let\textls\undefined
   \DeclareRobustCommand{\textls}[2][80]{%
     {{\addfontfeature{LetterSpace=\the\numexpr#1/10\relax}#2}}}
