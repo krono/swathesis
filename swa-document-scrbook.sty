@@ -191,8 +191,9 @@
 \AtEndPreamble{
   % redo document stuff:
   \ifcsvoid{hypersetup}{}{%
+    
     \hypersetup{
-      pdftitle={\@title{}: \@subtitle},
+      pdftitle={\@title{}\ifdefempty{\@subtitle}{}{:\space\@subtitle}},
       pdfauthor={\@author},
       pdfsubject={\@subject}
     }

@@ -7,7 +7,7 @@
 
 \RequirePackage{color}
 \PassOptionsToPackage{table,svgnames,dvipsnames*,x11names}{xcolor}
-\AfterPackage{xcolor}{%
+\AfterPackage*{xcolor}{%
   \definecolors{Aquamarine,Black,Blue,BlueViolet,Brown,CadetBlue,%
     CornflowerBlue,Cyan,DarkOrchid,ForestGreen,Fuchsia,Goldenrod,Gray,%
     Green,GreenYellow,Lavender,LimeGreen,Magenta,Maroon,MidnightBlue,%
@@ -130,6 +130,9 @@
   \RequirePackage{hyperref}
   \RequirePackage{bookmark}
   \RequirePackage{hyperxmp}
+  \@ifpackagelater{hyperxmp}{2019/03/31}%
+    {\hypersetup{keeppdfinfo}}% new
+    {}% ok
   \RequirePackage{hypcap}
   \RequirePackage{accsupp}
 }
