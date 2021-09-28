@@ -9,21 +9,21 @@ if [ ! -z "$ZSH_VERSION" ]; then
   setopt shwordsplit
 fi
 
+# COMMAND DETECTION
+ECHO="/usr/bin/printf %b\\n"
+if type curl >/dev/null 2>/dev/null; then
+  FETCH="curl -L -s -S -O"
+elif type wget >/dev/null 2>/dev/null; then
+  FETCH="wget --quiet"
+else
+  FETCH="$ECHO Please download "
+fi
+
 # SEE IF WE SHOULD RUN
 if [ -z "$TDS_DEST" ]; then
   $ECHO "run from install or run as"
   $ECHO "\tTDS_DEST=$(kpsewhich -var-value TEXMFHOME) $0"
   exit 1
-fi
-
-# COMMAND DETECTION
-ECHO="/usr/bin/printf %b\\n"
-if type wget >/dev/null 2>/dev/null; then
-  FETCH="wget --quiet"
-elif type curl >/dev/null 2>/dev/null; then
-  FETCH="curl -L -s -S -O"
-else
-  FETCH="$ECHO Please download "
 fi
 
 if type unzip >/dev/null 2>/dev/null; then
@@ -65,20 +65,24 @@ fi
 # HELPERS
 ########################################################################
 _deploy_tds() {
+  _deploy $TDS_DEST "$@"
+}
+
+_deploy() {
   case $- in
     *e*) RESET_E=0 ;;
     *) RESET_E=1 ;;
   esac
   set -e
   if type ditto >/dev/null 2>/dev/null; then
-    ditto -x -k $1 $TDS_DEST
+    ditto -x -k $2 $1
   else
     _P_d=$PWD;
-    case $1 in
-      /*) F=$1;;
-      *) F=$PWD/$1;;
+    case $2 in
+      /*) F=$2;;
+      *) F=$PWD/$2;;
     esac
-    cd $TDS_DEST
+    cd $1
     unzip -n $F >/dev/null 2>/dev/null
     cd $_P_d
   fi
@@ -97,7 +101,7 @@ _get_ctan() {
   CTAN=$PKG.zip
   CTANIFYOUT=$PKG.tar.gz
   TDS=$PKG.tds.zip
-  URL=http://mirrors.ctan.org/macros/latex/contrib/$CTAN
+  URL=https://mirrors.ctan.org/macros/latex/contrib/$CTAN
   if [ ! -f $CTAN ]; then
     $FETCH $URL >/dev/null 2>/dev/null
     if [ $? -ne 0 ]; then
@@ -152,7 +156,40 @@ _get_tds_() {
   $ECHO "$TDS"
 }
 
-_has_package() {
+_get_titlepage_github() {
+  PKG=uni-titlepage
+  HEAD=main
+  URL="https://github.com/komascript/$PKG/archive/refs/heads/$HEAD.zip"
+  TDS=$PKG.tds.zip
+  if [ ! -f $TDS ]; then
+    TPWORKING=$(mktemp -q -d -t "$PROGRAM-XXXXXX")
+    if [ $? -ne 0 ]; then
+      $ECHO "Cannot create temp dir, abort"
+      exit 1
+    else
+      mkdir -p $TPWORKING
+      trap 'rm -rf "$TPWORKING"' EXIT
+    fi
+    _P_tp=$PWD
+    cd $TPWORKING
+    $FETCH $URL >/dev/null 2>/dev/null
+    if [ $? -ne 0 ]; then
+      $ECHO "Cannot download $PKG from $URL, abort"
+      exit 100
+    fi
+    _deploy $TPWORKING $HEAD.zip
+    cd $TPWORKING/$PKG-$HEAD
+    perl -pi -e 's/packtdszip =.+$/packtdszip = true/' build.lua
+    l3build ctan >/dev/null 2>/dev/null
+    _deploy $PWD $PKG-ctan.zip
+    mv $TDS $_P_tp
+    cd $_P_tp
+    #rm -rf $TPWORKING
+   fi
+  $ECHO "$TDS"
+}
+
+_has_package(){
   PACKAGETEST=$(mktemp -q -t pkgtst$1-XXXX.tex)
   echo "\\\\relax%
 \\\\documentclass{article}%
@@ -222,22 +259,15 @@ _need_class() {
 ########################################################################
 ########################################################################
 ########################################################################
-if _need_class "llncs" "2013/09/27"; then
- if [ ! -f llncs.tds.zip ]; then
-    ./tdsify_llncs.sh
-  fi
-  _deploy_tds llncs.tds.zip
-  $ECHO ">> installed current LLNCS"
-fi
-
 if _need_package "scrbase" "2014/10/28" "KOMA-script"; then
   TDS=`_get_tds "koma-script" ""`
   _deploy_tds $TDS
   $ECHO ">> installed current KOMA-script".
 fi
 
-if _need_package "titlepage" "2012/12/18"; then
-  TDS=`_get_tds "titlepage" "https://komascript.de/repository/tds/titlepage-11.tds.zip"`
+if _need_package "uni-titlepage" "2021/09/01"; then
+  $ECHO ">>> Building $PKG, this can take a while, please stand by"
+  TDS=`_get_titlepage_github`
   _deploy_tds $TDS
   $ECHO ">> installed current titlepage"
 fi

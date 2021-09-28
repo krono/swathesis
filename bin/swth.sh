@@ -4,8 +4,8 @@
 #
 #
 
-VERSION="0.1"
-PROGRAM=`echo $0 | sed 's%.*/%%'`
+VERSION="0.2"
+PROGRAM=$(echo $0 | sed 's%.*/%%')
 if [ ! -z "$ZSH_VERSION" ]; then
   setopt shwordsplit
 fi
@@ -63,27 +63,32 @@ MV=mv
 THESESMARKER="%SWTH_do_not_remove"
 TEMPLATEMARKER="TEMPLATE"
 
-_T=`kpsewhich swathesis.cls`
-if test "x$_T" = "x"; then
+_has_cmd () {
+  command -v "$1"  2>/dev/null >/dev/null
+}
+
+_T=$(kpsewhich swathesis.cls)
+if [ -z "$_T" ]; then
   $ECHO "$PROGRAM: cannot find swathesis"
   exit 200
 fi
-TEMPLATEROOT="`dirname \"$_T\"`/contrib"
+TEMPLATEROOT="$(dirname "$_T")/contrib"
 
-if test -z "$OSTYPE" ; then
-  OSTYPE=`uname -s | tr A-Z a-z`
+if [ -z "$OSTYPE" ]; then
+  OSTYPE=$(uname -s | tr A-Z a-z)
 fi
 
-if type pushd 2>/dev/null >/dev/null ; then
-  : #ok, pushd is there
+if _has_cmd pushd ; then
+  alias _pushd=pushd
+  alias _popd=popd
 else
   # emulate pushd to our usage
-  pushd() {
+  _pushd() {
     export P_OLDPWD="$PWD"
     cd $1
   }
-  popd() {
-    if test "x$P_OLDPWD" = x; then
+  _popd() {
+    if [ -z "$P_OLDPWD" ]; then
       $ECHO "$0: directory stack empty"
       (exit 1)
       return 1
@@ -105,12 +110,18 @@ case "$OSTYPE" in
     ;;
   solaris*) OPEN="xdg-open" ;;
   bsd*)     OPEN="xdg-open" ;;
-  linux*)   OPEN="xdg-open" ;;
+  linux*)
+    if _has_cmd open; then
+      OPEN="open";
+    else
+      OPEN="xdg-open"
+    fi
+    ;;
   darwin*)
     OPEN="open"
     SKIM="net.sourceforge.skim-app.skim"
-    HAS_SKIM=`mdfind "kMDItemCFBundleIdentifier == 'net.sourceforge.skim-app.skim'"`
-    if test "x$HAS_SKIM" != "x" || \
+    SKIMS=$(mdfind -count "kMDItemCFBundleIdentifier == 'net.sourceforge.skim-app.skim'")
+    if [  "$SKIMS" -ge 1 ] || \
       [ -e /Applications/Skim.app/Contents/MacOS/Skim ] || \
       [ -e /Applications/TeX/Skim.app/Contents/MacOS/Skim ] ; then
       OPEN="$OPEN -b $SKIM"
@@ -141,7 +152,7 @@ _clean() {
 }
 
 __readmode() {
-  if test "x$MODE" = "x"; then
+  if [ -z $MODE ]; then
     printf "$1 [BACHELOR|master|phd] "
     read ANS
     case "$ANS" in
@@ -156,7 +167,7 @@ __readmode() {
 __readdir() {
   printf "$1 [$PWD] "
     read ANS
-    if test "x$ANS" = "x"; then
+    if [ -z $ANS ]; then
       SWTHDIR="$PWD"
     else
       SWTHDIR="$ANS"
@@ -164,40 +175,40 @@ __readdir() {
 }
 
 __readmain_bp() {
-  if test `date +"%m"` -gt 9; then
-    YEAR=`date +"%Y"`
+  if [ $(date +"%m") -gt 9 ]; then
+    YEAR=$(date +"%Y")
   else
     if date -v 1d > /dev/null 2>&1 ; then
       # this is BSDish date
-      YEAR=`date -v-1y +"%Y"`
+      YEAR=$(date -v-1y +"%Y")
     else
       # this is GNUish date
-      YEAR=`date --date="1 year ago" +"%Y"`
+      YEAR=$(date --date="1 year ago" +"%Y")
     fi
   fi
   BP=
-  while test "x$BP" = "x"; do
+  while [ -z $BP ]; do
     printf "What is your bachelor project number (eg, H1)? "
     read BP
-    BP=`$ECHO "$BP" | sed -e 's%[ ,./!?]%%g'`
+    BP=$($ECHO "$BP" | sed -e 's%[ ,./!?]%%g')
   done
   MAIN="BP${YEAR}${BP}_Theses"
 }
 
 
 __ask_for_main_to_OUT() {
-  YEAR=`date +"%Y"`
+  YEAR=$(date +"%Y")
   NAME=
-  while test "x$NAME" = "x"; do
+  while [ -z $NAME ]; do
     printf "What is your family name? "
     read NAME
-    NAME=`$ECHO "$NAME" | sed -e 's%[ ,./!?]%%g'`
+    NAME=$($ECHO "$NAME" | sed -e 's%[ ,./!?]%%g')
   done
   TITLE=
-  if test "x$TITLE" = "x"; then
+  if [ -z $TITLE ]; then
     printf "Please give a short title or leave blank: "
     read TITLE
-    if test "x$TITLE" = "x"; then
+    if [ -z $TITLE ]; then
       TITLE=Thesis
     fi
   fi
@@ -205,7 +216,7 @@ __ask_for_main_to_OUT() {
 }
 
 __readmain() {
-  if test "x$MODE" = "xbachelor"; then
+  if [ "$MODE" = "bachelor" ]; then
     printf "Use HPI Bachelor Project information? [NO/yes] "
     read ANS
     case "$ANS" in
@@ -221,43 +232,67 @@ __readmain() {
 }
 
 
+__untemplate() {
+  DFLT=TEMPLATE
+  _pushd "$1"
+  for ITEM in ${DFLT}+*; do
+    if [ -e "$ITEM" ];  then
+      DST=$(echo "$ITEM" | sed 's/TEMPLATE\+//')
+      $MV "$ITEM" "$DST"
+    fi
+  done
+  for ITEM in ${DFLT}-*; do
+    if [ -e "$ITEM" ];  then
+      DST=$(echo "$ITEM" | sed "s/TEMPLATE-/${MAIN}-/")
+      $MV "$ITEM" "$DST"
+    fi
+  done
+  _popd
+}
+
 __copy_template() {
   DFLT=TEMPLATE
   $CP -r "$TEMPLATEDIR/". "$SWTHDIR"
   $MV "$SWTHDIR/${DFLT}.tex" "$SWTHDIR/${MAIN}.tex"
   $MV "$SWTHDIR/${DFLT}-names.tex" "$SWTHDIR/${MAIN}-names.tex"
+  __untemplate "$SWTHDIR"
   _sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}"/*.tex
+  _sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}"/*.md
   if [ -d "${SWTHDIR}/common" ]; then
+      __untemplate "${SWTHDIR}/common"
     _sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}/common"/*.tex
   fi
-  $ECHO "" > "$SWTHDIR/${MAIN}.tex.latexmain"
+  : > "$SWTHDIR/${MAIN}.tex.latexmain"
 }
 
 
 _create() {
-  if test "x$SWTHFILE" != "x" && test -f "$SWTHFILE"; then
+  if [ -n "$SWTHFILE" -a -f "$SWTHFILE" ]; then
     printf "Already configured, really continue? [NO/yes] "
     read ANS
-    if test "x$ANS" = "xyes" || test "x$ANS" = "xYes" || test "x$ANS" = "xYES" || test "x$ANS" = "xy" || test "x$ANS" = "xY"; then
-      :
-    else
+    case "$ANS" in
+      [Yy]|[Yy][Ee][Ss]*)
+        :
+        ;;
+    *)
       $ECHO "aborting"
       exit 4
-    fi
+      ;;
+    esac
   fi
   __readmode "What thesis do you want to create?"
   __readdir "Where do you want to create?"
-  if test -d "$SWTHDIR"; then
+  if [ -d "$SWTHDIR" ]; then
     $ECHO "Found $SWTHDIR"
   else
     printf "$SWTHDIR does not yet exist, create? [YES/no]"
-    read $ANS
-    case "x$ANS" in
-      x[Nn][Oo]?) ;;
+    read ANS
+    case "$ANS" in
+      [Nn][Oo]?) ;;
       *) $MKDIR "$SWTHDIR" ;;
     esac
   fi
-  if test "x$MODE" != "xbachelor" ; then
+  if [ "$MODE" != "bachelor" ]; then
     __set_biber
   fi
   _init
@@ -267,10 +302,10 @@ _create() {
 _init() {
   __readmode "What thesis do you have?"
   __readmain
-  if test "x$SWTHFILE" = "x"; then
+  if [ -z $SWTHFILE ]; then
     SWTHFILE="$SWTHDIR/.swth"
   fi
-  if test "x$DRY" != "xtrue"; then
+  if [ "$DRY" != "true" ]; then
     : > $SWTHFILE
     printf "# swth config file\n" >> $SWTHFILE
     printf "MODE=\"$MODE\"\n"         >> $SWTHFILE
@@ -281,22 +316,22 @@ _init() {
 }
 
 __set_biber() {
-  if type biber 2>/dev/null >/dev/null; then
+  if _has_cmd biber;  then
     $ECHO "Using Biber for BibTeX"
     BIBTEX=biber
   fi
 }
 
 _bibtex() {
-  if test "x$MODE" = "xbachelor"; then
+  if [ "$MODE" = "bachelor" ]; then
     find "$SWTHDIR" -mindepth 2 -name \*.aux | while read FILENAME; do
       dir=$(dirname "$FILENAME");
       base=$(basename "$FILENAME" | _sed -e 's/\.aux$//')
-      pushd "$dir" 2>/dev/null >/dev/null;
+      _pushd "$dir"
         $BIBTEX "$base" "$@"
-      popd 2>/dev/null >/dev/null;
+      _popd
     done
-  elif test "x$MAIN" != "x"; then
+  elif [ -n $MAIN ]; then
     $BIBTEX "$MAIN" "$@"
   else
     $ECHO "$PROGRAM: Not working on a main file, forgot \`$PROGRAM init'?"
@@ -305,7 +340,7 @@ _bibtex() {
 }
 
 _latex() {
-  if test "x$MAIN" != "x"; then
+  if [ -n $MAIN ]; then
     $LATEX "$@" "$MAIN"
   else
     $ECHO "$PROGRAM: Not working on a main file, forgot \`$PROGRAM init'?"
@@ -314,7 +349,7 @@ _latex() {
 }
 
 _gloss() {
-  if test "x$MAIN" != "x"; then
+  if [ -n $MAIN ]; then
     $MKGLOSS "$@" "$MAIN"
   else
     $ECHO "$PROGRAM: Not working on a main file, forgot \`$PROGRAM init'?"
@@ -323,7 +358,7 @@ _gloss() {
 }
 
 _show() {
-  if test "x$MAIN" != "x"; then
+  if [ -n $MAIN ]; then
     $OPEN "$PDFOUT"
   else
     $ECHO "No main file. Forgot \`$PROGRAM init'?"
@@ -338,27 +373,29 @@ _go() {
 }
 
 _author() {
-  if test "x$MODE" != "xbachelor"; then
+  if  [ "$MODE" != "bachelor" ]; then
     $ECHO "$PROGRAM: adding an author outside BSc mode is not meaningful, aborting"
     exit 5;
   fi
   AU_TEMPLATEDIR="$TEMPLATEROOT/Author_template"
   AUTHOR=
-  while test "x$AUTHOR" = "x"; do
+  while [ -z $AUTHOR ]; do
     printf "Please name the author to add: "
     read AUTHOR
-    AUTHOR=`$ECHO "$AUTHOR" | sed -e 's%[ ,./!?]%%g'`
+    AUTHOR=$($ECHO "$AUTHOR" | sed -e 's%[ ,./!?]%%g')
   done
   AU_DIR="$SWTHDIR/$AUTHOR"
-  if test -d "$AU_DIR"; then
+  if [ -d "$AU_DIR" ]; then
     $ECHO "$PROGRAM: $AUTHOR directory already exists, don't know what to do, aborting"
     exit 6
   fi
   $CP -r "$AU_TEMPLATEDIR"/. "$AU_DIR"
+  __untemplate "$AU_DIR"
   __ask_for_main_to_OUT
   AU_MAIN="$OUT"
   $MV "$AU_DIR/TEMPLATE.tex" "$AU_DIR/${AU_MAIN}.tex"
   _sed_inplace -e "s!$TEMPLATEMARKER!$AU_MAIN!g" "${AU_DIR}"/*.tex
+  _sed_inplace -e "s!$TEMPLATEMARKER!$AU_MAIN!g" "${AU_DIR}"/*.md
   $ECHO "" > "$AU_DIR/${AU_MAIN}.tex.latexmain"
 
   if grep -q "$THESESMARKER" "$SWTHDIR/${MAIN}.tex" 2>/dev/null >/dev/null; then
@@ -369,75 +406,73 @@ _author() {
 }
 
 # process .swth file here or in parent (one dir up)
-SWTHDIR=$PWD
-SWTHFILE=
-if test -f ./.swth; then
-  SWTHFILE=./.swth
-  . $SWTHFILE
-else
-  if test -f ../.swth; then
-    SWTHDIR=`dirname $PWD`
-    SWTHFILE=../.swth
-    . $SWTHFILE
-  fi
+if [ -z "$SWTHDIR" ]; then
+  SWTHDIR=$PWD
 fi
+SWTHFINDDIR=$PWD
+for SWTHFINDFILE in ./.swth ../.swth ../../.swth; do
+  if [ -f "$SWTHFINDFILE" ]; then
+    SWTHFILE=$SWTHFINDFILE
+    SWTHDIR=$SWTHFINDDIR
+    . $SWTHFILE
+  else
+    SWTHFINDDIR=$(dirname $SWTHFINDDIR)
+    # try next round
+  fi
+done
 
 
-if test "x$MAIN" != "x"; then
+if [ -n $MAIN ]; then
   PDFOUT=$MAIN.pdf
 fi
 
 #
 # help if nothing specified
 #
-if test $# -lt 1; then
+if [ $# -lt 1 ]; then
     set -- --help
 fi
 
-while test $# -gt 0; do
-  if test "x$1" = x--help || test "x$1" = x-help || test "x$1" = x-h; then
-    $ECHO "$USAGE"
-    exit 0
-  elif test "x$1" = x--version || test "x$1" = x-version; then
-    $ECHO "$PROGRAM $VERSION"
-    exit 0
-  elif test "x$1" = x--verbose || test "x$1" = x-verbose; then
-    VERBOSE=true
-  elif test "x$1" = x--dry-run || test "x$1" = x-n; then
-    DRY=true
-  elif test "x$1" = x--bachelor; then
-    MODE=bachelor
-  elif test "x$1" = x--master; then
-    MODE=master
-  elif test "x$1" = x--phd; then
-    MODE=phd
-  elif test "x$1" = x--xe; then
-    LATEX=xelatex
-  elif test "x$1" = x--pdf; then
-    LATEX=pdflatex
-  elif test "x$1" = x--lua; then
-    LATEX=lualatex
-  elif test "x$1" = x--biber; then
-    __set_biber
-  elif $ECHO "x$1" | grep '^x-' >/dev/null >/dev/null; then
-    $ECHO "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
-    exit 1
-  else
-    break
-  fi
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --help | -help | -h | help)
+      $ECHO "$USAGE"
+      exit 0
+      ;;
+    --version | -version | -V)
+      $ECHO "$PROGRAM $VERSION"
+      exit 0
+      ;;
+    --verbose | -verbose | -v) VERBOSE=true ;;
+    --dry-run | -n) DRY=true ;;
+    --bachelor | -B | -BA | -BSc) MODE=bachelor ;;
+    --master | -M | -MA | -MSc) MODE=master ;;
+    --phd | -P | -D | -PhD | --dr | --doctor) MODE=phd ;;
+    --xe) LATEX=xelatex ;;
+    --pdf) LATEX=pdflatex ;;
+    --lua) LATEX=lualatex ;;
+    --biber) __set_biber ;;
+    -*)
+      $ECHO "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
   shift
 done
 
-if test $# -lt 1; then
+if [ $# -lt 1 ]; then
   $ECHO "$PROGRAM: no command specified, try --help." >&2
   exit 2
 fi
 
-if type texfot >/dev/null 2>/dev/null; then
+if _has_cmd texfot && [ "$VERBOSE" != "true" ]; then
     LATEX="texfot --quiet $LATEX"
 fi
 
-if test "x$DRY" = "xtrue"; then
+if [ "$DRY" = "true" ]; then
   RM="$ECHO $RM"
   MKDIR="$ECHO $MKDIR"
   CP="$ECHO $CP"
@@ -448,7 +483,7 @@ if test "x$DRY" = "xtrue"; then
 fi
 
 
-if test "x$VERBOSE" = "xtrue"; then
+if [ "$VERBOSE" = "true" ]; then
   $ECHO "\
 Information
 ===========
@@ -470,10 +505,11 @@ command = $1"
 
 fi
 
-pushd "$SWTHDIR" >/dev/null 2>/dev/null
+_pushd "$SWTHDIR" >/dev/null 2>/dev/null
+trap '_popd >/dev/null 2>/dev/null' EXIT
 
 CMD="_$1"
-if type $CMD >/dev/null 2>/dev/null; then
+if _has_cmd $CMD; then
   shift
   $CMD "$@"
 else
@@ -482,9 +518,7 @@ else
 fi
 EXIT=$?
 
-popd 2>/dev/null >/dev/null
-
-if test $EXIT -ne 0; then
+if [ $EXIT -ne 0 ]; then
   $ECHO "Whoops"
 else
   $ECHO "Done"

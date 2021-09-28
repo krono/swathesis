@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 if [ ! -z "$ZSH_VERSION" ]; then
   setopt shwordsplit
@@ -16,7 +17,7 @@ TEX=tds/tex/latex/swathesis
 BIN=tds/scripts/swathesis
 
 if [ ! -d "$TEX" ]; then mkdir -p "$TEX"; fi
-cp -r contrib *.sty *.def *.cls "$TEX"
+cp -r contrib *.sty *.def *.cls swa-*.tex "$TEX"
 
 if [ ! -d "$BIN" ]; then mkdir -p "$BIN"; fi
 cp bin/* "$BIN"

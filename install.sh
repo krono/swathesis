@@ -33,9 +33,6 @@ OPTIONS
 
   --no-req      do not atempt to install required packages
   --no-bin      do not link the \`swth' script
-  --no-logos    do not try to find Logos.zip (Uni Potsdam/HPI logos)
-
-  --logos=FILE  use Logos.zip from FILE
 
   --update      force update; rebuild TDS package prior to installation
   --verbose     turn verbose output on
@@ -86,11 +83,7 @@ DEST_DEFAULT= $DEST_DEFAULT
 BIN=          $BIN
 BIN_DEFAULT=  $BIN_DEFAULT
 "
-if [ "$NOLOGO" -eq 1 ]; then
-  $ECHON "not "
-fi
-$ECHO "deploying logos (from $LOGO)"
-
+  
 if [ ! -z "$E" ]; then
   $ECHO "using $E as sudo";
 fi
@@ -123,8 +116,6 @@ NOBIN=0
 NEEDMKTEXLSR=0
 UPDATE=0
 E=
-NOLOGO=0
-LOGO=Logos.zip
 
 while test $# -gt 0; do
   case "x$1" in
@@ -143,8 +134,6 @@ while test $# -gt 0; do
     x--no-req)      REQUIREMENTS=0                             ;;
     x--no-bin)      NOBIN=1                                    ;;
     x--update)      UPDATE=1                                   ;;
-    x--no-logos)    NOLOGO=1                                   ;;
-    x--logo=*)      LOGO="$($ECHON $1 | sed -e 's%--logo=%%')" ;;
     *)
       $ECHO "$PROGRAM: unknown option \`$1', try --help if you need it." >&2
       exit 1
@@ -226,28 +215,6 @@ Shall I ignore that (no linking) or overwrite that file?
   fi
 fi
 
-if [ "$NOLOGO" -eq 0 ]; then
-  if [ \! -f "$LOGO" ]; then
-    printf "Do you have a Logos.zip with Uni Potsdam/HPI logos?
-If you have, place it in this directory
-    $PWD
-and say \`yes' (or the filename), if not, or you do not 
-know what this means, say \`no'.
-
-[yes|filename|NO] "
-    read ANS
-    if [ -z "$ANS" ]; then ANS="no"; fi
-    case "$ANS" in
-      no|NO)  NOLOGO=1                    ;;
-      yes)    if [ \! -f "$LOGO" ]; then
-                $ECHO "Cannot find $LOGO, although requested to use it, don't know what to do, aborting."
-                exit 1
-              fi                          ;;
-      *)      LOGO="$ANS"                 ;;
-    esac
-  fi
-fi
-
 
 if [ "$VERBOSE" -eq 1 ]; then
   __verbose_info
@@ -288,11 +255,6 @@ _P=$PWD
 cd "$DEST_DIR"
 
 $E unzip -u -o -q "$PROGDIR/$THE_TDS"
-if [ $NOLOGO -ne 1 ]; then
-  cd tex/latex/swathesis
-  $ECHO "> Deploying logos into $DEST_DIR/tex/latex/swathesis"
-  $E unzip -u -o -q "$PROGDIR/$LOGO"
-fi
 
 cd "$_P"
 

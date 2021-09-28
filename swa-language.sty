@@ -1,4 +1,5 @@
-\RequirePackage[USenglish,german]{datenumber}
+\PassOptionsToPackage{USenglish,german}{datenumber}
+\RequirePackage{datenumber}
 \setdatetoday
 
 \RequirePackage{swa-platform}
@@ -71,4 +72,15 @@
     }
 
 }
+% Some commons
+\providecaptionname{english}{\advisorname}{Advisor}%
+\providecaptionname{english}{\advisorsname}{Advisors}%
+\providecaptionname{german,ngerman}{\advisorname}{Betreuer:in}%
+\providecaptionname{german,ngerman}{\advisorsname}{Betreuer:innen}%
+
+\providecaptionname{english}{\reviewername}{Reviewer}%
+\providecaptionname{english}{\reviewersname}{Reviewers}%
+\providecaptionname{german,ngerman}{\reviewername}{Gutachter:in}%
+\providecaptionname{german,ngerman}{\reviewersname}{Gutachter:innen}%
+
 \endinput

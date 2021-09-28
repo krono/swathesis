@@ -25,36 +25,81 @@
 \setcounter{tocdepth}{1}
 \setcounter{secnumdepth}{3}
 
+\usepackage{glossaries}
 \renewcommand*{\glsnamefont}[1]{\textbf{#1}}
 
-\usepackage{titlepage}
-\TitlePageStyle[discipline=phd, whom={der}, subject=degree]{hpi-swa}
-\degree{Doktor der Naturwissenschaften\\ (Doctor rerum naturalium)}
-% \degree{Doktor der Ingenieurwissenschaften\\ (Doktor-Ingerneur)}
-\faculty{%
-Mathematisch-Naturwissenschaftlichen Fakultät\\
-der Universität Potsdam}
 
-\advisor{Prof.\,Dr.\,Jack Hasaname}
+\usepackage[
+type={CC},modifier={by-sa},version={4.0},
+imagewidth={5em},imagemodifier={-80x15},
+]{doclicense}
 
+\usepackage{uni-titlepage}
+\TitlePageStyle[%
+%%% Language Specifics
+titlepagelanguage=ngerman,%
+% titlelanguage=english,%
+% othertitlelanguage=ngerman,%
+%%%% custom backpage of the main title (no imprint)
+% uppertitleback={...},
+% lowertitleback={....},
+%%% custom extra title
+% extratitle={},
+%%% to start right away with the colorful title
+% noextratitle=true,%
+%%% Omit the imprint on the default main title backpage
+% noimprint=true, % same as 'imprint=no/false', opposite: 'imprint=yes/true'
+]{hpi-swa-phd}
+
+
+\advisor{%
+  Prof.\,Dr.\,Jill Hasaname\\
+  Universität Potsdam,\\
+  Digital Engineering-Fakultät, \\
+  Software Architecture Group}
+\reviewers{%
+  Prof.\,Dr.\,Jack Alsohere\\
+  University of San Serife\\
+  Facultiy of Computer Doings%
+\and
+  prof.\,em.\,dr.\,Amelia van der Beenherelong\\
+  De Haagse Universiteit}
 
 % ABGABEDATUM
-% \setdate{2012}{04}{05}
+\handindate{2022-02-02}
+% VERTEIDIGUNG
+\defensedate{2022-04-01}
+% 
+% \setdate{2022}{02}{02}
 % \date{\datedate}
 
 \author{Vorname Nachname}
 \location{Berlin}
-\extratitle{\raggedleft Nachname, \\ Titel Kurz\par}
 \title{Der Lange Titel der Arbeit die zu Schreiben Ist}
 \subtitle{Ein Untertitel ist Optional}
-\othertitle{The Long Title of the Work to Be Done}
-\othersubtitle{This is Optionally Optional}
+
+%
+% %%%%%%%%%%%%%%%%%%% Other properties of the title pages that can be changed
+%
+%%%% Simple extratitle
+% \extratitle{\raggedleft Nachname, \\ Titel Kurz\par}
+%%%% Optional other title, typical second language
+% \othertitle{The Long Title of the Work to Be Done}
+% \othersubtitle{This is Optionally Optional}
+%%%% University specific
+% \faculty{Digital Engineering Fakultät}
+% \university{Universität Potsdam}
+%%%% Properties of the final work.
+% \doi{https://doi.org/10.25932/publishup-49913}
+% \urn{https://nbn-resolving.org/urn:nbn:de:kobv:517-opus4-499134}
+%%%% Aestetical additions
+% \dedication{To Robocop, my cat}
+% \frontispiece{A picture of the Matter.}
 
 \begin{document}
 \frontmatter
-\begin{otherlanguage}{ngerman}
 \maketitle
-\end{otherlanguage}
+\input{frontmatter}
 \input{frontmatter}
 \mainmatter
 \input{content}

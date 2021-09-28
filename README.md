@@ -1,8 +1,9 @@
 # SWAThesis #
 
-An unofficial LaTeX class for writing theses at
-the [Software Architecture Group][], [Hasso-Plattner-Institut][],
-[University of Potsdam][], Germany.
+A LaTeX class for writing theses at
+the [Hasso-Plattner-Institut][],
+[University of Potsdam][], Germany. 
+It has often been used at the [Software Architecture Group][].
 
 This package consists of
 
@@ -52,16 +53,12 @@ to generate a [TDS][] compatible package for manual installation.
 `swathesis` needs
 
 * A current [`microtype`][microtype] version
-* The [LNCS][] class LaTeX2e class
-* The [`titlepage`][titlepage] package by Markus Kohm (although still alpha)
+* The [HPITR][] class
+* The [`uni-titlepage`][titlepage] package by Markus Kohm
 * A current [`fontaxes`][fontaxes] package for `microtype`
-* A current [`acronyms`][acronyms] package
+* A current [`acronyms`][acronyms] or [`glossaries`][glossaries] package
 
 The `get_requirements.sh` script installs these automatically, if needed.
-
-### Logos ###
-
-`swtathesis` uses a `Logos.zip` when put next to the `install.sh`. If you do not know how to obtain it, ask the creator of this repository. If you have no idea what this is about, please ignore it.
 
 ## Contents ##
 
@@ -82,13 +79,14 @@ The `get_requirements.sh` script installs these automatically, if needed.
     └── title-hpi-swa.def — titlepage style
 
 
-[Software Architecture Group]: http://www.hpi.uni-potsdam.de/swa
-[University of Potsdam]: http://www.uni-potsdam.de
-[Hasso-Plattner-Institut]: http://www.hpi-web.de
-[TDS]: http://en.wikipedia.org/wiki/TeX_Directory_Structure "Wikipedia: TDS"
-[titlepage]: http://komascript.de/titlepage
-[LNCS]: http://www.springer.com/computer/lncs/lncs+authors
-[microtype]: http://mirror.ctan.org/help/Catalogue/entries/microtype.html
-[fontaxes]: http://mirror.ctan.org/help/Catalogue/entries/fontaxes.html
-[ctable]: http://mirror.ctan.org/help/Catalogue/entries/ctable.html
-[acronyms]: http://mirror.ctan.org/help/Catalogue/entries/acronyms.html
+[Software Architecture Group]: https://www.hpi.uni-potsdam.de/swa
+[University of Potsdam]: https://www.uni-potsdam.de
+[Hasso-Plattner-Institut]: https://www.hpi.de
+[TDS]: https://en.wikipedia.org/wiki/TeX_Directory_Structure "Wikipedia: TDS"
+[titlepage]: https://komascript.de/titlepage
+[hpitr]: https://github.com/hpi-swa-lab/hpitr
+[microtype]: https://ctan.org/pkg/microtype
+[fontaxes]: https://ctan.org/pkg/fontaxes
+[ctable]: https://ctan.org/pkg/ctable
+[acronyms]: https://ctan.org/pkg/acronyms
+[glossaries]: https://ctan.org/pkg/glossaries
