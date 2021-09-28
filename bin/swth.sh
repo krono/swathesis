@@ -79,13 +79,17 @@ if [ -z "$OSTYPE" ]; then
 fi
 
 if _has_cmd pushd ; then
-  alias _pushd=pushd
-  alias _popd=popd
+  _pushd() { 
+    pushd "$@" 2>/dev/null >dev/null 
+  }
+  _popd() { 
+    popd "$@" 2>/dev/null >dev/null 
+  }
 else
   # emulate pushd to our usage
   _pushd() {
     export P_OLDPWD="$PWD"
-    cd $1
+    cd $1  2>/dev/null >dev/null 
   }
   _popd() {
     if [ -z "$P_OLDPWD" ]; then
@@ -93,7 +97,7 @@ else
       (exit 1)
       return 1
     else
-      cd "$P_OLDPWD"
+      cd "$P_OLDPWD"  2>/dev/null >dev/null
       export P_OLDPWD=
     fi
   }
@@ -190,7 +194,7 @@ __readmain_bp() {
   while [ -z $BP ]; do
     printf "What is your bachelor project number (eg, H1)? "
     read BP
-    BP=$($ECHO "$BP" | sed -e 's%[ ,./!?]%%g')
+    BP=$($ECHO "$BP" | _sed 's%[ ,./!?]%%g')
   done
   MAIN="BP${YEAR}${BP}_Theses"
 }
@@ -202,7 +206,7 @@ __ask_for_main_to_OUT() {
   while [ -z $NAME ]; do
     printf "What is your family name? "
     read NAME
-    NAME=$($ECHO "$NAME" | sed -e 's%[ ,./!?]%%g')
+    NAME=$($ECHO "$NAME" | _sed 's%[ ,./!?]%%g')
   done
   TITLE=
   if [ -z $TITLE ]; then
@@ -237,13 +241,13 @@ __untemplate() {
   _pushd "$1"
   for ITEM in ${DFLT}+*; do
     if [ -e "$ITEM" ];  then
-      DST=$(echo "$ITEM" | sed 's/TEMPLATE\+//')
+      DST=$(echo "$ITEM" | _sed "s%${TEMPLATEMARKER}\\+%%")
       $MV "$ITEM" "$DST"
     fi
   done
   for ITEM in ${DFLT}-*; do
     if [ -e "$ITEM" ];  then
-      DST=$(echo "$ITEM" | sed "s/TEMPLATE-/${MAIN}-/")
+      DST=$(echo "$ITEM" | _sed "s%${TEMPLATEMARKER}\\-%${MAIN}-%")
       $MV "$ITEM" "$DST"
     fi
   done

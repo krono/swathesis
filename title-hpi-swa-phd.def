@@ -9,7 +9,7 @@
   -hpi-swa-phd%
  .def%
 }[%
-  2012/01/09 v0.01
+  2012/09/28 v0.2
 ]
 \begingroup
   \def\PackageNotLoadedError#1{%
@@ -41,6 +41,7 @@
 \DefineSimpleTitleKey[HPISWA]{titlepagelanguage}
 \DefineSimpleTitleKey[HPISWA]{titlelanguage}
 \DefineSimpleTitleKey[HPISWA]{othertitlelanguage}
+\DefineSimpleTitleKey[HPISWA]{imprintlanguage}
 
 \DefineSimpleTitleKey[HPISWA]{handindate}
 \DefineSimpleTitleKey[HPISWA]{defensedate}
@@ -71,6 +72,16 @@
   \ifstrequal{true}{#1}{\global\toggletrue{hpiswa@imprint}}{}%
   \ifstrequal{no}{#1}{\global\togglefalse{hpiswa@imprint}}{}%
   \ifstrequal{false}{#1}{\global\togglefalse{hpiswa@imprint}}{}%
+  \FamilyKeyStateProcessed}%
+
+\newtoggle{hpiswa@committee}
+\toggletrue{hpiswa@committee}
+\DefineFamilyKey[HPISWA]{title}{nocommittee}{\global\togglefalse{hpiswa@committee}\FamilyKeyStateProcessed}
+\DefineFamilyKey[HPISWA]{title}{committee}%
+  {\ifstrequal{yes}{#1}{\global\toggletrue{hpiswa@committee}}{}%
+  \ifstrequal{true}{#1}{\global\toggletrue{hpiswa@committee}}{}%
+  \ifstrequal{no}{#1}{\global\togglefalse{hpiswa@committee}}{}%
+  \ifstrequal{false}{#1}{\global\togglefalse{hpiswa@committee}}{}%
   \FamilyKeyStateProcessed}%
   
 %
@@ -133,75 +144,103 @@
     % extratitle already given
     {}%
   \ifcsvoid{@uppertitleback}%
-    {\ifboolexpr{ togl {hpiswa@imprint} }%
-      {\ifcsvoid{doclicenseURL}{}% has CC license…
-        {\uppertitleback{%
-          \pdfbookmark[subsection]{Imprint}{imprint}%
-          \noindent%
-          \begin{FlushLeft}
-            \small
-            This work is licensed under a Creative Commons License: \hfill\doclicenseImage\\
-            \doclicenseLongNameRef.\\
-            This does not apply to quoted content from other authors.\\
-            To view a copy of this license visit \\\url{\doclicenseURL}
-          \end{FlushLeft}}}}%
-        {}}%
+    {\uppertitleback{%
+      \pdfbookmark[subsection]{Imprint}{imprint}%
+      \ifboolexpe{ togl {hpiswa@imprint} }%
+        {\ifcsvoid{doclicenseURL}{}% has CC license…
+          {\hpiswalicense}%
+          {}}%
+        {}}}
     {}%
   \ifcsvoid{@lowertitleback}%
-    {\ifboolexpr{ togl {hpiswa@imprint} }%
-      {\lowertitleback{\hpiswaimprint}}%
-      {}}%
+    {\lowertitleback{%
+      \ifboolexpe{ togl {hpiswa@committee} }{\hpiswacommittee}{}%
+      \ifboolexpe{ togl {hpiswa@imprint} }{\hpiswaimprint}{}}}%
     {}%
   %stopdefaults
 }
 
-\providecommand*{\hpiswaimprint}%
-  {\begingroup
+
+\providecommand{\hpiswacommittee}%
+  {\begingroup%
   \RaggedRight
   \small
   \noindent
-  \begin{otherlanguage*}[date]{ngerman}%
-    \begingroup%
-    \ifcsvoid{@referee}%
-      % advisor only
-      {\def\\{ \tabularnewline & }%
-      \edef\tempa{\@advisor}%
-      \begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
-        \advisorname: & \tempa
-      \end{tabular}}
-      % advisor + referees
-      {\def\\{ \tabularnewline & }%
-      \def\and{ \tabularnewline \noexpand\smalllinespace & }%
-      \edef\tempa{\@advisor}%
-      \edef\tempb{\@referee}%
-      \def\smalllinespace{\addlinespace[4pt]}%
-      \begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
-        \advisorname: & \tempa \\\addlinespace[8pt]
-        \refereename: & \tempb
-      \end{tabular}}
-    \endgroup
-    \par\smallskip\noindent
-    \ifcsvoid{@handindate}%
-      {} % no hand in, no defense
-      {\ifcsvoid{@defensedate}%
-        % hand in only
-        {\begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
-          \handindatename: & \hpiswaprintdate{\@handindate}
-        \end{tabular}}%
-        % hand in + defense
-        {\begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
-          \handindatename: & \hpiswaprintdate{\@handindate}\\
-          \defensedatename:& \hpiswaprintdate{\@defensedate}
-        \end{tabular}}}
-  \end{otherlanguage*}\par
+  \begingroup%
+  \ifcsvoid{@referee}%
+    % advisor only
+    {\def\\{ \tabularnewline & }%
+    \edef\tempa{\@advisor}%
+    \begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
+      \advisorname: & \tempa
+    \end{tabular}}
+    % advisor + referees
+    {\def\\{ \tabularnewline & }%
+    \def\and{ \tabularnewline \noexpand\smalllinespace & }%
+    \edef\tempa{\@advisor}%
+    \edef\tempb{\@referee}%
+    \def\smalllinespace{\addlinespace[4pt]}%
+    \begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
+      \advisorname: & \tempa \\\addlinespace[8pt]
+      \refereename: & \tempb
+    \end{tabular}}
+  \endgroup
+  \par\smallskip\noindent
+  \ifcsvoid{@handindate}%
+    {} % no hand in, no defense
+    {\ifcsvoid{@defensedate}%
+      % hand in only
+      {\begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
+        \handindatename: & \hpiswaprintdate{\@handindate}
+      \end{tabular}}%
+      % hand in + defense
+      {\begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
+        \handindatename: & \hpiswaprintdate{\@handindate}\\
+        \defensedatename:& \hpiswaprintdate{\@defensedate}
+      \end{tabular}}}
+  \par
   \vspace*{4\baselineskip}%
-  \ifcsvoid{@doi}%
-    {}% not published
-    {Published online on the \\
-    Publication Server of the University of Potsdam:\\
-    \url{\@doi}\\
-    \url{\@urn}}
   \endgroup}%
+
+\providecommand*{\hpiswacsimprintlanguagebox}[1]%
+  {\ifcsvoid{@imprintlanguage}%
+    {\hpiswacsnontitlepagelanguage{#1}}
+    {\begin{otherlanguage*}[date]{\imprintlanguage}\csuse{#1}\end{otherlanguage*}}}
+
+\providecommand*{\hpiswacsnontitlepagelanguage}[1]%
+  {\ifcsvoid{@titlepagelanguage}%
+    {\csuse{#1}}
+    {%reverse the polarity
+    \begingroup%
+    \hpiswaresetlang{@titlepagelanguage}%
+    \csuse{#1}%
+    \hpiswasetlang{@titlepagelanguage}%
+    \endgroup}}
+    
+\providecommand*{\hpiswalicense}%
+  {\hpiswacsimprintlanguagebox{hpiswalicense@}}
+\providecommand*{\hpiswalicense@}%
+  {\noindent%
+  \begin{FlushLeft}
+    \small
+    This work is licensed under a Creative Commons License: \hfill\doclicenseImage\\
+    \doclicenseLongNameRef.\\
+    This does not apply to quoted content from other authors.\\
+    To view a copy of this license visit \\\url{\doclicenseURL}
+  \end{FlushLeft}}
+\providecommand*{\hpiswaimprint}%
+  {\hpiswacsimprintlanguagebox{hpiswaimprint@}}
+\providecommand*{\hpiswaimprint@}%
+  {\ifcsvoid{@doi}%
+    {}% not published
+    {\begingroup
+    \RaggedRight
+    \small
+    \noindent
+    \hpiswapulicationinfo\\
+    \url{\@doi}\\
+    \url{\@urn}%
+    \endgroup}}%
 
 \providecommand*{\hpiswaprinttititle}%
   {{\titlefont\huge\@title}\par}
@@ -235,6 +274,9 @@
   {\degreethesisname{} in pursuit of doctorate \ofthename{}\\
    \@faculty{}\\
    \ofthename{} \@university}
+\providecommand*{\hpiswapulicationinfo}
+    {Published online on the \\
+    Publication Server \ofthename{} \@university:}
 
 \providecommand*{\reviewer}{\referee}
 \providecommand*{\reviewers}{\referee}
@@ -280,6 +322,15 @@
     {\defensedatename}{Datum der Disputation}
   \providecaptionname{german,ngerman,austrian,naustrian,swissgerman,nswissgerman}%
     {\handindatename}{Datum der Einreichung}
+
+  \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}%
+    {\hpiswapulicationinfo}%
+    {Published online on the \\
+    Publication Server \ofthename{} \@university:}
+  \providecaptionname{german,ngerman,austrian,naustrian,swissgerman,nswissgerman}%
+    {\hpiswapulicationinfo}%
+    {Online veröffentlicht auf dem \\
+    Publications-Server \ofthename{} \@university:}  
   % stop provides
   }
   
@@ -334,22 +385,34 @@
   {\ifcsvoid{@extratitle}{}%
     % yes extra
     {\begin{titlepage}% 
+      \begingroup%
+      \hpiswasetlang{@titlepagelanguage}%
       \noindent\@extratitle%
+      \hpiswaresetlang{@titlepagelanguage}%
+      \endgroup%
     \end{titlepage}}}%
 \renewcommand*{\makepretitleback}%
   {\ifcsvoid{@extratitle}%
     % No extra, so no recto
-    {\ifcsvoid{@frontispiece}{}%
+    {\ifcsvoid{@frontispiece}%
+      % no fronti no work no verso
+      {}%
        % Yes fronti, need artificial recto
       {\begin{titlepage}\null\end{titlepage}}}%
-    % yes extra, already verso, need to fill verso
-    {\begin{titlepage}%
-      \ifcsvoid{@frontispiece}%
-        % no fronti, need aritficial verso
-        {\null}%
-        % Yes fronti, normal fronti
-        {\noindent\@frontispiece}%
-      \end{titlepage}}}%
+    % yes extra, already verso.
+    {}
+    % now fronti
+    \begin{titlepage}%
+    \ifcsvoid{@frontispiece}%
+      % no fronti, need aritficial verso
+      {\null}%
+      % Yes fronti, normal fronti
+      {\begingroup
+      \hpiswasetlang{@titlepagelanguage}
+      \noindent\@frontispiece%
+      \hpiswaresetlang{@titlepagelanguage}%
+      \endgroup}%
+    \end{titlepage}}%
   
 \renewcommand*{\makeposttitle}%
   {\ifcsvoid{@dedication}{}%
@@ -365,7 +428,7 @@
 %%%
 
 \renewcommand*{\makemaintitle}%
-  {\begin{titlepage}
+  {\begin{titlepage}\begingroup%
     \hpiswasetlang{@titlepagelanguage}%
     \initcovertitle%
     \setlength{\parskip}{\z@}%
@@ -405,7 +468,9 @@
       \vspace*{3em}
     \end{center}
     \@thanks
-    \vfill\null\vskip-\baselineskip
+    \vfill\null\vskip-\baselineskip%
+    \hpiswaresetlang{@titlepagelanguage}%
+    \endgroup
   \end{titlepage}}
 
 % put here because it is a stripped-down maintitle
@@ -452,6 +517,8 @@
 
 \renewcommand*{\makemaintitleback}%
   {\begin{titlepage}
+    \begingroup%
+    \hpiswasetlang{@titlepagelanguage}%
     \noindent
     \begin{minipage}[t]{\textwidth}
       \@titlepagefont{\@uppertitleback}%
@@ -461,10 +528,11 @@
     \begin{minipage}[b]{\textwidth}
       \@titlepagefont{\@lowertitleback}%
     \end{minipage}
+    \hpiswaresetlang{@titlepagelanguage}%
+    \endgroup%
   \end{titlepage}\par
   \@thanks\global\let\@thanks\@empty
-  \csuse{titlepage@restore}%
-  \hpiswaresetlang{@titlepagelanguage}}
+  \csuse{titlepage@restore}}
 
 \endinput
 %%

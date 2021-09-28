@@ -12,7 +12,7 @@ or similar, see `swth --help`.
     .
     ├── README.md                       # this file
     ├── abstract.tex                    # content of the abstract (English)
-    ├── acknowledgment.tex              # maybe thank those who made your thesis possible
+    ├── acknowledgments.tex             # maybe thank those who made your thesis possible
     ├── appendix.tex                    # good for detailed resources, like benchmark results
     ├── content.tex                     # entry point for your thesis content
     ├── frontmatter.tex                 # everything before the content: lists, abstract, etc.
