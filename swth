@@ -4,7 +4,7 @@
 #
 #
 
-VERSION="0.2"
+VERSION="1.0"
 PROGRAM=$(echo $0 | sed 's%.*/%%')
 if [ ! -z "$ZSH_VERSION" ]; then
   setopt shwordsplit
@@ -46,7 +46,9 @@ COMMAND
 
 "
 
-$ECHO "Beware of Dragons!"
+__dragons() {
+  $ECHO "Beware of Dragons!"
+}
 
 MODE=
 DRY=false
@@ -63,7 +65,7 @@ MV=mv
 THESESMARKER="%SWTH_do_not_remove"
 TEMPLATEMARKER="TEMPLATE"
 
-_has_cmd () {
+__has_cmd () {
   command -v "$1"  2>/dev/null >/dev/null
 }
 
@@ -78,20 +80,20 @@ if [ -z "$OSTYPE" ]; then
   OSTYPE=$(uname -s | tr A-Z a-z)
 fi
 
-if _has_cmd pushd ; then
-  _pushd() { 
+if __has_cmd pushd ; then
+  __pushd() { 
     pushd "$@" 2>/dev/null >dev/null 
   }
-  _popd() { 
+  __popd() { 
     popd "$@" 2>/dev/null >dev/null 
   }
 else
   # emulate pushd to our usage
-  _pushd() {
+  __pushd() {
     export P_OLDPWD="$PWD"
     cd $1  2>/dev/null >dev/null 
   }
-  _popd() {
+  __popd() {
     if [ -z "$P_OLDPWD" ]; then
       $ECHO "$0: directory stack empty"
       (exit 1)
@@ -102,40 +104,6 @@ else
     fi
   }
 fi
-
-
-case "$OSTYPE" in
-  cygwin*)
-    OPEN="cygstart"
-    RM="del"
-    MKDIR="md"
-    CP="copy"
-    MV="move"
-    ;;
-  solaris*) OPEN="xdg-open" ;;
-  bsd*)     OPEN="xdg-open" ;;
-  linux*)
-    if _has_cmd open; then
-      OPEN="open";
-    else
-      OPEN="xdg-open"
-    fi
-    ;;
-  darwin*)
-    OPEN="open"
-    SKIM="net.sourceforge.skim-app.skim"
-    SKIMS=$(mdfind -count "kMDItemCFBundleIdentifier == 'net.sourceforge.skim-app.skim'")
-    if [  "$SKIMS" -ge 1 ] || \
-      [ -e /Applications/Skim.app/Contents/MacOS/Skim ] || \
-      [ -e /Applications/TeX/Skim.app/Contents/MacOS/Skim ] ; then
-      OPEN="$OPEN -b $SKIM"
-    fi
-    ;;
-  *)
-    $ECHO "Warn: cannot provide open. \`show' won't work."
-    OPEN=$ECHO
-    ;;
-esac
 
 _sed() {
 case "$OSTYPE" in
@@ -238,7 +206,7 @@ __readmain() {
 
 __untemplate() {
   DFLT=TEMPLATE
-  _pushd "$1"
+  __pushd "$1"
   for ITEM in ${DFLT}+*; do
     if [ -e "$ITEM" ];  then
       DST=$(echo "$ITEM" | _sed "s%${TEMPLATEMARKER}\\+%%")
@@ -251,7 +219,7 @@ __untemplate() {
       $MV "$ITEM" "$DST"
     fi
   done
-  _popd
+  __popd
 }
 
 __copy_template() {
@@ -320,7 +288,7 @@ _init() {
 }
 
 __set_biber() {
-  if _has_cmd biber;  then
+  if __has_cmd biber;  then
     $ECHO "Using Biber for BibTeX"
     BIBTEX=biber
   fi
@@ -331,9 +299,9 @@ _bibtex() {
     find "$SWTHDIR" -mindepth 2 -name \*.aux | while read FILENAME; do
       dir=$(dirname "$FILENAME");
       base=$(basename "$FILENAME" | _sed -e 's/\.aux$//')
-      _pushd "$dir"
+      __pushd "$dir"
         $BIBTEX "$base" "$@"
-      _popd
+      __popd
     done
   elif [ -n $MAIN ]; then
     $BIBTEX "$MAIN" "$@"
@@ -434,7 +402,8 @@ fi
 # help if nothing specified
 #
 if [ $# -lt 1 ]; then
-    set -- --help
+  __dragons
+  set -- --help
 fi
 
 while [ $# -gt 0 ]; do
@@ -467,12 +436,48 @@ while [ $# -gt 0 ]; do
   shift
 done
 
+__dragons
+
+
+case "$OSTYPE" in
+  cygwin*)
+    OPEN="cygstart"
+    RM="del"
+    MKDIR="md"
+    CP="copy"
+    MV="move"
+    ;;
+  solaris*) OPEN="xdg-open" ;;
+  bsd*)     OPEN="xdg-open" ;;
+  linux*)
+    if __has_cmd open; then
+      OPEN="open";
+    else
+      OPEN="xdg-open"
+    fi
+    ;;
+  darwin*)
+    OPEN="open"
+    SKIM="net.sourceforge.skim-app.skim"
+    SKIMS=$(mdfind -count "kMDItemCFBundleIdentifier == 'net.sourceforge.skim-app.skim'")
+    if [  "$SKIMS" -ge 1 ] || \
+      [ -e /Applications/Skim.app/Contents/MacOS/Skim ] || \
+      [ -e /Applications/TeX/Skim.app/Contents/MacOS/Skim ] ; then
+      OPEN="$OPEN -b $SKIM"
+    fi
+    ;;
+  *)
+    $ECHO "Warn: cannot provide open. \`show' won't work."
+    OPEN=$ECHO
+    ;;
+esac
+
 if [ $# -lt 1 ]; then
   $ECHO "$PROGRAM: no command specified, try --help." >&2
   exit 2
 fi
 
-if _has_cmd texfot && [ "$VERBOSE" != "true" ]; then
+if __has_cmd texfot && [ "$VERBOSE" != "true" ]; then
     LATEX="texfot --quiet $LATEX"
 fi
 
@@ -509,11 +514,11 @@ command = $1"
 
 fi
 
-_pushd "$SWTHDIR" >/dev/null 2>/dev/null
-trap '_popd >/dev/null 2>/dev/null' EXIT
+__pushd "$SWTHDIR" >/dev/null 2>/dev/null
+trap '__popd >/dev/null 2>/dev/null' EXIT
 
 CMD="_$1"
-if _has_cmd $CMD; then
+if __has_cmd $CMD; then
   shift
   $CMD "$@"
 else

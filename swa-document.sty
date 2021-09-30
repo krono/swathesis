@@ -5,7 +5,6 @@
 
 \RequirePackage{ifpdf}
 
-\RequirePackage{color}
 \PassOptionsToPackage{table,svgnames,dvipsnames*,x11names}{xcolor}
 \AfterPackage*{xcolor}{%
   \definecolors{Aquamarine,Black,Blue,BlueViolet,Brown,CadetBlue,%
@@ -23,10 +22,8 @@
 \RequirePackage{pdfpages}
 
 % macros for comments
-\RequirePackage[%
-  obeyDraft,%
-  colorinlistoftodos,%
-]{todonotes}
+\PassOptionsToPackage{obeyDraft,colorinlistoftodos}
+\RequirePackage{todonotes}
 
 \def\todosec{\par\noindent\todo[inline]}
 \def\secmissing{\par\noindent\todo[color=red,inline,size=\Large]}

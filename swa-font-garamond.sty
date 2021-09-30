@@ -1,4 +1,5 @@
-\RequirePackage[osf,p]{ebgaramond}
+\PassOptionsToPackage{osf,p}{ebgaramond}
+\RequirePackage{ebgaramond}
 \ifboolexpr{bool{tutex}}{%
   %\addfontfeatures{RawFeature={+ss06}}
   \AtBeginDocument{\addfontfeatures{RawFeature={+ss06}}}
@@ -24,7 +25,8 @@
     ]%
     {DejaVuSansMono}
 }{%
-  \RequirePackage[scaled=.9]{DejaVuSansMono}
+  \PassOptionsToPackage{scaled=.9}{DejaVuSansMono}
+\RequirePackage{DejaVuSansMono}
   \providecommand*\ebgaramondtabulartext[1]{\tabularnums{#1}}
 }
 \addtokomafont{partentrypagenumber}{\ebgaramondtabular}

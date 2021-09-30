@@ -1,0 +1,63 @@
+# swathesis needs the follwing packages.
+# These are available via TeXLive tlmgr or MiKTeX mpm
+accsupp
+acronym
+babel
+biblatex
+blindtext
+bookmark
+booktabs
+caption
+chapterbib
+comment
+csquotes
+datenumber
+dejavu # DejaVuSansMono
+ebgaramond
+ebgaramond-maths
+enumitem
+eso-pic
+etoolbox
+fancybox
+fnpct
+fontaxes
+fontenc
+fontspec
+glossaries
+graphicx
+greek-fontenc # alphabeta
+hyperref
+hyperxmp
+ifluatex
+ifpdf
+ifxetex
+inputenx
+koma-script
+l3kernel # expl3
+lineno
+listings
+lmodern
+lstaddons # for lstlinebgrd
+ltablex
+microtype
+morewrites
+newpx # newpxmath, newpxtext
+newtx # newtxmath
+oberdiek # hypcap, ifdraft
+pdfpages
+pgf # tikz
+pgfplots
+pifont
+relsize
+soft polyglossia
+subcaption
+textcase
+threeparttable
+todonotes
+totpages
+uni-titlepage # in TL 2021
+unicode-math
+wrapfig
+xcolor
+xspace
+# EOF

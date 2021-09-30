@@ -266,7 +266,7 @@ fi
 
 if [ "$NOBIN" -eq 0 ]; then
   $ECHO "> Linking \`swth' into $BIN"
-  $E ln -s "$DEST_DIR"/scripts/swathesis/swth.sh "$BIN"/swth
+  $E ln -s "$DEST_DIR"/scripts/swathesis/swth "$BIN"/swth
   if $ECHO $PATH | tr ':' '\n' | grep -q "$BIN"; then
     :
   else

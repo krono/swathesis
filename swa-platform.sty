@@ -19,8 +19,10 @@
   {}%
   {\input glyphtounicode
    \pdfgentounicode=1
-   \RequirePackage[LGR,OT1,LY1,T1]{fontenc}
-   \RequirePackage[utf8]{inputenx}
+   \PassOptionsToPackage{LGR,OT1,LY1,T1}{fontenc}
+   \RequirePackage{fontenc}
+   \PassOptionsToPackage{utf8}{inputenx}
+   \RequirePackage{inputenx}
    \input{ix-utf8enc.dfu}
    \ProvideTextCommandDefault{\textblacksquare}{\vrule \@width .3em \@height .4em \@depth -.1em\relax}
    \RequirePackage{alphabeta}}
