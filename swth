@@ -22,9 +22,9 @@ OPTIONS
   --phd      operate in PhD mode
 
   --xe       use XeLaTeX
-  --pdf      use PDFLaTeX (default)
+  --pdf      use pdfLaTeX (default)
   --lua      use LuaLaTeX
-  --biber    use Biber instead of Bibtex
+  --biber    use Biber instead of BibTeX
 
   --help     output this help and exit
   --dry-run  don't execute, just say what would be
@@ -46,7 +46,7 @@ COMMAND
 
 "
 
-__dragons() {
+_dragons() {
   $ECHO "Beware of Dragons!"
 }
 
@@ -74,7 +74,12 @@ if [ -z "$_T" ]; then
   $ECHO "$PROGRAM: cannot find swathesis"
   exit 200
 fi
-TEMPLATEROOT="$(dirname "$_T")/contrib"
+SWTHDOC=$(kpsewhich swth.tex)
+if [ -z "$SWTHDOC" ]; then
+  $ECHO "$PROGRAM: cannot find swth"
+  exit 200
+fi
+TEMPLATEROOT="$(dirname "$SWTHDOC")/contrib"
 
 if [ -z "$OSTYPE" ]; then
   OSTYPE=$(uname -s | tr A-Z a-z)
@@ -105,14 +110,14 @@ else
   }
 fi
 
-_sed() {
+__sed() {
 case "$OSTYPE" in
   darwin*) sed -E "$@" ;;
   *) sed -r "$@";;
 esac
 }
 
-_sed_inplace() {
+__sed_inplace() {
 case "$OSTYPE" in
   darwin*) sed -E -i '' "$@" ;;
   *) sed -r -i "$@";;
@@ -162,7 +167,7 @@ __readmain_bp() {
   while [ -z $BP ]; do
     printf "What is your bachelor project number (eg, H1)? "
     read BP
-    BP=$($ECHO "$BP" | _sed 's%[ ,./!?]%%g')
+    BP=$($ECHO "$BP" | __sed 's%[ ,./!?]%%g')
   done
   MAIN="BP${YEAR}${BP}_Theses"
 }
@@ -174,7 +179,7 @@ __ask_for_main_to_OUT() {
   while [ -z $NAME ]; do
     printf "What is your family name? "
     read NAME
-    NAME=$($ECHO "$NAME" | _sed 's%[ ,./!?]%%g')
+    NAME=$($ECHO "$NAME" | __sed 's%[ ,./!?]%%g')
   done
   TITLE=
   if [ -z $TITLE ]; then
@@ -209,13 +214,13 @@ __untemplate() {
   __pushd "$1"
   for ITEM in ${DFLT}+*; do
     if [ -e "$ITEM" ];  then
-      DST=$(echo "$ITEM" | _sed "s%${TEMPLATEMARKER}\\+%%")
+      DST=$(echo "$ITEM" | __sed "s%${TEMPLATEMARKER}\\+%%")
       $MV "$ITEM" "$DST"
     fi
   done
   for ITEM in ${DFLT}-*; do
     if [ -e "$ITEM" ];  then
-      DST=$(echo "$ITEM" | _sed "s%${TEMPLATEMARKER}\\-%${MAIN}-%")
+      DST=$(echo "$ITEM" | __sed "s%${TEMPLATEMARKER}\\-%${MAIN}-%")
       $MV "$ITEM" "$DST"
     fi
   done
@@ -228,11 +233,11 @@ __copy_template() {
   $MV "$SWTHDIR/${DFLT}.tex" "$SWTHDIR/${MAIN}.tex"
   $MV "$SWTHDIR/${DFLT}-names.tex" "$SWTHDIR/${MAIN}-names.tex"
   __untemplate "$SWTHDIR"
-  _sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}"/*.tex
-  _sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}"/*.md
+  __sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}"/*.tex
+  __sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}"/*.md
   if [ -d "${SWTHDIR}/common" ]; then
       __untemplate "${SWTHDIR}/common"
-    _sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}/common"/*.tex
+    __sed_inplace -e "s!${TEMPLATEMARKER}!${MAIN}!g" "${SWTHDIR}/common"/*.tex
   fi
   : > "$SWTHDIR/${MAIN}.tex.latexmain"
 }
@@ -298,7 +303,7 @@ _bibtex() {
   if [ "$MODE" = "bachelor" ]; then
     find "$SWTHDIR" -mindepth 2 -name \*.aux | while read FILENAME; do
       dir=$(dirname "$FILENAME");
-      base=$(basename "$FILENAME" | _sed -e 's/\.aux$//')
+      base=$(basename "$FILENAME" | __sed -e 's/\.aux$//')
       __pushd "$dir"
         $BIBTEX "$base" "$@"
       __popd
@@ -366,12 +371,12 @@ _author() {
   __ask_for_main_to_OUT
   AU_MAIN="$OUT"
   $MV "$AU_DIR/TEMPLATE.tex" "$AU_DIR/${AU_MAIN}.tex"
-  _sed_inplace -e "s!$TEMPLATEMARKER!$AU_MAIN!g" "${AU_DIR}"/*.tex
-  _sed_inplace -e "s!$TEMPLATEMARKER!$AU_MAIN!g" "${AU_DIR}"/*.md
+  __sed_inplace -e "s!$TEMPLATEMARKER!$AU_MAIN!g" "${AU_DIR}"/*.tex
+  __sed_inplace -e "s!$TEMPLATEMARKER!$AU_MAIN!g" "${AU_DIR}"/*.md
   $ECHO "" > "$AU_DIR/${AU_MAIN}.tex.latexmain"
 
   if grep -q "$THESESMARKER" "$SWTHDIR/${MAIN}.tex" 2>/dev/null >/dev/null; then
-    _sed -i.bak -e "s!$THESESMARKER!$AUTHOR,$THESESMARKER!" "$SWTHDIR/${MAIN}.tex"
+    __sed -i.bak -e "s!$THESESMARKER!$AUTHOR,$THESESMARKER!" "$SWTHDIR/${MAIN}.tex"
   else
     $ECHO "$PROGRAM: Cannot find Thesesmarker \`$THESESMARKER' in $MAIN, you're on your own."
   fi
@@ -402,7 +407,7 @@ fi
 # help if nothing specified
 #
 if [ $# -lt 1 ]; then
-  __dragons
+  _dragons
   set -- --help
 fi
 
@@ -435,8 +440,6 @@ while [ $# -gt 0 ]; do
   esac
   shift
 done
-
-__dragons
 
 
 case "$OSTYPE" in
@@ -471,6 +474,8 @@ case "$OSTYPE" in
     OPEN=$ECHO
     ;;
 esac
+
+_dragons
 
 if [ $# -lt 1 ]; then
   $ECHO "$PROGRAM: no command specified, try --help." >&2

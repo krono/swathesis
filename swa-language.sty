@@ -37,25 +37,22 @@
 }{
 %fool AUCTeX
 \iffalse
-  \PassOptionsToPackage{english}{babel}
-\RequirePackage{babel}
+\RequirePackage[english]{babel}
 \fi
 
 
   \ifboolexpr{bool{@swa@german}}{
     % hyperref can't handle that.
     % \PassOptionsToPackage{main=english,ngerman}{babel}
-\RequirePackage{babel}
     % order matters!
     \PassOptionsToPackage{english,ngerman}{babel}
-\RequirePackage{babel}
+    \RequirePackage{babel}
   }{
     % hyperref can't handle that.
     % \PassOptionsToPackage{main=english,ngerman}{babel}
-\RequirePackage{babel}
     % order matters!
     \PassOptionsToPackage{ngerman,english}{babel}
-\RequirePackage{babel}
+    \RequirePackage{babel}
   }
 
   \defcaptionname{english}{\figureautorefname}{figure}
