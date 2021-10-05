@@ -6,6 +6,7 @@
 
 VERSION="1.0"
 PROGRAM=$(echo $0 | sed 's%.*/%%')
+PROGDIR="$(cd `dirname $0`; echo $PWD)"
 if [ ! -z "$ZSH_VERSION" ]; then
   setopt shwordsplit
 fi
@@ -74,12 +75,14 @@ if [ -z "$_T" ]; then
   $ECHO "$PROGRAM: cannot find swathesis"
   exit 200
 fi
-SWTHDOC=$(kpsewhich swth.tex)
-if [ -z "$SWTHDOC" ]; then
-  $ECHO "$PROGRAM: cannot find swth"
+TEMPLATEROOT="$(dirname "$_T")/contrib"
+if [ ! -d "$TEMPLATEROOT" ]; then
+  TEMPLATEROOT="${PROGDIR}/contrib"
+fi
+if [ ! -d "$TEMPLATEROOT" ]; then
+  $ECHO "$PROGRAM: cannot find template root "
   exit 200
 fi
-TEMPLATEROOT="$(dirname "$SWTHDOC")/contrib"
 
 if [ -z "$OSTYPE" ]; then
   OSTYPE=$(uname -s | tr A-Z a-z)

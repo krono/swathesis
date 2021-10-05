@@ -1,12 +1,18 @@
-\RequirePackage{etoolbox}
-\RequirePackage{ifthen,ifpdf,ifluatex,ifxetex}
+\RequirePackage{etoolbox,auxhook}
+\RequirePackage{ifpdf,ifluatex,ifxetex}
 
 \RequirePackage{scrbase}
 
 \def\swa@RequireIfPackageExists#1{%
   \IfFileExists{#1.sty}{\RequirePackage{#1}{}}{}}
 
-\ifboolexpr{bool{luatex}}%
+% for older TeXen
+\ifcsundef{iftutex}%
+  {\providebool{tutex}%
+  \ifboolexpr{bool{luatex} or bool{xetex}}{\booltrue{tutex}}{}}%
+  {}%
+
+\ifbool{luatex}%
   {\swa@RequireIfPackageExists{luatex85}
    \swa@RequireIfPackageExists{luatexbase}
    \PreventPackageFromLoading*%
@@ -15,7 +21,8 @@
   {\RequirePackage{morewrites}}
 
 
-\ifboolexpr{bool{tutex}}%
+  
+\ifbool{tutex}%
   {}%
   {\input glyphtounicode
    \pdfgentounicode=1
