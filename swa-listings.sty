@@ -3,15 +3,8 @@
 %
 \RequirePackage{swa-document}
 
-\newif\if@swa@listings@zebra
-\DeclareOption{zebra}{\@swa@listings@zebratrue}
-\DeclareOption{nozebra}{\@swa@listings@zebrafalse}
-\ExecuteOptions{nozebra}
-\ProcessOptions\relax
-
 \PassOptionsToPackage{final}{listings}
 \RequirePackage{listings}
-%\RequirePackage{lstlinebgrd}
 \RequirePackage{relsize}
 \input{javascript.def}
 \input{smalltalk.def}
@@ -43,30 +36,6 @@
   %linewidth=\linewidth,
   escapechar=\`,
 }
-
-%
-% Zebra listings, inspired by tessi.
-%
-\if@swa@listings@zebra
-\lstset{
-  aboveskip=25pt,
-  xleftmargin=15pt,
-  xrightmargin=-15pt,
-  numbers=left,
-  stepnumber=1,
-  % FRAME
-  frame=lines,
-  framexleftmargin=15.5pt,
-  framexrightmargin=-15.5pt,
-  framextopmargin=3pt,
-  framexbottommargin=3pt,
-  framesep=0pt,
-  resetmargins=true,
-  linebackgroundcolor={\ifodd\value{lstnumber}\color{swashadecolor}\fi},
-}
-\fi
-
-
 
 
 \@ifclassloaded{scrbook}{}{%

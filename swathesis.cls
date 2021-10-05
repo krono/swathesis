@@ -60,8 +60,6 @@
 \DeclareOption{printmode}{\renewcommand*\printmode{true}}
 \DeclareOption{online}{\renewcommand*\printmode{false}}
 
-\DeclareOption{zebralistings}{\PassOptionsToPackage{zebra}{swa-listings}}
-
 \DeclareOption*{\gappto\swa@miscoptions{\CurrentOption,}}
 
 
