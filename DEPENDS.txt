@@ -2,6 +2,7 @@
 # These are available via TeXLive tlmgr or MiKTeX mpm
 accsupp
 acronym
+auxhook
 babel
 biblatex
 blindtext
