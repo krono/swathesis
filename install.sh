@@ -31,7 +31,6 @@ OPTIONS
   --bin-tex     install the \`swth' script to $(dirname $KPSEWHICH)
   --bin-sys     install the \`swth' script to /usr/bin (not recommended)
 
-  --no-req      do not atempt to install required packages
   --no-bin      do not link the \`swth' script
 
   --update      force update; rebuild TDS package prior to installation
@@ -88,11 +87,6 @@ if [ ! -z "$E" ]; then
   $ECHO "using $E as sudo";
 fi
 
-if [ "$REQUIREMENTS" -eq 0 ]; then
-  $ECHON "not "
-fi
-$ECHO "installing requirements"
-
 if [ "$NOBIN" -eq 1 ]; then
   printf "not "
 fi
@@ -109,7 +103,6 @@ $ECHO "-----------"
 VERBOSE=0
 DEST=
 DEST_DEFAULT="$($KPSEWHICH -var-value TEXMFHOME)"
-REQUIREMENTS=1
 BIN=
 BIN_DEFAULT="$(__find_bin)"
 NOBIN=0
@@ -131,7 +124,6 @@ while test $# -gt 0; do
     x--bin-local)   BIN=/usr/local/bin                         ;;
     x--bin-tex)     BIN="$(dirname $KPSEWHICH)"                ;;
     x--bin-tex)     BIN=/usr/bin                               ;;
-    x--no-req)      REQUIREMENTS=0                             ;;
     x--no-bin)      NOBIN=1                                    ;;
     x--update)      UPDATE=1                                   ;;
     *)
@@ -218,14 +210,6 @@ fi
 
 if [ "$VERBOSE" -eq 1 ]; then
   __verbose_info
-fi
-
-
-if [ "$REQUIREMENTS" -eq 1 ]; then
-  $ECHO "> Installing Requirements"
-  _PREQ="$PWD"; cd "$PROGDIR"/requirements
-  TDS_DEST="$DEST_DIR" ./get_requirements.sh
-  cd "$_PREQ"
 fi
 
 if [ \( ! -f "$PROGDIR/$THE_TDS" \) -o \( "$UPDATE" -eq 1 \) ]; then

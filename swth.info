@@ -1,0 +1,189 @@
+This is swth.info, produced by makeinfo version 4.8 from swth.texi.
+
+INFO-DIR-SECTION Man-pages
+START-INFO-DIR-ENTRY
+* Swth: (swth). Its Man-Page
+END-INFO-DIR-ENTRY
+
+
+File: swth.info,  Node: Top,  Next: Description,  Prev: (dir),  Up: (dir)
+
+swth
+****
+
+swth - create or manage `swathesis' documents.
+
+Synopsis
+========
+
+swth [ options ] COMMAND
+
+* Menu:
+
+* Description::
+* Options::
+* Commands::
+* Files::
+* Bugs::
+* Examples::
+* Create a new document::
+* Run LaTeX::
+* Everything::
+* See Also::
+
+
+File: swth.info,  Node: Description,  Next: Options,  Prev: Top,  Up: Top
+
+Description
+===========
+
+swth is a tool to manage documents using the swathesis bundle
+
+
+File: swth.info,  Node: Options,  Next: Commands,  Prev: Description,  Up: Top
+
+Options
+=======
+
+`--bachelor'
+     operate in BSc mode
+
+`--master'
+     operate in MSc mode
+
+`--phd'
+     operate in PhD mode
+
+`--xe'
+     use XeLaTeX
+
+`--pdf'
+     use pdfLaTeX (default)
+
+`--lua'
+     use LuaLaTeX
+
+`--biber'
+     use Biber instead of BibTeX
+
+`--help'
+     output this help and exit
+
+`--dry-run'
+     don't execute, just say what would be
+
+`--version'
+     output version information and exit
+
+
+File: swth.info,  Node: Commands,  Next: Files,  Prev: Options,  Up: Top
+
+Commands
+========
+
+`CREATE'
+     create swathesis document
+
+`INIT'
+     put directory under swth management
+
+`BIBTEX'
+     run bibtex [especially for BSc mode]
+
+`LATEX'
+     run latex (honors options and management file)
+
+`GLOSS'
+     run makeglossaries [especially for PhD mode]
+
+`SHOW'
+     open result document
+
+`CLEAN'
+     clean auxiliary files
+
+`GO'
+     short for latex; bibtex; latex; latex; latex; show
+
+`AUTHOR'
+     add another author in BSc mode
+
+
+File: swth.info,  Node: Files,  Next: Bugs,  Prev: Commands,  Up: Top
+
+Files
+=====
+
+``.swth''
+     Controls the master file for LaTeXoperations and certain
+     variables. swth will search up to three levels of parent
+     directories for such a file.
+
+
+File: swth.info,  Node: Bugs,  Next: Examples,  Prev: Files,  Up: Top
+
+Bugs
+====
+
+Plenty. Beware of Dragons.
+
+
+File: swth.info,  Node: Examples,  Next: Create a new document,  Prev: Bugs,  Up: Top
+
+Examples
+========
+
+
+File: swth.info,  Node: Create a new document,  Next: Run LaTeX,  Prev: Examples,  Up: Top
+
+Create a new document
+---------------------
+
+swth -lua -phd -biber create
+asks for directory/name/title and create template files, as well as
+`.swth' file
+
+
+File: swth.info,  Node: Run LaTeX,  Next: Everything,  Prev: Create a new document,  Up: Top
+
+Run LaTeX
+---------
+
+swth latex
+run current latex command on current main file, as defined in `.swth'
+file
+
+
+File: swth.info,  Node: Everything,  Next: See Also,  Prev: Run LaTeX,  Up: Top
+
+Everything
+----------
+
+swth go
+run everything on current main file, as defined in `.swth' file, showing
+pdf at the end
+
+
+File: swth.info,  Node: See Also,  Prev: Everything,  Up: Top
+
+See Also
+========
+
+latexmk(1), arara
+
+
+
+Tag Table:
+Node: Top166
+Node: Description498
+Node: Options663
+Node: Commands1156
+Node: Files1691
+Node: Bugs1946
+Node: Examples2058
+Node: Create a new document2166
+Node: Run LaTeX2416
+Node: Everything2620
+Node: See Also2823
+
+End Tag Table
