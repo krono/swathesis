@@ -79,9 +79,7 @@
 \newdimen\ac@longest \relax
 \newdimen\ac@curr@width \relax
 \newcommand*\ac@setlongest@label[1]{
-  \microtypesetup{disable}
   \settowidth{\ac@curr@width}{\ac@labelfont{#1}}
-  \microtypesetup{enable}
   \ifdim\ac@longest<\ac@curr@width\relax
     \global\ac@longest=\ac@curr@width\relax
   \fi
@@ -109,21 +107,8 @@
 
 \newcommand\listofacronyms[1][1]{%
   \begingroup
-
   \let\contentsname\listofloaname\relax
   \ac@listhead
-
-  %determine if we have acros defined at all
-  \newif\if@ac@listempty
-  \@ac@listemptytrue
-  \def\doacro{%
-    \global\@ac@listemptyfalse\@gobble%
-  }
-  \ac@doacros\relax
-
-  \if@ac@listempty
-  \else
-
   \begin{acronym}[#1]
     % check for optional argument
     \def\@tempa{1}\def\@tempb{#1}%
@@ -131,19 +116,15 @@
       % determine longest label into \ac@longest
       \def\doacro{\ac@setlongest@label}
       \ac@doacros\relax
-
       % adjust lengths
       \setlength{\labelwidth}{\ac@longest}%
       \leftmargin\z@
       \itemindent\dimexpr\labelwidth-\labelsep\relax
     \fi
-
       \let\makelabel\ac@label
-
       % print acros
       \let\doacro\printacroentry
       \ac@doacros\relax
   \end{acronym}
-  \fi
   \endgroup
 }

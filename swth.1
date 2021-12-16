@@ -1,0 +1,151 @@
+'\" t
+.\" Manual page created with latex2man on Tue Oct  5 09:30:28 2021
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "SWTH" "1" "2021\-10\-01" "swth 1.0" "swth 1.0"
+.SH NAME
+
+swth
+\-\- create or manage swathesis
+documents. 
+.PP
+.SH SYNOPSIS
+
+.PP
+swth
+[\fBoptions\fP]
+\fIcommand\fP
+.PP
+.SH DESCRIPTION
+
+.PP
+swth
+is a tool to manage documents using the swathesis bundle 
+.PP
+.SH OPTIONS
+
+.PP
+.TP
+\fB\-\-bachelor\fP
+ operate in BSc mode 
+.TP
+\fB\-\-master\fP
+ operate in MSc mode 
+.TP
+\fB\-\-phd\fP
+ operate in PhD mode 
+.PP
+.TP
+\fB\-\-xe\fP
+ use XeLaTeX
+.TP
+\fB\-\-pdf\fP
+ use pdfLaTeX (default) 
+.TP
+\fB\-\-lua\fP
+ use LuaLaTeX
+.TP
+\fB\-\-biber\fP
+ use Biber instead of BibTeX 
+.PP
+.TP
+\fB\-\-help\fP
+ output this help and exit 
+.TP
+\fB\-\-dry\-run\fP
+ don\&'t execute, just say what would be 
+.TP
+\fB\-\-version\fP
+ output version information and exit 
+.PP
+.SH COMMANDS
+
+.PP
+.TP
+\fIcreate\fP
+ create swathesis document 
+.TP
+\fIinit\fP
+ put directory under swth
+management 
+.PP
+.TP
+\fIbibtex\fP
+ run bibtex [especially for BSc mode] 
+.TP
+\fIlatex\fP
+ run latex (honors \fBoptions\fP
+and management file) 
+.TP
+\fIgloss\fP
+ run makeglossaries [especially for PhD mode] 
+.TP
+\fIshow\fP
+ open result document 
+.TP
+\fIclean\fP
+ clean auxiliary files 
+.TP
+\fIgo\fP
+ short for latex; bibtex; latex; latex; latex; show 
+.PP
+.TP
+\fIauthor\fP
+ add another author in BSc mode 
+.PP
+.SH FILES
+
+.PP
+.TP
+\&.swth
+ Controls the master file for LaTeXoperations and certain 
+variables. swth
+will search up to three levels of parent directories 
+for such a file. 
+.PP
+.SH BUGS
+
+.PP
+Plenty. Beware of Dragons. 
+.PP
+.SH EXAMPLES
+
+.PP
+.SS CREATE A NEW DOCUMENT
+.PP
+swth \-\-lua \-\-phd \-\-biber create
+.br 
+asks for directory/name/title and create template files, as well as 
+\&.swth
+file 
+.PP
+.SS RUN LaTeX
+.PP
+swth latex
+.br 
+run current latex command on current main file, as defined in \&.swth
+file 
+.PP
+.SS EVERYTHING
+.PP
+swth go
+.br 
+run everything on current main file, as defined in \&.swth
+file, showing 
+pdf at the end 
+.PP
+.SH SEE ALSO
+
+.PP
+\fIlatexmk\fP(1),
+arara
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

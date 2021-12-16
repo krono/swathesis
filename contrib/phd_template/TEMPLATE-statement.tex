@@ -1,0 +1,48 @@
+% Options. Should match TEMPLATE.tex
+%
+% Language
+%  en  -  english (default)
+%  de  -  german
+%
+% Modes
+%  draft     - drafting mode, esp for todos
+%  fulldraft - drafting mode, also for listings/graphics, faster
+%  final     - final mode
+%
+% Fonts
+%  lmodern   - Latin Modern, like TeX default
+%  palatino  - Heavier, slightly more readable (default)
+%  garamond  - Lighter than palatino, heavier than latin modern, more readable.
+%
+\documentclass[de,phd]{swathesis}
+\KOMAoptions{paper=a4,DIV=calc,fontsize=11pt} 
+\begin{document}\pagestyle{plain}
+\input{TEMPLATE-names}
+{\noindent\LARGE Erklärung\par}\vspace{2\baselineskip}
+\noindent
+  Hiermit erkläre ich an Eides statt, dass ich die vorliegende Dissertation
+  mit dem Titel
+  \begin{center}%
+    % If appropriate, switch language
+    %{\selectlanguage{english}
+      \usekomafont{section} TITEL
+    %}
+  \end{center}
+  selbst angefertigt und nur die im Literaturverzeichnis aufgeführten Quellen
+  und Hilfsmittel verwendet habe.
+
+  Diese Dissertation oder Teile davon wurden nicht als Prüfungsarbeit für
+  eine staatliche oder andere wissenschaftliche Prüfung eingereicht.
+
+  Ich versichere weiterhin, dass ich diese Arbeit oder eine andere Abhandlung
+  nicht bei einer anderen Fakultät oder einer anderen Universität eingereicht
+  habe.
+  ~\\[7\baselineskip]%
+  ORT, den ABGABEDATUM \hfill \rule{.45\textwidth}{0.4pt}\par
+    \raggedleft%
+    VORNAME NACHNAME
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% coding: utf-8
+%%% End:

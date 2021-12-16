@@ -1,0 +1,34 @@
+% Options. Should match TEMPLATE.tex
+%
+% Language
+%  en  -  english (default)
+%  de  -  german
+%
+% Modes
+%  draft     - drafting mode, esp for todos
+%  fulldraft - drafting mode, also for listings/graphics, faster
+%  final     - final mode
+%
+% Fonts
+%  lmodern   - Latin Modern, like TeX default
+%  palatino  - Heavier, slightly more readable (default)
+%  garamond  - Lighter than palatino, heavier than latin modern, more readable.
+%
+\documentclass[en,phd]{swathesis}
+\KOMAoptions{paper=a4,DIV=calc,fontsize=11pt} 
+\begin{document}
+\input{TEMPLATE-names}
+{\noindent\centering \usekomafont{section}\LARGE TITLE\par}\vspace{\baselineskip}
+{\noindent\large NAME\par}
+\addsec*{Abstract}
+\input{abstract}
+\begingroup
+\selectlanguage{ngerman}
+\addsec*{Zusammenfassung}
+\input{zusammenfassung}
+\endgroup
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% coding: utf-8
+%%% End:

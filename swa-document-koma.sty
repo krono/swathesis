@@ -1,0 +1,86 @@
+%
+% KOMA-specific properties
+%
+\@ifpackageloaded{scrbase}{}%
+  {% not koma
+  \PackageError{swa-document-koma}%
+    {This package should only be used with KOMA script}%
+    {You might consider loading swa-document.}}
+
+  \setfootnoterule{4cc}
+
+%\PassOptionsToPackage{hang,small,bf}{caption}
+\RequirePackage{caption}
+\setcapindent{1em}
+% \addtokomafont{caption}{\small}
+\setkomafont{captionlabel}{\normalfont}
+\RequirePackage{subcaption}
+
+
+\RequirePackage{enumitem}
+\AtBeginDocument{%
+  % \setlist{noitemsep,topsep=.5\baselineskip,leftmargin=1em,partopsep=0pt}
+  % \setlist{noitemsep,leftmargin=1em,topsep=0pt,partopsep=\baselineskip}
+  \setlist{noitemsep,topsep=.5\baselineskip,leftmargin=1em,partopsep=.5\baselineskip}
+  \setlist[1]{leftmargin=0pt}
+  % \setdescription{noitemsep,font=\normalfont\scshape,leftmargin=\parindent,topsep=.5\baselineskip,partopsep=0pt}
+  % \setdescription{noitemsep,font=\normalfont\scshape,leftmargin=\parindent,topsep=0pt,partopsep=\baselineskip}
+  \setdescription{noitemsep,font=\normalfont\scshape,leftmargin=\parindent,topsep=.5\baselineskip,partopsep=.5\baselineskip}
+  % \setkomafont{descriptionlabel}{\normalfont\scshape}
+}
+
+% koma-hacks
+\RequirePackage{scrhack}
+
+% undo babel thing in tocbasic
+\unsettoc{toc}{nobabel}
+\unsettoc{lof}{nobabel}
+\unsettoc{lot}{nobabel}
+
+\setuptoc{toc}{noprotrusion}
+\setuptoc{lof}{noprotrusion}
+\setuptoc{lot}{noprotrusion}
+\setuptoc{lol}{noprotrusion}
+\setuptoc{loa}{noprotrusion}
+
+\tocbasicautomode
+
+%
+% design
+%
+\setkomafont{subtitle}{\usekomafont{title}\LARGE}
+% \setkomafont{disposition}{\rmfamily\mdseries\scshape}
+\addtokomafont{disposition}{\rmfamily}
+\setkomafont{title}{\rmfamily\mdseries}
+
+\RedeclareSectionCommand[%
+  afterskip = 1\baselineskip,%
+  beforeskip = -1\baselineskip,%
+  ]{section}
+\RedeclareSectionCommand[%
+  afterskip = 1\baselineskip,%
+  beforeskip = -1\baselineskip,%
+  ]{subsection}
+\RedeclareSectionCommand[%
+  afterskip = 1sp plus -1sp minus 1sp,%
+  beforeskip = -1\baselineskip,%
+  ]{subsubsection}
+\RedeclareSectionCommand[%
+  beforeskip = 1\baselineskip,%
+  ]{paragraph}
+\RedeclareSectionCommand[%
+  beforeskip = 1\baselineskip,%
+  ]{subparagraph}
+
+
+\def\bookmarkext{\csuse{@currext}}
+\AfterTOCHead{%
+  \pdfbookmark[section]{\csuse{list@fname}}{\bookmarkext}}
+
+
+\KOMAoption{captions}{tableheading}
+\AtBeginDocument{%
+  \setlength{\abovecaptionskip}{.5\baselineskip}
+  \setlength{\belowcaptionskip}{0pt}}
+
+% EOF

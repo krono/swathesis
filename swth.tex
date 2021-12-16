@@ -1,0 +1,147 @@
+\documentclass{scrartcl}
+\usepackage{swa-platform}
+\usepackage{swa-language,swa-document-koma}
+\usepackage{textcomp}
+\usepackage{textcase}
+\usepackage{relsize}
+\usepackage[final,babel=true]{microtype}
+\ifboolexpr{bool{tutex}}%
+  % yes otf
+  {\usepackage{fontspec}
+    \microtypesetup{stretch=9,shrink=15,step=3}
+    \setmainfont[ExternalLocation,%
+      Numbers={Proportional,OldStyle},%
+      UprightFont= *-regular,%
+      BoldFont=*-bold,%
+      ItalicFont=*-italic,%
+      BoldItalicFont=*-bolditalic,%
+      Ligatures={Common,TeX},%
+      ]{texgyrepagella}
+    \setmonofont[ExternalLocation,
+      Scale=MatchLowercase,%
+      \ifboolexpe{bool{luatex}}%
+        {RawFeature={-tlig;-trep}}%
+        {Mapping=},% empty, no ligs
+      BoldFont={*-Bold},
+      ItalicFont={*-Oblique},
+      BoldItalicFont={*-BoldOblique}
+    ] {DejaVuSansMono}}%
+  % no otf
+  {\usepackage{fontaxes}
+    \microtypesetup{stretch=9,shrink=15,step=3,tracking=smallcaps,letterspace=75}
+    \usepackage[largesc,p,osf]{newpxtext}
+    \usepackage[scaled=.84]{DejaVuSansMono}
+    \usepackage{newpxmath}}
+\linespread{1.05} % a bit more for Palatino
+\usepackage{verbatim}
+
+\usepackage[nofancy]{latex2man}
+\renewcommand{\Prog}[1]{\texttt{#1}}                      % Program name
+\renewcommand{\Cmd}[2]{\texttt{#1}(#2)}                   % Command with number
+\makeatletter
+\renewcommand{\@LM@Arg}[1]{\texttt{\textit{#1}}}
+\renewcommand{\@LM@Opt}[1]{\texttt{\textbf{#1}}}
+\makeatother
+\usepackage{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\begin{document}
+\setdescription{noitemsep,font=\normalfont,leftmargin=\parindent,topsep=.5\baselineskip,partopsep=.5\baselineskip}
+\setDate{2021-10-01}
+\setVersion{1.0}
+
+\begin{Name}{1}{swth}{Tobias Pape}{swth \Version}{swth}
+  \Prog{swth} -- create or manage \File{swathesis} documents.
+\end{Name}
+
+\section{Synopsis}
+
+\Prog{swth}
+  \oOpt{options}
+  \Arg{command}
+
+\section{Description}
+
+\Prog{swth} is a tool to manage documents using the swathesis bundle
+
+\section{Options}
+
+\begin{Description}[\Opt{--bachelor}]\setlength{\itemsep}{0pt}
+\item[\Opt{--bachelor}] operate in BSc mode
+\item[\Opt{--master}]   operate in MSc mode
+\item[\Opt{--phd}]      operate in PhD mode
+\end{Description}
+
+\begin{Description}[\Opt{--bachelor}]\setlength{\itemsep}{0pt}
+\item[\Opt{--xe}]       use Xe\LaTeX
+\item[\Opt{--pdf}]      use pdf\LaTeX\ (default)
+\item[\Opt{--lua}]      use Lua\LaTeX
+\item[\Opt{--biber}]    use Biber instead of BibTeX
+\end{Description}
+
+\begin{Description}[\Opt{--bachelor}]\setlength{\itemsep}{0pt}
+\item[\Opt{--help}]     output this help and exit
+\item[\Opt{--dry-run}]  don't execute, just say what would be
+\item[\Opt{--version}]  output version information and exit
+\end{Description}
+
+\section{Commands}
+
+\begin{Description}[\Arg{author}]\setlength{\itemsep}{0pt}
+\item[\Arg{create}]     create swathesis document
+\item[\Arg{init}]     put directory under \Prog{swth} management
+\end{Description}
+
+\begin{Description}[\Arg{author}]\setlength{\itemsep}{0pt}
+\item[\Arg{bibtex}]     run bibtex [especially for BSc mode]
+\item[\Arg{latex}]     run latex (honors \Opt{options} and management file)
+\item[\Arg{gloss}]     run makeglossaries [especially for PhD mode]
+\item[\Arg{show}]     open result document
+\item[\Arg{clean}]     clean auxiliary files
+\item[\Arg{go}]     short for latex; bibtex; latex; latex; latex; show
+\end{Description}
+
+\begin{Description}[\Arg{author}]\setlength{\itemsep}{0pt}
+\item[\Arg{author}]     add another author in BSc mode
+\end{Description}
+
+\section{Files}
+
+\begin{Description}\setlength{\itemsep}{0pt}
+\item[\File{.swth}] Controls the master file for \LaTeX operations and certain
+  variables. \Prog{swth} will search up to three levels of parent directories
+  for such a file.
+\end{Description}
+
+\section{Bugs}
+
+Plenty. Beware of Dragons.
+
+\section{Examples}
+
+\subsection{Create a new document}
+
+\verb+swth --lua --phd --biber create+\\
+asks for directory/name/title and create template files, as well as
+\File{.swth} file
+
+\subsection{Run \LaTeX}
+
+\verb+swth latex+\\
+run current latex command on current main file, as defined in \File{.swth} file
+
+\subsection{Everything}
+
+\verb+swth go+\\
+run everything on current main file, as defined in \File{.swth} file, showing
+pdf at the end
+
+\section{See Also}
+
+\Cmd{latexmk}{1}, \Prog{arara}
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% coding: utf-8
+%%% End:

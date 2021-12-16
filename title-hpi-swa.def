@@ -115,7 +115,7 @@
   \@faculty{}\\%
   in partial fulfillment of the requirements for the degree of \\[.5\baselineskip]
   \if
-{\scshape \@degree{} in  \@discipline\\}%
+{\scshape \@academicgrade{} in  \@discipline\\}%
 }
 
 
@@ -147,9 +147,9 @@
     \@faculty{}\\%
     in partial fulfillment of the requirements for the degree of \\[.5\baselineskip]
     \ifx\@discipline\@phd@\relax
-    {\scshape \@degree{} \\    }%
+    {\scshape \@academicgrade{} \\    }%
     \else
-    {\scshape \@degree{} in \@discipline\\    }%
+    {\scshape \@academicgrade{} in \@discipline\\    }%
     \fi
   }
   \providecaptionname{german,ngerman}{\supervisorname}{Betreuer}%
@@ -158,9 +158,9 @@
     \@subject{}\\
     zur Erlangung des akademischen Grades des\\[.5\baselineskip]
     \ifx\@discipline\@phd@\relax
-      {\scshape \@degree{}}%
+      {\scshape \@academicgrade{}}%
     \else
-      {\scshape \@degree{} in \@discipline}%
+      {\scshape \@academicgrade{} in \@discipline}%
     \fi\\[\baselineskip]
     vorgelegt \\
     \@whom\space\@faculty{}.
@@ -199,11 +199,10 @@
   \fi
   %
   \ifx\@universitylogo\@empty
-  % see http://www.intern.uni-potsdam.de/u/zavz/logos.htm
-  \universitylogo{Unilogo}
+  \universitylogo{swa-logo-uni}
   \fi
   \ifx\@facultylogo\@empty
-  \facultylogo{hpi_logo_2017_cmyk_wb_sl1}
+  \facultylogo{swa-logo-hpi}
   \fi
  %
   \ifx\@titlehead\@empty
@@ -215,24 +214,30 @@
     \expandafter\IfFileExists{\@universitylogo.ai}{\global\@logo@universitytrue}{}
     \expandafter\IfFileExists{\@universitylogo.pdf}{\global\@logo@universitytrue}{}
     \expandafter\IfFileExists{\@universitylogo.eps}{\global\@logo@universitytrue}{}
+    \expandafter\IfFileExists{\@universitylogo.tex}{\global\@logo@universitytrue}{}
     \expandafter\IfFileExists{\@facultylogo.pdf}{\global\@logo@facultytrue}{}
     \expandafter\IfFileExists{\@facultylogo.eps}{\global\@logo@facultytrue}{}
+    \expandafter\IfFileExists{\@facultylogo.tex}{\global\@logo@facultytrue}{}
     %
     \scr@ifundefinedorrelax{includegraphics}{%
       \if@atdocument\else
-        \RequirePackage{graphics}
+        \RequirePackage{graphicx}
       \fi
     }{}
     \scr@ifundefinedorrelax{includegraphics}{}{%
       \titlehead{%
         \vspace*{-\dimexpr\baselineskip+\headheight+\headsep\relax}%
         \hbox to \linewidth{%
-        \if@logo@university%
-          \includegraphics[height=6pc]{\@universitylogo}%
+          \if@logo@university%
+            \IfFileExists{\@universitylogo.tex}%
+              {\resizebox{!}{6pc}{\input{\@universitylogo.tex}}}%
+              {\includegraphics[height=6pc]{\@universitylogo}}%
         \fi%
         \hfill%
         \if@logo@faculty%
-          \includegraphics[height=6pc]{\@facultylogo}%
+          \IfFileExists{\@facultylogo.tex}%
+            {\resizebox{!}{6pc}{\input{\@facultylogo.tex}}}%
+            {\includegraphics[height=6pc]{\@facultylogo}}%
         \fi%
         }
       }%

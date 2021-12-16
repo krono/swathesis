@@ -1,0 +1,542 @@
+%%
+%% title-hpi-swa.def
+%% for use with titlepage.sty by Markus Kohm.
+%% Takes inspiration and code from title-DHBW.def,
+%% title-KOMAScript.def, and title-TU-HH.def
+%%
+\ProvidesFile{%
+  title%
+  -hpi-swa-phd%
+ .def%
+}[%
+  2012/09/28 v0.2
+]
+\begingroup
+  \def\PackageNotLoadedError#1{%
+    \GenericError{%
+      (#1)\@spaces\@spaces\@spaces\@spaces
+    }{%
+      File `#1' Error: package `uni-titlepage' hasn't been loaded%
+    }{%
+      This definition file was made to be loaded by package
+      `uni-titlepage'.\MessageBreak
+      You may not use it without package `uni-titlepage'!\MessageBreak
+      See the documentation of package `uni-titlepage' for explanation.%
+    }%
+  }%
+  \ifx\csname uni-titlepage.sty@vers\endcsname\relax
+    \PackageNotLoadedError{%
+      title-KOMAScript.def%
+    }%
+  \fi
+\endgroup
+%% end init mumbojumbo
+\RequirePackage{etoolbox,ragged2e,datenumber}
+
+\DefineFamilyMember[HPISWA]{title}
+
+\DefineSimpleTitleKey[HPISWA]{facultylogo}
+\DefineSimpleTitleKey[HPISWA]{universitylogo}
+
+\DefineSimpleTitleKey[HPISWA]{titlepagelanguage}
+\DefineSimpleTitleKey[HPISWA]{titlelanguage}
+\DefineSimpleTitleKey[HPISWA]{othertitlelanguage}
+\DefineSimpleTitleKey[HPISWA]{imprintlanguage}
+
+\DefineSimpleTitleKey[HPISWA]{handindate}
+\DefineSimpleTitleKey[HPISWA]{defensedate}
+\DefineSimpleTitleKey[HPISWA]{doi}
+\DefineSimpleTitleKey[HPISWA]{urn}
+
+
+%%% to be KOMA-like, nearly straight from title-KOMAScript.def
+\providecommand*{\@uppertitleback}{}
+\providecommand{\uppertitleback}[1]{\gdef\@uppertitleback{#1}}
+\DefineFamilyKey[HPISWA]{title}{uppertitleback}{\uppertitleback{#1}\FamilyKeyStateProcessed}
+\providecommand*{\@lowertitleback}{}
+\providecommand{\lowertitleback}[1]{\gdef\@lowertitleback{#1}}
+\DefineFamilyKey[HPISWA]{title}{lowertitleback}{\lowertitleback{#1}\FamilyKeyStateProcessed}
+\providecommand*{\@extratitle}{}
+\providecommand{\extratitle}[1]{\gdef\@extratitle{#1}}
+\DefineFamilyKey[HPISWA]{title}{extratitle}{\extratitle{#1}\FamilyKeyStateProcessed}
+
+\newtoggle{hpiswa@extratitle}
+\toggletrue{hpiswa@extratitle}
+\DefineFamilyKey[HPISWA]{title}{noextratitle}{\global\togglefalse{hpiswa@extratitle}\FamilyKeyStateProcessed}
+
+\newtoggle{hpiswa@imprint}
+\toggletrue{hpiswa@imprint}
+\DefineFamilyKey[HPISWA]{title}{noimprint}{\global\togglefalse{hpiswa@imprint}\FamilyKeyStateProcessed}
+\DefineFamilyKey[HPISWA]{title}{imprint}%
+  {\ifstrequal{yes}{#1}{\global\toggletrue{hpiswa@imprint}}{}%
+  \ifstrequal{true}{#1}{\global\toggletrue{hpiswa@imprint}}{}%
+  \ifstrequal{no}{#1}{\global\togglefalse{hpiswa@imprint}}{}%
+  \ifstrequal{false}{#1}{\global\togglefalse{hpiswa@imprint}}{}%
+  \FamilyKeyStateProcessed}%
+
+\newtoggle{hpiswa@committee}
+\toggletrue{hpiswa@committee}
+\DefineFamilyKey[HPISWA]{title}{nocommittee}{\global\togglefalse{hpiswa@committee}\FamilyKeyStateProcessed}
+\DefineFamilyKey[HPISWA]{title}{committee}%
+  {\ifstrequal{yes}{#1}{\global\toggletrue{hpiswa@committee}}{}%
+  \ifstrequal{true}{#1}{\global\toggletrue{hpiswa@committee}}{}%
+  \ifstrequal{no}{#1}{\global\togglefalse{hpiswa@committee}}{}%
+  \ifstrequal{false}{#1}{\global\togglefalse{hpiswa@committee}}{}%
+  \FamilyKeyStateProcessed}%
+  
+%
+%
+\providecommand*{\@othertitle}{}
+\providecommand{\othertitle}[1]{\gdef\@othertitle{#1}}
+\DefineFamilyKey[HPISWA]{title}{othertitle}{\othertitle{#1}}
+\providecommand*{\@othersubtitle}{}
+\providecommand{\othersubtitle}[1]{\gdef\@othersubtitle{#1}}
+\DefineFamilyKey[HPISWA]{title}{othersubtitle}{\othersubtitle{#1}}
+
+\providecommand*{\hpiswaphddefaults}%
+  {\ifcsvoid{@date}{\date{\today}}{}
+  \ifcsvoid{@faculty}{\faculty{Digital Engineering Faculty}}{}
+  \ifcsvoid{@university}{\university{University of Potsdam}}{}
+  \ifcsvoid{@universitylogo}{\universitylogo{swa-logo-uni}}{}
+  \ifcsvoid{@facultylogo}{\facultylogo{swa-logo-hpi}}{}
+  \ifcsvoid{@titlepagefont}{\renewcommand*{\@titlepagefont}{\normalfont}}{}
+  \ifcsvoid{@titlehead}%
+    {\newtoggle{hpi@logo@university}
+    \togglefalse{hpi@logo@university}
+    \newtoggle{hpi@logo@faculty}
+    \togglefalse{hpi@logo@faculty}
+    %
+    \expandafter\IfFileExists{\@universitylogo.ai}{\global\toggletrue{hpi@logo@university}}{}
+    \expandafter\IfFileExists{\@universitylogo.pdf}{\global\toggletrue{hpi@logo@university}}{}
+    \expandafter\IfFileExists{\@universitylogo.eps}{\global\toggletrue{hpi@logo@university}}{}
+    \expandafter\IfFileExists{\@universitylogo.tex}{\global\toggletrue{hpi@logo@university}}{}
+    \expandafter\IfFileExists{\@facultylogo.pdf}{\global\toggletrue{hpi@logo@faculty}}{}
+    \expandafter\IfFileExists{\@facultylogo.eps}{\global\toggletrue{hpi@logo@faculty}}{}
+    \expandafter\IfFileExists{\@facultylogo.tex}{\global\toggletrue{hpi@logo@faculty}}{}
+    %
+    \ifdefvoid{\includegraphics}% try to load if not there
+      {\if@atdocument\else
+        \RequirePackage{graphicx}
+      \fi}{}
+    \ifdefvoid{\includegraphics}{}% try to use if there
+      {\titlehead{%
+        \vspace*{-\dimexpr\baselineskip+\headheight+\headsep\relax}%
+        \makebox[\linewidth]%
+          {\ifboolexpr{ togl {hpi@logo@university} }%
+            {\IfFileExists{\@universitylogo.tex}%
+              {\resizebox{!}{6pc}{\@@input \@universitylogo.tex\relax}}%
+              {\includegraphics[height=6pc]{\@universitylogo}}}%
+             {}%
+          \hfill%
+          \ifboolexpr{ togl {hpi@logo@faculty} }%
+            {\IfFileExists{\@facultylogo.tex}%
+              {\resizebox{!}{6pc}{\@@input \@facultylogo.tex\relax}}%
+              {\includegraphics[height=6pc]{\@facultylogo}}}%
+            {}}}}}%
+     {}
+  \ifcsvoid{@extratitle}%
+    % no extratitle given
+    {\ifboolexpr{ togl {hpiswa@extratitle} }%
+      % but want one
+      {\extratitle{\hpiswaextratitle}}
+      % or want none
+      {}}% noop
+    % extratitle already given
+    {}%
+  \ifcsvoid{@uppertitleback}%
+    {\uppertitleback{%
+      \pdfbookmark[subsection]{Imprint}{imprint}%
+      \ifboolexpe{ togl {hpiswa@imprint} }%
+        {\ifcsvoid{doclicenseURL}{}% has CC license…
+          {\hpiswalicense}%
+          {}}%
+        {}}}
+    {}%
+  \ifcsvoid{@lowertitleback}%
+    {\lowertitleback{%
+      \ifboolexpe{ togl {hpiswa@committee} }{\hpiswacommittee}{}%
+      \ifboolexpe{ togl {hpiswa@imprint} }{\hpiswaimprint}{}}}%
+    {}%
+  %stopdefaults
+}
+
+
+\providecommand{\hpiswacommittee}%
+  {\begingroup%
+  \RaggedRight
+  \small
+  \noindent
+  \begingroup%
+  \ifcsvoid{@referee}%
+    % advisor only
+    {\def\\{ \tabularnewline & }%
+    \edef\tempa{\@advisor}%
+    \begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
+      \advisorname: & \tempa
+    \end{tabular}}
+    % advisor + referees
+    {\def\\{ \tabularnewline & }%
+    \def\and{ \tabularnewline \noexpand\smalllinespace & }%
+    \edef\tempa{\@advisor}%
+    \edef\tempb{\@referee}%
+    \def\smalllinespace{\addlinespace[4pt]}%
+    \begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
+      \advisorname: & \tempa \\\addlinespace[8pt]
+      \refereename: & \tempb
+    \end{tabular}}
+  \endgroup
+  \par\smallskip\noindent
+  \ifcsvoid{@handindate}%
+    {} % no hand in, no defense
+    {\ifcsvoid{@defensedate}%
+      % hand in only
+      {\begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
+        \handindatename: & \hpiswaprintdate{\@handindate}
+      \end{tabular}}%
+      % hand in + defense
+      {\begin{tabular}{@{}l@{\hspace*{1ex}}l@{}}
+        \handindatename: & \hpiswaprintdate{\@handindate}\\
+        \defensedatename:& \hpiswaprintdate{\@defensedate}
+      \end{tabular}}}
+  \par
+  \vspace*{4\baselineskip}%
+  \endgroup}%
+
+\providecommand*{\hpiswacsimprintlanguagebox}[1]%
+  {\ifcsvoid{@imprintlanguage}%
+    {\hpiswacsnontitlepagelanguage{#1}}
+    {\begin{otherlanguage*}[date]{\imprintlanguage}\csuse{#1}\end{otherlanguage*}}}
+
+\providecommand*{\hpiswacsnontitlepagelanguage}[1]%
+  {\ifcsvoid{@titlepagelanguage}%
+    {\csuse{#1}}
+    {%reverse the polarity
+    \begingroup%
+    \hpiswaresetlang{@titlepagelanguage}%
+    \csuse{#1}%
+    \hpiswasetlang{@titlepagelanguage}%
+    \endgroup}}
+    
+\providecommand*{\hpiswalicense}%
+  {\hpiswacsimprintlanguagebox{hpiswalicense@}}
+\providecommand*{\hpiswalicense@}%
+  {\noindent%
+  \begin{FlushLeft}
+    \small
+    This work is licensed under a Creative Commons License: \hfill\doclicenseImage\\
+    \doclicenseLongNameRef.\\
+    This does not apply to quoted content from other authors.\\
+    To view a copy of this license visit \\\url{\doclicenseURL}
+  \end{FlushLeft}}
+\providecommand*{\hpiswaimprint}%
+  {\hpiswacsimprintlanguagebox{hpiswaimprint@}}
+\providecommand*{\hpiswaimprint@}%
+  {\ifcsvoid{@doi}%
+    {}% not published
+    {\begingroup
+    \RaggedRight
+    \small
+    \noindent
+    \hpiswapulicationinfo\\
+    \url{\@doi}\\
+    \url{\@urn}%
+    \endgroup}}%
+
+\providecommand*{\hpiswaprinttititle}%
+  {{\titlefont\huge\@title}\par}
+
+
+\providecommand*{\hpiswasetlang}[1]%
+  {\csgdef{#1back}{}%
+  \ifcsvoid{#1}{}%
+    {\csxdef{#1back}{\languagename}%
+    \edef\templ{\csuse{#1}}%
+    \expandafter\selectlanguage\expandafter{\templ}}}%
+
+\providecommand*{\hpiswaresetlang}[1]%
+  {\ifcsvoid{#1back}{}%
+    {\edef\templ{\csuse{#1back}}%
+    \expandafter\selectlanguage\expandafter{\templ}}}%
+
+
+\def\@hpiswaprintdate#1-#2-#3\enddate%
+  {\begingroup%
+  \edef\@tempa{\thedatenumber}%
+  \setdate{#1}{#2}{#3}%
+  \datedate%
+  \setdatebynumber{\@tempa}%
+  \endgroup}
+\def\hpiswaprintdate#1%
+  {\edef\@tempa{#1}
+  \expandafter\@hpiswaprintdate\@tempa\enddate}
+
+\providecommand*{\presentationinformationHPISWA}%
+  {\degreethesisname{} in pursuit of doctorate \ofthename{}\\
+   \@faculty{}\\
+   \ofthename{} \@university}
+\providecommand*{\hpiswapulicationinfo}
+    {Published online on the \\
+    Publication Server \ofthename{} \@university:}
+
+\providecommand*{\reviewer}{\referee}
+\providecommand*{\reviewers}{\referee}
+\providecommand*{\referees}{\referee}
+
+\providecommand*{\defensedatename}{Date of Defense}
+\providecommand*{\handindatename}{Date handed in}
+
+\NowButAfterBeginDocument{%
+  \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}%
+    {\@university}{University of Potsdam}
+  \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}%
+    {\@faculty}{Digital Engineering Faculty}
+  \providecaptionname{german,ngerman,austrian,naustrian,swissgerman,nswissgerman}%
+    {\@university}{Universität Potsdam}
+  \providecaptionname{german,ngerman,austrian,naustrian,swissgerman,nswissgerman}%
+    {\@faculty}{Digital Engineering Fakultät}
+
+  \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}%
+    {\refereename}{Referee}%
+  \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}%
+    {\referesename}{Referees}%
+  \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}%
+    {\presentationinformationHPISWA}%
+    {\degreethesisname{} in pursuit of doctorate \ofthename{}\\
+    \@faculty{}\\
+    \ofthename{} \@university}
+  \providecaptionname{german,ngerman,austrian,naustrian,swissgerman,nswissgerman}%
+    {\refereename}{Gutachter:in}%
+  \providecaptionname{german,ngerman,austrian,naustrian,swissgerman,nswissgerman}%
+    {\referesename}{Gutachter:innen}%
+  \providecaptionname{german,ngerman,austrian,naustrian,swissgerman,nswissgerman}%
+    {\presentationinformationHPISWA}%
+    {\degreethesisname{}\\
+    zur Erlangung des Doktorgrades \ofthename{}\\
+    \@faculty{}\\
+    \ofthename{} \@university}
+  \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}%
+    {\defensedatename}{Date of Defense}
+  \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}%
+    {\handindatename}{Date handed in}
+  \providecaptionname{german,ngerman,austrian,naustrian,swissgerman,nswissgerman}%
+    {\defensedatename}{Datum der Disputation}
+  \providecaptionname{german,ngerman,austrian,naustrian,swissgerman,nswissgerman}%
+    {\handindatename}{Datum der Einreichung}
+
+  \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}%
+    {\hpiswapulicationinfo}%
+    {Published online on the \\
+    Publication Server \ofthename{} \@university:}
+  \providecaptionname{german,ngerman,austrian,naustrian,swissgerman,nswissgerman}%
+    {\hpiswapulicationinfo}%
+    {Online veröffentlicht auf dem \\
+    Publications-Server \ofthename{} \@university:}  
+  % stop provides
+  }
+  
+
+\renewcommand*{\inittitle}{%
+  \let\footnotesize\small
+  \let\footnoterule\relax
+  \let\footnote\thanks
+  \renewcommand*\thefootnote{\@fnsymbol\c@footnote}%
+  \let\@oldmakefnmark\@makefnmark
+  \renewcommand*{\@makefnmark}{\rlap\@oldmakefnmark}
+  \hpiswaphddefaults}%
+  
+\providecommand*{\initcovertitle}%
+  {\ifcsundef{if@titlepageiscoverpage}{\global\let\if@titlepageiscoverpage\iffalse}
+   \if@titlepageiscoverpage
+    \edef\titlepage@restore{%
+      \noexpand\endgroup
+      \noexpand\global\noexpand\@colht\the\@colht
+      \noexpand\global\noexpand\@colroom\the\@colroom
+      \noexpand\global\vsize\the\vsize
+      \noexpand\global\noexpand\@titlepageiscoverpagefalse
+      \noexpand\let\noexpand\titlepage@restore\noexpand\relax
+    }%
+     \begingroup
+     \topmargin=\dimexpr \coverpagetopmargin-1in\relax
+     \oddsidemargin=\dimexpr \coverpageleftmargin-1in\relax
+     \evensidemargin=\dimexpr \coverpageleftmargin-1in\relax
+     \textwidth=\dimexpr
+     \paperwidth-\coverpageleftmargin-\coverpagerightmargin\relax
+     \textheight=\dimexpr
+     \paperheight-\coverpagetopmargin-\coverpagebottommargin\relax
+     \headheight=0pt
+     \headsep=0pt
+     \footskip=\baselineskip
+     \@colht=\textheight
+     \@colroom=\textheight
+     \vsize=\textheight
+     \columnwidth=\textwidth
+     \hsize=\columnwidth
+     \linewidth=\hsize
+  \else
+    \let\titlepage@restore\relax
+  \fi}
+  
+%%
+%
+% Again, KOMA-like
+%
+%%
+\renewcommand*{\makepretitle}%
+  {\ifcsvoid{@extratitle}{}%
+    % yes extra
+    {\begin{titlepage}% 
+      \begingroup%
+      \hpiswasetlang{@titlepagelanguage}%
+      \noindent\@extratitle%
+      \hpiswaresetlang{@titlepagelanguage}%
+      \endgroup%
+    \end{titlepage}}}%
+\renewcommand*{\makepretitleback}%
+  {\ifcsvoid{@extratitle}%
+    % No extra, so no recto
+    {\ifcsvoid{@frontispiece}%
+      % no fronti no work no verso
+      {}%
+       % Yes fronti, need artificial recto
+      {\begin{titlepage}\null\end{titlepage}}}%
+    % yes extra, already verso.
+    {}
+    % now fronti
+    \begin{titlepage}%
+    \ifcsvoid{@frontispiece}%
+      % no fronti, need aritficial verso
+      {\null}%
+      % Yes fronti, normal fronti
+      {\begingroup
+      \hpiswasetlang{@titlepagelanguage}
+      \noindent\@frontispiece%
+      \hpiswaresetlang{@titlepagelanguage}%
+      \endgroup}%
+    \end{titlepage}}%
+  
+\renewcommand*{\makeposttitle}%
+  {\ifcsvoid{@dedication}{}%
+    % yes dedi
+    {\begin{titlepage}
+      \null\vfill
+      {\centering\usekomafont{dedication}{\@dedication \par}}%
+      \vskip \z@ \@plus 3fill
+    \end{titlepage}}}
+\renewcommand*{\makeposttitleback}%
+  % if dedi, need artifical verso
+  {\ifcsvoid{@dedication}{}{\begin{titlepage}\null\end{titlepage}}}
+%%%
+
+\renewcommand*{\makemaintitle}%
+  {\begin{titlepage}\begingroup%
+    \hpiswasetlang{@titlepagelanguage}%
+    \initcovertitle%
+    \setlength{\parskip}{\z@}%
+    \setlength{\parindent}{\z@}%
+    \setlength{\parfillskip}{\z@\@plus 1fil}%
+    \linespread{1}\selectfont
+    \@titlepagefont
+    \pdfbookmark[section]{Title}{title}
+    \ifcsvoid{@titlehead}{}%
+      {\begin{minipage}[t]{\textwidth}%
+        \usekomafont{titlehead}{\@titlehead\par}%
+      \end{minipage}\par}%
+    \begin{center}
+      \ifcsvoid{@othertitle}
+        {\Large
+          \null\vfill
+          \hpiswasetlang{@titlelanguage}%
+          \hpiswaprinttititle%
+          {\ifcsvoid{@subtitle}{}{\@subtitlefont{\@subtitle}\par}}%
+          \hpiswaresetlang{@titlellanguage}}
+        {\large
+        \null\vfill
+        \hpiswasetlang{@titlelanguage}%
+        {\titlefont\LARGE\@title}\par
+        \ifcsvoid{@subtitle}{}{{\@subtitlefont{\@subtitle}}{\LARGE\strut\par}}%
+        \hpiswaresetlang{@titlelanguage}
+        \vskip 3em%
+        \hpiswasetlang{@othertitlelanguage}
+        {\itshape
+           {\titlefont\LARGE\@othertitle}\par
+           \ifcsvoid{@othersubtitle}{}{{\@subtitlefont{\@othersubtitle}}{\LARGE\strut\par}}}%
+        \hpiswaresetlang{@othertitlelanguage}}
+        \vskip 3em%
+        {\usekomafont{author}{\@author \par}}%
+      \vfill
+      \presentationinformationHPISWA\par
+      \vspace*{3em}
+    \end{center}
+    \@thanks
+    \vfill\null\vskip-\baselineskip%
+    \hpiswaresetlang{@titlepagelanguage}%
+    \endgroup
+  \end{titlepage}}
+
+% put here because it is a stripped-down maintitle
+\providecommand*{\hpiswaextratitle}
+  {%\vspace*{\dimexpr 6pc + 1.08cm\relax}%
+  \ifcsvoid{@titlehead}{}%
+    {\phantom{\parbox{\textwidth}%
+      {\begin{minipage}[t]{\textwidth}%
+        \usekomafont{titlehead}{\@titlehead}%
+        \end{minipage}}}}%
+  \pdfbookmark[section]{Antiporta}{antiporta}%
+  \begin{center}%
+    \ifcsvoid{@othertitle}%
+      % no othertitle
+      {\Large
+      \null\vfill
+      \hpiswasetlang{@titlelanguage}%
+      \hpiswaprinttititle%
+      {\ifcsvoid{@subtitle}{}%
+        {\phantom{\parbox{\linewidth}{\@subtitlefont{\@subtitle}}}}}%
+      \hpiswaresetlang{@titlellanguage}}
+      % yes othertitle
+      {\large
+      \null\vfill
+      \hpiswasetlang{@titlelanguage}%
+      {\titlefont\LARGE\@title}\par
+      {\ifcsvoid{@subtitle}{}%
+        {\phantom{\parbox{\linewidth}{\@subtitlefont{\@subtitle}}{\LARGE\strut}}}}%
+      \hpiswaresetlang{@titlelanguage}
+      \vskip 3em%
+      {\phantom{\parbox{\linewidth}%
+        {\hpiswasetlang{@othertitlelanguage}
+        {\itshape
+           {\titlefont\LARGE\@othertitle}\\
+           \ifcsvoid{@othersubtitle}{}{{\@subtitlefont{\@othersubtitle}}{\LARGE\strut}}}%
+        \hpiswaresetlang{@othertitlelanguage}}}}}%
+    \vskip 3em%
+    {\usekomafont{author}{\@author \par}}%
+    \vfill
+    {\phantom{\parbox{\linewidth}{\presentationinformationHPISWA}}}
+    \vspace*{3em}
+  \end{center}%
+  \vfill\null\vskip-\baselineskip}
+
+\renewcommand*{\makemaintitleback}%
+  {\begin{titlepage}
+    \begingroup%
+    \hpiswasetlang{@titlepagelanguage}%
+    \noindent
+    \begin{minipage}[t]{\textwidth}
+      \@titlepagefont{\@uppertitleback}%
+    \end{minipage}\par
+    \vfill
+    \noindent
+    \begin{minipage}[b]{\textwidth}
+      \@titlepagefont{\@lowertitleback}%
+    \end{minipage}
+    \hpiswaresetlang{@titlepagelanguage}%
+    \endgroup%
+  \end{titlepage}\par
+  \@thanks\global\let\@thanks\@empty
+  \csuse{titlepage@restore}}
+
+\endinput
+%%
+%% End of file `title-hpi-swa.def'.
+%%% Local Variables: 
+%%% mode: latex
+%%% End: 

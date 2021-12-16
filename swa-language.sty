@@ -1,4 +1,5 @@
-\RequirePackage[USenglish,german]{datenumber}
+\PassOptionsToPackage{USenglish,german}{datenumber}
+\RequirePackage{datenumber}
 \setdatetoday
 
 \RequirePackage{swa-platform}
@@ -36,20 +37,22 @@
 }{
 %fool AUCTeX
 \iffalse
-  \RequirePackage[english]{babel}
+\RequirePackage[english]{babel}
 \fi
 
 
   \ifboolexpr{bool{@swa@german}}{
     % hyperref can't handle that.
-    % \RequirePackage[main=english,ngerman]{babel}
+    % \PassOptionsToPackage{main=english,ngerman}{babel}
     % order matters!
-    \RequirePackage[english,ngerman]{babel}
+    \PassOptionsToPackage{english,ngerman}{babel}
+    \RequirePackage{babel}
   }{
     % hyperref can't handle that.
-    % \RequirePackage[main=english,ngerman]{babel}
+    % \PassOptionsToPackage{main=english,ngerman}{babel}
     % order matters!
-    \RequirePackage[ngerman,english]{babel}
+    \PassOptionsToPackage{ngerman,english}{babel}
+    \RequirePackage{babel}
   }
 
   \defcaptionname{english}{\figureautorefname}{figure}
@@ -71,4 +74,15 @@
     }
 
 }
+% Some commons
+\providecaptionname{english}{\advisorname}{Advisor}%
+\providecaptionname{english}{\advisorsname}{Advisors}%
+\providecaptionname{german,ngerman}{\advisorname}{Betreuer:in}%
+\providecaptionname{german,ngerman}{\advisorsname}{Betreuer:innen}%
+
+\providecaptionname{english}{\reviewername}{Reviewer}%
+\providecaptionname{english}{\reviewersname}{Reviewers}%
+\providecaptionname{german,ngerman}{\reviewername}{Gutachter:in}%
+\providecaptionname{german,ngerman}{\reviewersname}{Gutachter:innen}%
+
 \endinput
