@@ -265,4 +265,10 @@ CAUTION: '$BIN' is not on your \$PATH. You
   fi
 fi
 
+if type complete >/dev/null 2>/dev/null; then
+    $E complete -W "latex bibtex go gloss show clean" swth
+else
+    $ECHO ">> \`complete' not found, skipping configuration of auto completion."
+fi
+
 $ECHO "Done"
