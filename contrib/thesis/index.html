@@ -152,17 +152,20 @@
         var add_words = Math.max(0, Math.floor((per_words - per_time) * targetWords) + 1);
 
         var words_today = 0, pages_today = 0;
-        if (words.filter(fromToday).length > 0)
-          words_today = wordcount - words[words.indexOf(words.filter(fromToday)[0]) - 1].y;
-        if (pages.filter(fromToday).length > 0)
-          pages_today = pagecount - pages[pages.indexOf(pages.filter(fromToday)[0]) - 1].y;
+        if (words.filter(fromToday).length > 0) {
+            words_today = wordcount - words[Math.max(0, words.indexOf(words.filter(fromToday)[0]) - 1)].y;
+        }
+        if (pages.filter(fromToday).length > 0) {
+          pages_today = pagecount - pages[Math.max(0, pages.indexOf(pages.filter(fromToday)[0]) - 1)].y;
+        }
 
         var days_current_pace = remaining_words / words_today;
         var endDate_current_pace = new Date();
             endDate_current_pace.setDate(endDate_current_pace.getDate() + days_current_pace);
 
-        var pace_to_finish_ontime = Math.floor(remaining_words / (remaining_seconds / 3600 / 24)) - words_today;
+        var pace_to_finish_ontime = (remaining_words / (remaining_seconds / 3600 / 24)) - words_today;
         pace_to_finish_ontime *= 1.1; // error margin, better let user configure 5 or 6 day work week
+	pace_to_finish_ontime = Math.floor(pace_to_finish_ontime);
 
         var words_per_day = reduceArrayPerDay(words);
 
