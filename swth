@@ -27,9 +27,11 @@ OPTIONS
   --lua      use LuaLaTeX
   --biber    use Biber instead of BibTeX
 
-  --help     output this help and exit
-  --dry-run  don't execute, just say what would be
-  --version  output version information and exit
+  --help                output this help and exit
+  --dry-run             don't execute, just say what would be
+  --install-completion  install bash autocompletion
+  --version             output version information and exit
+
 
 COMMAND
 
@@ -352,6 +354,38 @@ _go() {
    _bibtex && _latex && _latex && _latex && _show
 }
 
+_install_completion() {
+  if ! bash --version >/dev/null 2>/dev/null ; then
+    $ECHO ">> \`bash' not found, skipping configuration of auto completion."
+    exit 300
+  fi
+  if ! bash -c type complete >/dev/null 2>/dev/null ; then
+    $ECHO ">> \`complete' not found, skipping configuration of auto completion."
+    exit 300
+  fi
+  if ! bash -c type pkg-config >/dev/null 2>/dev/null ; then
+    $ECHO ">> \`pkg-config' not found, skipping configuration of auto completion."
+    exit 300
+  fi
+
+  COMPLETE_INSTALL_DIR=$(pkg-config --variable=compatdir bash-completion)
+  if [ ! -z "$COMPLETE_INSTALL_DIR" ]; then
+    if [ ! -w "$COMPLETE_INSTALL_DIR" ]; then
+      printf "\n$COMPLETE_INSTALL_DIR is not writable, continue as root (sudo)? [NO|yes] "
+      EOLD=$E
+      read ANS
+      case "$ANS" in
+        [Yy][Ee][Ss]) E=sudo ;;
+          *) exit 2 ;;
+      esac
+    fi
+    $ECHO 'complete -W "latex bibtex go gloss show clean" swth' | $E tee -a "$COMPLETE_INSTALL_DIR"/swth >/dev/null
+    E=$EOLD
+  else
+    $ECHO ">> no automatic installation directory found, skipping configuration of auto completion."
+  fi
+}
+
 _author() {
   if  [ "$MODE" != "bachelor" ]; then
     $ECHO "$PROGRAM: adding an author outside BSc mode is not meaningful, aborting"
@@ -422,6 +456,10 @@ while [ $# -gt 0 ]; do
       ;;
     --version | -version | -V)
       $ECHO "$PROGRAM $VERSION"
+      exit 0
+      ;;
+    --install-completion)
+      _install_completion
       exit 0
       ;;
     --verbose | -verbose | -v) VERBOSE=true ;;
