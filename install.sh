@@ -265,31 +265,4 @@ CAUTION: '$BIN' is not on your \$PATH. You
   fi
 fi
 
-
-if type complete >/dev/null 2>/dev/null ; then
-  if type pkg-config >/dev/null 2>/dev/null ; then
-	COMPLETE_INSTALL_DIR=$(pkg-config --variable=compatdir bash-completion)
-	if [ ! -z "$COMPLETE_INSTALL_DIR" ]; then
-    if [ ! -w "$COMPLETE_INSTALL_DIR" ]; then
-      printf "\n$COMPLETE_INSTALL_DIR is not writable, continue as root (sudo)? [NO|yes] "
-      EOLD=$E
-      read ANS
-      case "$ANS" in
-        [Yy][Ee][Ss]) E=sudo ;;
-        *) exit 2 ;;
-      esac
-    fi
-    $ECHO 'complete -W "latex bibtex go gloss show clean" swth' | $E tee -a "$COMPLETE_INSTALL_DIR"/swth >/dev/null
-	  E=$EOLD
-	else
-    $ECHO ">> no automatic installation directory found, skipping configuration of auto completion."
-	fi
-else
-  $ECHO ">> \`pkg-config' not found, skipping configuration of auto completion."
-fi
-else
-  $ECHO ">> \`complete' not found, skipping configuration of auto completion."
-fi
-
-
 $ECHO "Done"
