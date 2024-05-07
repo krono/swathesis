@@ -3,3 +3,16 @@ requirements/ctanify
 tds/
 swathesis.tds.zip
 Logos.zip
+
+
+# latex
+*.acn
+*.aux
+*.bcf
+*.fdb_latexmk
+*.fls
+*.glo
+*.log
+*.mw
+*.synctex.gz
+*.xdy
