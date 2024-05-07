@@ -22,10 +22,11 @@ OPTIONS
   --master   operate in MSc mode
   --phd      operate in PhD mode
 
-  --xe       use XeLaTeX
-  --pdf      use pdfLaTeX (default)
-  --lua      use LuaLaTeX
-  --biber    use Biber instead of BibTeX
+  --xe       use XeLaTeX*
+  --pdf      use pdfLaTeX (default)*
+  --lua      use LuaLaTeX*
+  --biber    use Biber instead of BibTeX*
+  * not used in create command
 
   --help                output this help and exit
   --dry-run             don't execute, just say what would be
@@ -91,17 +92,17 @@ if [ -z "$OSTYPE" ]; then
 fi
 
 if __has_cmd pushd ; then
-  __pushd() { 
-    pushd "$@" 2>/dev/null >dev/null 
+  __pushd() {
+    pushd "$@" 2>/dev/null >dev/null
   }
-  __popd() { 
-    popd "$@" 2>/dev/null >dev/null 
+  __popd() {
+    popd "$@" 2>/dev/null >dev/null
   }
 else
   # emulate pushd to our usage
   __pushd() {
     export P_OLDPWD="$PWD"
-    cd $1  2>/dev/null >dev/null 
+    cd $1  2>/dev/null >dev/null
   }
   __popd() {
     if [ -z "$P_OLDPWD" ]; then
@@ -298,10 +299,11 @@ _init() {
 }
 
 __set_biber() {
-  if __has_cmd biber;  then
-    $ECHO "Using Biber for BibTeX"
-    BIBTEX=biber
+  if ! __has_cmd biber;  then
+    $ECHO "$PROGRAM: Biber not found, cannot use it."
+    exit 7
   fi
+  BIBTEX=biber
 }
 
 _bibtex() {
