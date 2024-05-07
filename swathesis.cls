@@ -27,7 +27,8 @@
 %  garamond  - Lighter than palatino, heavier than latin modern, more readable.
 %
 % Other
-%  print - do not color links
+%  print     - do not color links
+%  oneside   - one sided printing (equally spaced margins)
 %
 \RequirePackage{etoolbox}
 
@@ -60,6 +61,9 @@
 \DeclareOption{printmode}{\renewcommand*\printmode{true}}
 \DeclareOption{online}{\renewcommand*\printmode{false}}
 
+\newif\if@swa@oneside
+\DeclareOption{oneside}{\@swa@onesidetrue}
+
 \DeclareOption*{\gappto\swa@miscoptions{\CurrentOption,}}
 
 
@@ -81,6 +85,9 @@
 }{%
   \gdef\swa@cls{scrbook}%
   % \gappto\swa@miscoptions{DIV=8,}
+  \if@swa@oneside
+    \gappto\swa@miscoptions{oneside,}
+  \fi
 }
 \ifx\swa@miscoptions\empty\relax\else
   \PassOptionsToClass{\swa@miscoptions}{\swa@cls}
@@ -136,6 +143,6 @@
   }
 }
 
-%%% Local Variables: 
+%%% Local Variables:
 %%% mode: latex
-%%% End: 
+%%% End:
