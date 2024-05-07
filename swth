@@ -91,17 +91,17 @@ if [ -z "$OSTYPE" ]; then
 fi
 
 if __has_cmd pushd ; then
-  __pushd() { 
-    pushd "$@" 2>/dev/null >dev/null 
+  __pushd() {
+    pushd "$@" 2>/dev/null >dev/null
   }
-  __popd() { 
-    popd "$@" 2>/dev/null >dev/null 
+  __popd() {
+    popd "$@" 2>/dev/null >dev/null
   }
 else
   # emulate pushd to our usage
   __pushd() {
     export P_OLDPWD="$PWD"
-    cd $1  2>/dev/null >dev/null 
+    cd $1  2>/dev/null >dev/null
   }
   __popd() {
     if [ -z "$P_OLDPWD" ]; then
@@ -449,6 +449,11 @@ if [ $# -lt 1 ]; then
 fi
 
 while [ $# -gt 0 ]; do
+  if [ "$1" = "--" ]; then
+    shift
+    break
+  fi
+
   case "$1" in
     --help | -help | -h | help)
       $ECHO "$USAGE"
@@ -476,7 +481,11 @@ while [ $# -gt 0 ]; do
       exit 1
       ;;
     *)
-      break
+      if [ -n "$CMD" ]; then
+        $ECHO "$PROGRAM: unknown argument \`$1' after command."
+        exit 1
+      fi
+      CMD="$1"
       ;;
   esac
   shift
@@ -518,7 +527,7 @@ esac
 
 _dragons
 
-if [ $# -lt 1 ]; then
+if [ -z "$CMD" ]; then
   $ECHO "$PROGRAM: no command specified, try --help." >&2
   exit 2
 fi
@@ -556,19 +565,18 @@ OPEN = $OPEN
 
 TEMPLATEROOT = $TEMPLATEROOT
 TEMPLATEDIR = $TEMPLATEDIR
-command = $1"
+command = $CMD"
 
 fi
 
 __pushd "$SWTHDIR" >/dev/null 2>/dev/null
 trap '__popd >/dev/null 2>/dev/null' EXIT
 
-CMD="_$1"
-if __has_cmd $CMD; then
-  shift
-  $CMD "$@"
+_CMD="_$CMD"
+if __has_cmd "$_CMD"; then
+  $_CMD "$@"
 else
-  $ECHO "$PROGRAM: unknown command \`$1', try --help if you need it."
+  $ECHO "$PROGRAM: unknown command \`$CMD', try --help if you need it."
   exit 2
 fi
 EXIT=$?
