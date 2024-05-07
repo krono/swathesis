@@ -1,4 +1,4 @@
-# swathesis needs the follwing packages.
+# swathesis needs the following packages.
 # These are available via TeXLive tlmgr or MiKTeX mpm
 accsupp
 acronym
