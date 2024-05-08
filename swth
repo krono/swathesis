@@ -3,6 +3,7 @@
 # swth.sh -- create or manage theses for swathesis
 #
 #
+# shellcheck disable=SC2317  # metaprogramming via $_CMD
 
 VERSION="1.0"
 PROGRAM=$(echo $0 | sed 's%.*/%%')
@@ -304,6 +305,7 @@ __set_biber() {
   fi
 }
 
+# shellcheck disable=SC2120  # metaprogramming via $_CMD
 _bibtex() {
   if [ "$MODE" = "bachelor" ]; then
     find "$SWTHDIR" -mindepth 2 -name \*.aux | while read FILENAME; do
@@ -321,6 +323,7 @@ _bibtex() {
   fi
 }
 
+# shellcheck disable=SC2120  # metaprogramming via $_CMD
 _latex() {
   if [ -n $MAIN ]; then
     $LATEX "$@" "$MAIN"
@@ -330,6 +333,7 @@ _latex() {
   fi
 }
 
+# shellcheck disable=SC2120  # metaprogramming via $_CMD
 _gloss() {
   if [ -n $MAIN ]; then
     $MKGLOSS "$@" "$MAIN"
