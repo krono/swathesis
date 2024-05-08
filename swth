@@ -267,7 +267,7 @@ _create() {
   if [ -d "$SWTHDIR" ]; then
     $ECHO "Found $SWTHDIR"
   else
-    printf "$SWTHDIR does not yet exist, create? [YES/no]"
+    printf "$SWTHDIR does not yet exist, create? [YES/no] "
     read ANS
     case "$ANS" in
       [Nn][Oo]?) ;;
