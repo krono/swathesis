@@ -91,17 +91,17 @@ if [ -z "$OSTYPE" ]; then
 fi
 
 if __has_cmd pushd ; then
-  __pushd() { 
-    pushd "$@" 2>/dev/null >dev/null 
+  __pushd() {
+    pushd "$@" 2>/dev/null >/dev/null || exit
   }
-  __popd() { 
-    popd "$@" 2>/dev/null >dev/null 
+  __popd() {
+    popd "$@" 2>/dev/null >/dev/null || exit
   }
 else
   # emulate pushd to our usage
   __pushd() {
     export P_OLDPWD="$PWD"
-    cd $1  2>/dev/null >dev/null 
+    cd $1 2>/dev/null >/dev/null || exit
   }
   __popd() {
     if [ -z "$P_OLDPWD" ]; then
@@ -109,7 +109,7 @@ else
       (exit 1)
       return 1
     else
-      cd "$P_OLDPWD"  2>/dev/null >dev/null
+      cd "$P_OLDPWD"  2>/dev/null >/dev/null || exit
       export P_OLDPWD=
     fi
   }
