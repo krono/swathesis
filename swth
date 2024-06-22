@@ -12,7 +12,7 @@ if [ ! -z "$ZSH_VERSION" ]; then
 fi
 ECHO="/usr/bin/printf %b\\n"
 
-USAGE="Usage: $PROGRAM [OPTIONS] COMMAND
+USAGE="Usage: $PROGRAM [OPTIONS] COMMAND [COMMAND_OPTIONS]
 
 Create or manage swathesis documents.
 
@@ -47,6 +47,8 @@ COMMAND
 
   author     add another author in BSc mode
 
+COMMAND_OPTIONS
+  Will be passed to the command (bibtex, latex, or gloss).
 "
 
 _dragons() {
