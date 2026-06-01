@@ -83,7 +83,7 @@
   % \gappto\swa@miscoptions{DIV=8,}
 }
 \ifx\swa@miscoptions\empty\relax\else
-  \PassOptionsToClass{\swa@miscoptions}{\swa@cls}
+  \expandafter\PassOptionsToClass\expandafter{\swa@miscoptions}{\swa@cls}
 \fi
 \LoadClass{\swa@cls}
 
