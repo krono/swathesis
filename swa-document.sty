@@ -182,7 +182,9 @@
         [\dimexpr .33\baselineskip + \depth]{%
           \makebox[\paperwidth]{\color{black!50}\swa@draftInfo}}}}
   }
-  \AtEndDocument{\clearpage\phantomsection\pdfbookmark{List of Todos}{lot}\listoftodos}
+  \AtEndDocument{%
+    \@ifpackagewith{todonotes}{disable}{}{%
+      \clearpage\phantomsection\pdfbookmark{List of Todos}{lot}\listoftodos}}
 }{
   \let\blindtext\relax
   \let\Blindtext\relax
