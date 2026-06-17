@@ -61,6 +61,10 @@ to generate a [TDS][] compatible package for manual installation.
 
 See [DEPENDS.txt](DEPENDS.txt) for an exhaustive list of requires packages
 
+## Hints ##
+
+To see how to create Matplotlib figures that fit nicely to the template, see [figures.md](figures.md).
+
 ## Contents ##
 
     .
